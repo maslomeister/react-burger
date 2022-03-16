@@ -1,0 +1,16 @@
+.row {
+  width: 1336px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-content: center;
+  margin: auto;
+}
+
+.col_left {
+  width: 600px;
+}
+
+.col_right {
+  width: 600px;
+}
