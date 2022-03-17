@@ -1,28 +1,22 @@
-.outer_ingredient {
-  display: flex;
-  flex-flow: column;
-  align-items: end;
-  width: calc(600px - 8px);
+.main {
 }
 
-.inner_ingredients {
-  display: flex;
-  flex-flow: column;
-  align-items: end;
+.components {
   overflow-y: auto;
-  max-height: 465px;
+  max-width: 600px;
+  max-height: 700px;
 }
 
-.cart {
+.tabs_container {
   display: flex;
-  flex-flow: row;
-  align-items: center;
-  justify-content: end;
-  width: calc(600px - 8px);
 }
 
-.total {
+.item_container {
   display: flex;
-  flex-flow: row;
-  align-items: center;
+  flex-flow: row wrap;
+}
+
+p {
+  word-break: break-word;
+  white-space: normal;
 }

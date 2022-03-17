@@ -1,65 +1,48 @@
 import ingredientsStyles from "./burger-ingredients.module.css";
-import {
-  ConstructorElement,
-  DragIcon,
-  Button,
-  CurrencyIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useState } from "react";
 import Data from "../../utils/data";
+import Tabs from "../../utils/tabs-data";
+import BurgerIngredientItem from "../burger-ingredients-item/burger-ingredients-item";
 
-function BurgerIngredients() {
+function BurgerIngredient() {
+  const [currentTab, setCurrentTab] = useState("one");
+
   return (
-    <div className="mt-25">
-      <div className={ingredientsStyles.outer_ingredient}>
-        <div className="ml-4 mr-4 mb-4">
-          <ConstructorElement
-            type="top"
-            isLocked={true}
-            text="Краторная булка N-200i (верх)"
-            price={200}
-            thumbnail={Data[0].image}
-          />
-        </div>
+    <>
+      <p className="text text_type_main-large mb-5 mt-10">Соберите бургер</p>
+      <div className="mb-10" style={{ display: "flex" }}>
+        {Tabs.map((tab) => (
+          <Tab
+            key={tab._id}
+            value={tab.value}
+            active={currentTab === tab.value}
+            onClick={setCurrentTab}
+          >
+            {tab.name}
+          </Tab>
+        ))}
       </div>
 
-      <div className={ingredientsStyles.inner_ingredients}>
-        {Data.map((data) => {
-          return (
-            <div className="ml-4 mr-4 mb-4">
-              <DragIcon type="primary" />
-              <ConstructorElement
-                text="Краторная булка N-200i (верх)"
-                price={200}
-                thumbnail={data.image}
-              />
+      <div className={ingredientsStyles.components}>
+        {Tabs.map((tab) => (
+          <section key={tab._id}>
+            <p className="text text_type_main-medium">{tab.name}</p>
+            <div className={`${ingredientsStyles.item_container} ml-4`}>
+              {Data.filter((x) => x.type === tab.type).map((data) => (
+                <BurgerIngredientItem
+                  key={data._id}
+                  imageSrc={data.image}
+                  price={data.price}
+                  name={data.name}
+                />
+              ))}
             </div>
-          );
-        })}
+          </section>
+        ))}
       </div>
-
-      <div className={ingredientsStyles.outer_ingredient}>
-        <div className="ml-4 mr-4 mt-4">
-          <ConstructorElement
-            type="bottom"
-            isLocked={true}
-            text="Краторная булка N-200i (верх)"
-            price={200}
-            thumbnail={Data[0].image}
-          />
-        </div>
-      </div>
-
-      <div className={`${ingredientsStyles.cart} mt-10`}>
-        <div className={`${ingredientsStyles.total} mr-10`}>
-          <p className="text text_type_digits-medium">500</p>
-          <CurrencyIcon type="primary" />
-        </div>
-        <Button type="primary" size="large">
-          Оформить заказ
-        </Button>
-      </div>
-    </div>
+    </>
   );
 }
 
-export default BurgerIngredients;
+export default BurgerIngredient;

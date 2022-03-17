@@ -1,4 +1,4 @@
-import itemStyles from "./burger-constructor-item.module.css";
+import itemStyles from "./burger-ingredients-item.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
   price: number;
 }
 
-function BurgerConstructorItem(props: Props) {
+function BurgerIngredientItem(props: Props) {
   return (
     <div className={`${itemStyles.item} ml-4 mr-5 mb-10 mt-6`}>
       <img
@@ -26,4 +26,4 @@ function BurgerConstructorItem(props: Props) {
   );
 }
 
-export default BurgerConstructorItem;
+export default BurgerIngredientItem;

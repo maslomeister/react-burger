@@ -1,6 +1,6 @@
 import buildStyles from "./build-burger.module.css";
-import BurgerIngredients from "../../burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../../burger-constructor/burger-constructor";
+import BurgerIngredients from "../../burger-constructor/burger-constructor";
+import BurgerConstructor from "../../burger-ingredients/burger-ingredients";
 
 function BuildBurger() {
   return (
