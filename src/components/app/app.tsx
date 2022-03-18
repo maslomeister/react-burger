@@ -1,4 +1,4 @@
-import appStyles from "./app-header.module.css";
+import appStyles from "./app.module.css";
 import AppHeader from "../../components/app-header/app-header";
 import BuildBurger from "../../components/pages/build-burger/build-burger";
 
