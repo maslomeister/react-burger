@@ -13,6 +13,11 @@
   max-height: 465px;
 }
 
+.ingredient {
+  display: flex;
+  align-items: center;
+}
+
 .cart {
   display: flex;
   flex-flow: row;

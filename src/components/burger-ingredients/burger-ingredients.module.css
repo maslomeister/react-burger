@@ -1,6 +1,10 @@
 .main {
 }
 
+.tabs {
+  display: flex;
+}
+
 .components {
   overflow-y: auto;
   max-width: 600px;
