@@ -45,9 +45,9 @@ function BurgerIngredient(props: burgerIngredientsPropTypes) {
     <>
       <p className="text text_type_main-large mb-5 mt-10">Соберите бургер</p>
       <div className={`${ingredientsStyles.tabs} mb-10`}>
-        {props.tabs!.map((tab, index) => (
+        {props.tabs!.map((tab) => (
           <Tab
-            key={index}
+            key={tab._id}
             value={tab.value}
             active={currentTab === tab.value}
             onClick={setCurrentTab}
@@ -59,8 +59,8 @@ function BurgerIngredient(props: burgerIngredientsPropTypes) {
 
       {props.dataArray && (
         <div className={ingredientsStyles.components}>
-          {props.tabs!.map((tab, index) => (
-            <section key={index}>
+          {props.tabs!.map((tab) => (
+            <section key={tab._id}>
               <p className="text text_type_main-medium">{tab.name}</p>
               <div className={`${ingredientsStyles.item_container} ml-4`}>
                 {props
