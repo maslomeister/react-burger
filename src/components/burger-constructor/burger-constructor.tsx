@@ -51,7 +51,7 @@ function BurgerConstructor(props: burgerConstructorPropTypes) {
     );
 
     elements.map((element) => {
-      element.style.width = "488px";
+      return (element.style.width = "488px");
     });
   }, [props.dataArray]);
 
