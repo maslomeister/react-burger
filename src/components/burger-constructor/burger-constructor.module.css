@@ -1,0 +1,33 @@
+.outer_style {
+  display: flex;
+  flex-flow: column;
+  align-items: end;
+  width: calc(600px - 8px);
+}
+
+.inner_style {
+  display: flex;
+  flex-flow: column;
+  align-items: end;
+  overflow-y: auto;
+  max-height: 465px;
+}
+
+.ingredient {
+  display: flex;
+  align-items: center;
+}
+
+.cart {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: end;
+  width: calc(600px - 8px);
+}
+
+.total {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+}
