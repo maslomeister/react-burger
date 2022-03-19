@@ -1,0 +1,40 @@
+.main {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.name {
+  width: 520px;
+  text-align: center;
+}
+
+.nutrition {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0px 20px;
+  width: 520px;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+}
+
+.text {
+  /* flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+  position: static;
+  width: 120px;
+  left: calc(50% - 120px / 2);
+  top: 0%;
+  bottom: 57.14%; */
+}
