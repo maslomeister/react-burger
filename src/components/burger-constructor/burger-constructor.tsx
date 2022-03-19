@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import constructorStyles from "./burger-constructor.module.css";
 import {
   ConstructorElement,
@@ -56,16 +56,18 @@ function BurgerConstructor(props: burgerConstructorPropTypes) {
   }, [props.dataArray]);
 
   return (
-    <div className="mt-25">
-      <div className={constructorStyles.outer_style}>
-        <div className="ml-4 mr-4 mb-4">
-          <ConstructorElement
-            type="top"
-            isLocked={true}
-            text={`${props.dataArray![0].name} (верх)`}
-            price={props.dataArray![0].price}
-            thumbnail={props.dataArray![0].image}
-          />
+    <>
+      <div className="mt-25">
+        <div className={constructorStyles.outer_style}>
+          <div className="ml-4 mr-4 mb-4">
+            <ConstructorElement
+              type="top"
+              isLocked={true}
+              text={`${props.dataArray![0].name} (верх)`}
+              price={props.dataArray![0].price}
+              thumbnail={props.dataArray![0].image}
+            />
+          </div>
         </div>
       </div>
 
@@ -108,11 +110,8 @@ function BurgerConstructor(props: burgerConstructorPropTypes) {
           <p className="text text_type_digits-medium">500</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button type="primary" size="large">
-          Оформить заказ
-        </Button>
       </div>
-    </div>
+    </>
   );
 }
 

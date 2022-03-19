@@ -1,8 +1,8 @@
 @font-face {
-  font-family: "JetBrainsMono-Medium";
+  font-family: "JetBrainsMono-Regular";
   font-style: normal;
   font-weight: 400;
-  src: url("./fonts/JetBrainsMono-Medium.woff2") format("woff2");
+  src: url("./fonts/JetBrainsMono-Regular.woff2") format("woff2");
 }
 
 @font-face {
@@ -15,7 +15,7 @@
 body {
   background-color: #131316;
   margin: 0;
-  font-family: "JetBrainsMono-Medium", "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+  font-family: "JetBrainsMono-Regular", "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
     "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
