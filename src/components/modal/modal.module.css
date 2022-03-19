@@ -12,12 +12,6 @@
   cursor: auto;
 }
 
-/* .inner {
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-} */
-
 .title {
   display: flex;
   flex-flow: row;
