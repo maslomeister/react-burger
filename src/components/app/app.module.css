@@ -1,0 +1,21 @@
+.row {
+  width: 1241px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-content: center;
+  margin: auto;
+}
+
+.col_left {
+}
+
+.col_right {
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 500px;
+}
