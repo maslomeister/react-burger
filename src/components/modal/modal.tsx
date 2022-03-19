@@ -32,7 +32,10 @@ function Modal(props: modalProps) {
           </div>
         </div>
       ) : (
-        <div className={`${modalStyles.close_icon_absolute} mr-10 mt-15`}>
+        <div
+          className={`${modalStyles.close_icon_absolute} mr-10 mt-15`}
+          onClick={props.onClose}
+        >
           {props.closeIcon}
         </div>
       )}
