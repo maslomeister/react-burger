@@ -1,9 +1,11 @@
-import appStyles from "./app.module.css";
 import { useState, useEffect } from "react";
+
 import AppHeader from "../../components/app-header/app-header";
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor";
 import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients";
 import Tabs from "../../utils/tabs-data";
+
+import appStyles from "./app.module.css";
 
 const serverUrl = "https://norma.nomoreparties.space/api/ingredients";
 

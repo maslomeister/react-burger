@@ -1,7 +1,7 @@
-import React from "react";
+import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "../../components/modal-overlay/modal-overlay";
 import Modal from "../../components/modal/modal";
-import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+
 import ingredientDetailsStyles from "./ingredient-details.module.css";
 
 interface ingredientDetailsProps {

@@ -1,9 +1,11 @@
-import ingredientsStyles from "./burger-ingredients.module.css";
-import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState } from "react";
-import BurgerIngredientItem from "../burger-ingredients-item/burger-ingredients-item";
 import PropTypes from "prop-types";
+
+import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import BurgerIngredientItem from "../burger-ingredients-item/burger-ingredients-item";
 import IngredientDetails from "../../components/ingredient-details/ingredient-details";
+
+import ingredientsStyles from "./burger-ingredients.module.css";
 
 const tab = PropTypes.shape({
   _id: PropTypes.number.isRequired,

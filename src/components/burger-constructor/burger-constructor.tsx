@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import constructorStyles from "./burger-constructor.module.css";
+import PropTypes from "prop-types";
+
 import {
   ConstructorElement,
   DragIcon,
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
 import OrderDetails from "../../components/order-details/order-details";
+
+import constructorStyles from "./burger-constructor.module.css";
 
 const dataPropTypes = PropTypes.shape({
   _id: PropTypes.string.isRequired,

@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
-import orderDetailsStyles from "./order-details.module.css";
-import ModalOverlay from "../../components/modal-overlay/modal-overlay";
-import Modal from "../../components/modal/modal";
 import {
   CloseIcon,
   CheckMarkIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import checkIconBackground from "../../images/order-details/check_icon_background.svg";
+import ModalOverlay from "../../components/modal-overlay/modal-overlay";
+import Modal from "../../components/modal/modal";
+
+import orderDetailsStyles from "./order-details.module.css";
 
 interface orderDetailsProps {
   show: boolean;

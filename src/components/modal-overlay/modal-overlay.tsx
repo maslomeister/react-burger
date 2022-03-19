@@ -1,5 +1,6 @@
-import modalOverlayStyles from "./modal-overlay.module.css";
 import { createPortal } from "react-dom";
+
+import modalOverlayStyles from "./modal-overlay.module.css";
 
 interface modalOverlayProps {
   children: JSX.Element;

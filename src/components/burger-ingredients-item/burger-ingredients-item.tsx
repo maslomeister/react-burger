@@ -1,9 +1,11 @@
-import itemStyles from "./burger-ingredients-item.module.css";
+import PropTypes from "prop-types";
+
 import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
+
+import itemStyles from "./burger-ingredients-item.module.css";
 
 const propTypes = {
   imageSrc: PropTypes.string.isRequired,
