@@ -9,6 +9,7 @@ const propTypes = {
   imageSrc: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 BurgerIngredientItem.propTypes = propTypes;
@@ -18,7 +19,10 @@ type burgerIngredientsPropTypes = PropTypes.InferProps<typeof propTypes>;
 
 function BurgerIngredientItem(props: burgerIngredientsPropTypes) {
   return (
-    <div className={`${itemStyles.item} ml-4 mr-5 mb-10 mt-6`}>
+    <div
+      className={`${itemStyles.item} ml-4 mr-5 mb-10 mt-6`}
+      onClick={props.onClick}
+    >
       <img
         className={`${itemStyles.item} ml-4 mr-5`}
         alt="previewImage"
