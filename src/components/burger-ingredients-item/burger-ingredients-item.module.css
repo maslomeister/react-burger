@@ -1,4 +1,4 @@
-.item {
+.Item {
   position: relative;
   display: flex;
   flex-flow: column;
@@ -8,18 +8,15 @@
   cursor: pointer;
 }
 
-.image {
-}
-
-.name {
+.Item_name {
   text-align: center;
 }
 
-.price {
+.Item_price {
   font-family: "Iceland";
   display: flex;
   flex-direction: row;
   align-items: center;
-  font-size: 32px;
+  font-size: 28px;
   line-height: 24px;
 }
