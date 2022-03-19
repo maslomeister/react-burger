@@ -13,12 +13,16 @@
   max-height: 465px;
 }
 
-.ingredient {
+.Ingredient {
   display: flex;
   align-items: center;
 }
 
-.cart {
+.constructor_element_wrapper div {
+  width: 536px;
+}
+
+.Cart {
   display: flex;
   flex-flow: row;
   align-items: center;
@@ -26,7 +30,7 @@
   width: calc(600px - 8px);
 }
 
-.total {
+.Cart_total {
   display: flex;
   flex-flow: row;
   align-items: center;
