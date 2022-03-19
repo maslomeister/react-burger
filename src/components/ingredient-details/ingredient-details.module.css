@@ -26,15 +26,3 @@
   align-items: center;
   height: 50px;
 }
-
-.text {
-  /* flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0;
-  position: static;
-  width: 120px;
-  left: calc(50% - 120px / 2);
-  top: 0%;
-  bottom: 57.14%; */
-}
