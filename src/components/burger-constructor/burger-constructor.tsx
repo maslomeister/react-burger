@@ -121,11 +121,9 @@ function BurgerConstructor(props: burgerConstructorPropTypes) {
               <ConstructorElement
                 type="bottom"
                 isLocked={true}
-                text={`${
-                  props.dataArray[props.dataArray.length - 1].name
-                } (низ)`}
-                price={props.dataArray[props.dataArray.length - 1].price}
-                thumbnail={props.dataArray[props.dataArray.length - 1].image}
+                text={`${props.dataArray[0].name} (низ)`}
+                price={props.dataArray[0].price}
+                thumbnail={props.dataArray[0].image}
               />
             </div>
           </div>
