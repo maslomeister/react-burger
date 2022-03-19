@@ -40,29 +40,25 @@ function App() {
   return (
     <div className="App">
       <AppHeader />
-      {state.hasError && (
+      {state.isLoading && (
         <div className={appStyles.loading}>
           <p className="text text_type_main-large">Данные загружаются</p>
         </div>
       )}
-      {state.isLoading && (
+      {state.hasError && (
         <div className={appStyles.loading}>
           <p className="text text_type_main-large">
             Данные не смогли загрузиться: {state.error}
           </p>
         </div>
       )}
-      {!state.isLoading && !state.hasError && state.data.length !== 0 && (
+      {state.data.length !== 0 && (
         <section className={appStyles.row}>
           <div className={`{buildStyles.col_left} mr-10`}>
             <BurgerIngredients tabs={Tabs} dataArray={state.data} />
           </div>
           <div className={appStyles.col_right}>
-            <BurgerConstructor
-              dataArray={state.data}
-              topBun={state.data[0]}
-              bottomBun={state.data[state.data.length - 1]}
-            />
+            <BurgerConstructor dataArray={state.data} />
           </div>
         </section>
       )}
