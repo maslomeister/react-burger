@@ -1,16 +1,16 @@
-.main {
+.Main {
   display: flex;
   flex-flow: column;
   align-items: center;
   justify-content: center;
 }
 
-.name {
+.Main_text {
   width: 520px;
   text-align: center;
 }
 
-.nutrition {
+.Main_nutrition {
   display: flex;
   flex-flow: row;
   justify-content: center;
@@ -19,7 +19,7 @@
   width: 520px;
 }
 
-.item {
+.Main_item {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
