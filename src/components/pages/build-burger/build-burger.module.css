@@ -1,5 +1,5 @@
 .row {
-  width: 1336px;
+  width: 1241px;
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
@@ -8,9 +8,7 @@
 }
 
 .col_left {
-  width: 600px;
 }
 
 .col_right {
-  width: 600px;
 }

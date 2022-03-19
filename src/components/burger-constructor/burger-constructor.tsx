@@ -72,21 +72,39 @@ function BurgerConstructor(props: burgerConstructorPropTypes) {
       <div className={constructorStyles.inner_style}>
         {props.dataArray!.map((data, index) => {
           if (data.type !== "bun") {
-            return (
-              <div
-                key={index}
-                className={`${constructorStyles.ingredient} ml-4 mr-4 mb-4`}
-              >
-                <DragIcon type="primary" />
+            if (index === props.dataArray!.length - 2) {
+              return (
+                <div
+                  key={index}
+                  className={`${constructorStyles.ingredient} ml-4 mr-4`}
+                >
+                  <DragIcon type="primary" />
 
-                <ConstructorElement
-                  text={data.name}
-                  price={data.price}
-                  thumbnail={data.image}
-                />
-              </div>
-            );
+                  <ConstructorElement
+                    text={data.name}
+                    price={data.price}
+                    thumbnail={data.image}
+                  />
+                </div>
+              );
+            } else {
+              return (
+                <div
+                  key={index}
+                  className={`${constructorStyles.ingredient} ml-4 mr-4 mb-4`}
+                >
+                  <DragIcon type="primary" />
+
+                  <ConstructorElement
+                    text={data.name}
+                    price={data.price}
+                    thumbnail={data.image}
+                  />
+                </div>
+              );
+            }
           }
+
           return null;
         })}
       </div>
