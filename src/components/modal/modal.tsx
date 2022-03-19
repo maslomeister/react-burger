@@ -1,47 +1,69 @@
 import { useEffect } from "react";
 
+import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import ModalOverlay from "../../components/modal-overlay/modal-overlay";
+
 import modalStyles from "./modal.module.css";
 
-interface modalProps {
+declare type TIconTypes = "secondary" | "primary" | "error" | "success";
+
+interface ModalProps {
   children: any;
   title: string;
-  closeIcon: JSX.Element;
-  onClose: any;
+  onClose: () => void;
+  show: boolean;
+  closeIconType: TIconTypes;
 }
 
-function Modal(props: modalProps) {
-  useEffect(() => {
-    document.body.addEventListener("keydown", closeOnESC);
-    return () => {
-      document.body.removeEventListener("keydown", closeOnESC);
-    };
-  }, []);
+const defaultProps = {
+  title: "",
+};
 
-  const closeOnESC = (e: any) => {
-    if ((e.charCode || e.keyCode) === 27) {
-      props.onClose();
+Modal.defaultProps = defaultProps;
+
+function Modal(props: ModalProps) {
+  useEffect(() => {
+    const closeOnESC = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        props.onClose();
+      }
+    };
+
+    console.log("mounted");
+    if (props.show) {
+      document.body.addEventListener("keydown", closeOnESC);
     }
-  };
+    return () => {
+      if (!props.show) {
+        document.body.removeEventListener("keydown", closeOnESC);
+      }
+    };
+  }, [props.show]);
 
   return (
-    <div className={modalStyles.main}>
-      {props.title ? (
-        <div className={`${modalStyles.title} ml-10 mr-10 mt-10`}>
-          <p className="text text_type_main-medium">{props.title}</p>
-          <div className={modalStyles.close_icon_flex} onClick={props.onClose}>
-            {props.closeIcon}
+    <ModalOverlay onClose={props.onClose} show={props.show} title={props.title}>
+      <div className={modalStyles.Main} onClick={(e) => e.stopPropagation()}>
+        {props.title ? (
+          <div className={`${modalStyles.Main_title} ml-10 mr-10 mt-10`}>
+            <p className="text text_type_main-medium">{props.title}</p>
+            <div
+              className={modalStyles.Main___closeIconFlex}
+              onClick={props.onClose}
+            >
+              <CloseIcon type={props.closeIconType} />
+            </div>
           </div>
-        </div>
-      ) : (
-        <div
-          className={`${modalStyles.close_icon_absolute} mr-10 mt-15`}
-          onClick={props.onClose}
-        >
-          {props.closeIcon}
-        </div>
-      )}
-      {props.children}
-    </div>
+        ) : (
+          <div
+            className={`${modalStyles.Main___closeIconAbsolute} mr-10 mt-15`}
+            onClick={props.onClose}
+          >
+            <CloseIcon type={props.closeIconType} />
+          </div>
+        )}
+        {props.children}
+      </div>
+    </ModalOverlay>
   );
 }
 
