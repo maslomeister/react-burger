@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import constructorStyles from "./burger-constructor.module.css";
 import {
   ConstructorElement,
@@ -7,6 +7,7 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
+import OrderDetails from "../../components/order-details/order-details";
 
 const dataPropTypes = PropTypes.shape({
   _id: PropTypes.string.isRequired,
@@ -43,6 +44,8 @@ BurgerConstructor.propTypes = propTypes;
 type burgerConstructorPropTypes = PropTypes.InferProps<typeof propTypes>;
 
 function BurgerConstructor(props: burgerConstructorPropTypes) {
+  const [showModal, setShowModal] = useState(false);
+
   useEffect(() => {
     const elements = Array.from(
       document.getElementsByClassName(
@@ -56,81 +59,93 @@ function BurgerConstructor(props: burgerConstructorPropTypes) {
   }, [props.dataArray]);
 
   return (
-    <div className="mt-25">
-      <div className={constructorStyles.outer_style}>
-        <div className="ml-4 mr-4 mb-4">
-          <ConstructorElement
-            type="top"
-            isLocked={true}
-            text={`${props.dataArray![0].name} (верх)`}
-            price={props.dataArray![0].price}
-            thumbnail={props.dataArray![0].image}
-          />
+    <>
+      <OrderDetails onClose={() => setShowModal(!showModal)} show={showModal} />
+      {props.dataArray && (
+        <div className="mt-25">
+          <div className={constructorStyles.outer_style}>
+            <div className="ml-4 mr-4 mb-4">
+              <ConstructorElement
+                type="top"
+                isLocked={true}
+                text={`${props.dataArray[0].name} (верх)`}
+                price={props.dataArray[0].price}
+                thumbnail={props.dataArray[0].image}
+              />
+            </div>
+          </div>
+
+          <div className={constructorStyles.inner_style}>
+            {props.dataArray.map((data, index) => {
+              if (data.type !== "bun") {
+                const lastIndex = props.dataArray!.length - 2;
+                if (index === lastIndex) {
+                  return (
+                    <div
+                      key={index}
+                      className={`${constructorStyles.ingredient} ml-4 mr-4`}
+                    >
+                      <DragIcon type="primary" />
+
+                      <ConstructorElement
+                        text={data.name}
+                        price={data.price}
+                        thumbnail={data.image}
+                      />
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div
+                      key={index}
+                      className={`${constructorStyles.ingredient} ml-4 mr-4 mb-4`}
+                    >
+                      <DragIcon type="primary" />
+
+                      <ConstructorElement
+                        text={data.name}
+                        price={data.price}
+                        thumbnail={data.image}
+                      />
+                    </div>
+                  );
+                }
+              }
+
+              return null;
+            })}
+          </div>
+
+          <div className={constructorStyles.outer_style}>
+            <div className="ml-4 mr-4 mt-4">
+              <ConstructorElement
+                type="bottom"
+                isLocked={true}
+                text={`${
+                  props.dataArray[props.dataArray.length - 1].name
+                } (низ)`}
+                price={props.dataArray[props.dataArray.length - 1].price}
+                thumbnail={props.dataArray[props.dataArray.length - 1].image}
+              />
+            </div>
+          </div>
+
+          <div className={`${constructorStyles.cart} mt-10`}>
+            <div className={`${constructorStyles.total} mr-10`}>
+              <p className="text text_type_digits-medium">500</p>
+              <CurrencyIcon type="primary" />
+            </div>
+            <Button
+              type="primary"
+              size="large"
+              onClick={() => setShowModal(true)}
+            >
+              Оформить заказ
+            </Button>
+          </div>
         </div>
-      </div>
-
-      <div className={constructorStyles.inner_style}>
-        {props.dataArray!.map((data, index) => {
-          if (data.type !== "bun") {
-            if (index === props.dataArray!.length - 2) {
-              return (
-                <div
-                  key={index}
-                  className={`${constructorStyles.ingredient} ml-4 mr-4`}
-                >
-                  <DragIcon type="primary" />
-
-                  <ConstructorElement
-                    text={data.name}
-                    price={data.price}
-                    thumbnail={data.image}
-                  />
-                </div>
-              );
-            } else {
-              return (
-                <div
-                  key={index}
-                  className={`${constructorStyles.ingredient} ml-4 mr-4 mb-4`}
-                >
-                  <DragIcon type="primary" />
-
-                  <ConstructorElement
-                    text={data.name}
-                    price={data.price}
-                    thumbnail={data.image}
-                  />
-                </div>
-              );
-            }
-          }
-
-          return null;
-        })}
-      </div>
-
-      <div className={constructorStyles.outer_style}>
-        <div className="ml-4 mr-4 mt-4">
-          <ConstructorElement
-            type="bottom"
-            isLocked={true}
-            text={`${props.dataArray![props.dataArray!.length - 1].name} (низ)`}
-            price={props.dataArray![props.dataArray!.length - 1].price}
-            thumbnail={props.dataArray![props.dataArray!.length - 1].image}
-          />
-        </div>
-      </div>
-
-      <div className={`${constructorStyles.cart} mt-10`}>
-        <div className={`${constructorStyles.total} mr-10`}>
-          <p className="text text_type_digits-medium">500</p>
-          <CurrencyIcon type="primary" />
-        </div>
-        <Button type="primary" size="large">
-          Оформить заказ
-        </Button>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
 
