@@ -59,7 +59,7 @@ function BurgerIngredients(props: burgerIngredientsPropTypes) {
         onClose={() =>
           setState((prevState) => ({
             ...prevState,
-            modalShow: !state.modalShow,
+            modalShow: false,
           }))
         }
         show={state.modalShow}
@@ -71,7 +71,7 @@ function BurgerIngredients(props: burgerIngredientsPropTypes) {
         carbohydrates={state.modalCarbohydrates}
       />
       <p className="text text_type_main-large mb-5 mt-10">Соберите бургер</p>
-      <div className={`${ingredientsStyles.tabs} mb-10`}>
+      <div className={`${ingredientsStyles.Tabs} mb-10`}>
         {props.tabs!.map((tab) => (
           <Tab
             key={tab._id}
@@ -94,7 +94,7 @@ function BurgerIngredients(props: burgerIngredientsPropTypes) {
           {props.tabs!.map((tab) => (
             <section key={tab._id}>
               <p className="text text_type_main-medium">{tab.name}</p>
-              <div className={`${ingredientsStyles.item_container} ml-4`}>
+              <div className={`${ingredientsStyles.Item_container} ml-4`}>
                 {props
                   .dataArray!.filter((data) => data.type === tab.type)
                   .map((data) => (
