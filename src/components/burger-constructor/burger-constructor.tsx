@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 
 import {
@@ -11,7 +11,7 @@ import OrderDetails from "../../components/order-details/order-details";
 
 import constructorStyles from "./burger-constructor.module.css";
 
-const dataPropTypes = PropTypes.shape({
+const DataPropTypes = PropTypes.shape({
   _id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
@@ -26,54 +26,33 @@ const dataPropTypes = PropTypes.shape({
   __v: PropTypes.number.isRequired,
 });
 
-const bottomBun = dataPropTypes;
-
-const topBun = dataPropTypes;
-
 const propTypes = {
-  ref: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-  ]),
-  dataArray: PropTypes.arrayOf(dataPropTypes.isRequired),
-  topBun,
-  bottomBun,
+  dataArray: PropTypes.arrayOf(DataPropTypes.isRequired),
 };
 
 BurgerConstructor.propTypes = propTypes;
 
 //Используется для того чтобы TS автоматически получил типы которые мы указали через prop-types
-type burgerConstructorPropTypes = PropTypes.InferProps<typeof propTypes>;
+type BurgerConstructorPropTypes = PropTypes.InferProps<typeof propTypes>;
 
-function BurgerConstructor(props: burgerConstructorPropTypes) {
+function BurgerConstructor(props: BurgerConstructorPropTypes) {
   const [showModal, setShowModal] = useState(false);
-
-  useEffect(() => {
-    const elements = Array.from(
-      document.getElementsByClassName(
-        "constructor-element"
-      ) as HTMLCollectionOf<HTMLElement>
-    );
-
-    elements.map((element) => {
-      return (element.style.width = "488px");
-    });
-  }, [props.dataArray]);
-
   return (
     <>
-      <OrderDetails onClose={() => setShowModal(!showModal)} show={showModal} />
+      <OrderDetails onClose={() => setShowModal(false)} show={showModal} />
       {props.dataArray && (
         <div className="mt-25">
           <div className={constructorStyles.outer_style}>
             <div className="ml-4 mr-4 mb-4">
-              <ConstructorElement
-                type="top"
-                isLocked={true}
-                text={`${props.dataArray[0].name} (верх)`}
-                price={props.dataArray[0].price}
-                thumbnail={props.dataArray[0].image}
-              />
+              <div className={constructorStyles.constructor_element_wrapper}>
+                <ConstructorElement
+                  type="top"
+                  isLocked={true}
+                  text={`${props.dataArray[0].name} (верх)`}
+                  price={props.dataArray[0].price}
+                  thumbnail={props.dataArray[0].image}
+                />
+              </div>
             </div>
           </div>
 
@@ -84,31 +63,42 @@ function BurgerConstructor(props: burgerConstructorPropTypes) {
                 if (index === lastIndex) {
                   return (
                     <div
-                      key={index}
-                      className={`${constructorStyles.ingredient} ml-4 mr-4`}
+                      key={data._id}
+                      className={`${constructorStyles.Ingredient} ml-4 mr-4`}
                     >
                       <DragIcon type="primary" />
 
-                      <ConstructorElement
-                        text={data.name}
-                        price={data.price}
-                        thumbnail={data.image}
-                      />
+                      <div
+                        className={
+                          constructorStyles.constructor_element_wrapper
+                        }
+                      >
+                        <ConstructorElement
+                          text={data.name}
+                          price={data.price}
+                          thumbnail={data.image}
+                        />
+                      </div>
                     </div>
                   );
                 } else {
                   return (
                     <div
-                      key={index}
-                      className={`${constructorStyles.ingredient} ml-4 mr-4 mb-4`}
+                      key={data._id}
+                      className={`${constructorStyles.Ingredient} ml-4 mr-4 mb-4`}
                     >
                       <DragIcon type="primary" />
-
-                      <ConstructorElement
-                        text={data.name}
-                        price={data.price}
-                        thumbnail={data.image}
-                      />
+                      <div
+                        className={
+                          constructorStyles.constructor_element_wrapper
+                        }
+                      >
+                        <ConstructorElement
+                          text={data.name}
+                          price={data.price}
+                          thumbnail={data.image}
+                        />
+                      </div>
                     </div>
                   );
                 }
@@ -120,18 +110,20 @@ function BurgerConstructor(props: burgerConstructorPropTypes) {
 
           <div className={constructorStyles.outer_style}>
             <div className="ml-4 mr-4 mt-4">
-              <ConstructorElement
-                type="bottom"
-                isLocked={true}
-                text={`${props.dataArray[0].name} (низ)`}
-                price={props.dataArray[0].price}
-                thumbnail={props.dataArray[0].image}
-              />
+              <div className={constructorStyles.constructor_element_wrapper}>
+                <ConstructorElement
+                  type="bottom"
+                  isLocked={true}
+                  text={`${props.dataArray[0].name} (низ)`}
+                  price={props.dataArray[0].price}
+                  thumbnail={props.dataArray[0].image}
+                />
+              </div>
             </div>
           </div>
 
-          <div className={`${constructorStyles.cart} mt-10`}>
-            <div className={`${constructorStyles.total} mr-10`}>
+          <div className={`${constructorStyles.Cart} mt-10`}>
+            <div className={`${constructorStyles.Cart_total} mr-10`}>
               <p className="text text_type_digits-medium">500</p>
               <CurrencyIcon type="primary" />
             </div>
