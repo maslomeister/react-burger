@@ -78,7 +78,7 @@ function BurgerConstructor(props: burgerConstructorPropTypes) {
           <div className={constructorStyles.inner_style}>
             {props.dataArray.map((data, index) => {
               if (data.type !== "bun") {
-                const lastIndex = props.dataArray!.length - 2;
+                const lastIndex = props.dataArray!.length - 1;
                 if (index === lastIndex) {
                   return (
                     <div
