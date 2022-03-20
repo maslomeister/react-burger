@@ -40,19 +40,17 @@ function App() {
   return (
     <div className="App">
       <AppHeader />
-      {state.isLoading && (
+      {state.isLoading ? (
         <div className={appStyles.loading}>
           <p className="text text_type_main-large">Данные загружаются</p>
         </div>
-      )}
-      {state.hasError && (
+      ) : state.hasError ? (
         <div className={appStyles.loading}>
           <p className="text text_type_main-large">
             Данные не смогли загрузиться: {state.error}
           </p>
         </div>
-      )}
-      {state.data.length !== 0 && (
+      ) : state.data.length !== 0 ? (
         <section className={appStyles.row}>
           <div className={`{buildStyles.col_left} mr-10`}>
             <BurgerIngredients tabs={Tabs} dataArray={state.data} />
@@ -61,7 +59,7 @@ function App() {
             <BurgerConstructor dataArray={state.data} />
           </div>
         </section>
-      )}
+      ) : null}
     </div>
   );
 }
