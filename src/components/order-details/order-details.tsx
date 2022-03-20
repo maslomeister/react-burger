@@ -1,5 +1,5 @@
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import checkIconBackground from "../../images/order-details/check_icon_background.svg";
+import checkIconBackground from "../../assets/images/order-details/check_icon_background.svg";
 import Modal from "../../components/modal/modal";
 
 import orderDetailsStyles from "./order-details.module.css";
@@ -11,7 +11,7 @@ interface OrderDetailsProps {
 
 function OrderDetails(props: OrderDetailsProps) {
   return (
-    <Modal onClose={props.onClose} show={props.show} closeIconType={"primary"}>
+    <Modal onClose={props.onClose} show={props.show} closeIconType="primary">
       <div className={orderDetailsStyles["order-details"]}>
         <div
           className={`${orderDetailsStyles["order-number_shadow"]} text text_type_digits-large mt-30`}

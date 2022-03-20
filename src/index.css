@@ -2,14 +2,14 @@
   font-family: "JetBrainsMono-Regular";
   font-style: normal;
   font-weight: 400;
-  src: url("./fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  src: url("./assets/fonts/JetBrainsMono-Regular.woff2") format("woff2");
 }
 
 @font-face {
   font-family: "Iceland";
   font-style: normal;
   font-weight: 400;
-  src: url("./fonts/Iceland-Regular.ttf") format("ttf");
+  src: url("./assets/fonts/Iceland-Regular.ttf") format("ttf");
 }
 
 body {
