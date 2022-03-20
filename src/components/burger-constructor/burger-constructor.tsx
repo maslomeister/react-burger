@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 import { useState } from "react";
 import PropTypes from "prop-types";
 
+=======
+import { useEffect, useState } from "react";
+import constructorStyles from "./burger-constructor.module.css";
+>>>>>>> main
 import {
   ConstructorElement,
   DragIcon,
@@ -117,7 +122,11 @@ function BurgerConstructor(props: BurgerConstructorPropTypes) {
             </Button>
           </div>
         </div>
+<<<<<<< HEAD
       )}
+=======
+      </div>
+>>>>>>> main
     </>
   );
 }
