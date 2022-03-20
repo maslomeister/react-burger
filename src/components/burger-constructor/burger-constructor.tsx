@@ -1,14 +1,22 @@
+<<<<<<< HEAD
+import { useState } from "react";
+import PropTypes from "prop-types";
+
+=======
 import { useEffect, useState } from "react";
 import constructorStyles from "./burger-constructor.module.css";
+>>>>>>> main
 import {
   ConstructorElement,
   DragIcon,
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
+import OrderDetails from "../../components/order-details/order-details";
 
-const dataPropTypes = PropTypes.shape({
+import constructorStyles from "./burger-constructor.module.css";
+
+const ingredient = PropTypes.shape({
   _id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
@@ -23,94 +31,102 @@ const dataPropTypes = PropTypes.shape({
   __v: PropTypes.number.isRequired,
 });
 
-const bottomBun = dataPropTypes;
-
-const topBun = dataPropTypes;
-
 const propTypes = {
-  ref: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-  ]),
-  dataArray: PropTypes.arrayOf(dataPropTypes.isRequired),
-  topBun,
-  bottomBun,
+  ingredients: PropTypes.arrayOf(ingredient.isRequired),
+  ingredient,
 };
 
 BurgerConstructor.propTypes = propTypes;
 
 //Используется для того чтобы TS автоматически получил типы которые мы указали через prop-types
-type burgerConstructorPropTypes = PropTypes.InferProps<typeof propTypes>;
+type BurgerConstructorPropTypes = PropTypes.InferProps<typeof propTypes>;
 
-function BurgerConstructor(props: burgerConstructorPropTypes) {
-  useEffect(() => {
-    const elements = Array.from(
-      document.getElementsByClassName(
-        "constructor-element"
-      ) as HTMLCollectionOf<HTMLElement>
-    );
-
-    elements.map((element) => {
-      return (element.style.width = "488px");
-    });
-  }, [props.dataArray]);
-
+function BurgerConstructor(props: BurgerConstructorPropTypes) {
+  const [showModal, setShowModal] = useState(false);
   return (
     <>
-      <div className="mt-25">
-        <div className={constructorStyles.outer_style}>
-          <div className="ml-4 mr-4 mb-4">
-            <ConstructorElement
-              type="top"
-              isLocked={true}
-              text={`${props.dataArray![0].name} (верх)`}
-              price={props.dataArray![0].price}
-              thumbnail={props.dataArray![0].image}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className={constructorStyles.inner_style}>
-        {props.dataArray!.map((data, index) => {
-          if (data.type !== "bun") {
-            return (
-              <div
-                key={index}
-                className={`${constructorStyles.ingredient} ml-4 mr-4 mb-4`}
-              >
-                <DragIcon type="primary" />
-
+      <OrderDetails onClose={() => setShowModal(false)} show={showModal} />
+      {props.ingredients && (
+        <div className="mt-25">
+          <div className={constructorStyles["outer_style"]}>
+            <div className="ml-4 mr-4 mb-4">
+              <div className={constructorStyles["constructor-element-wrapper"]}>
                 <ConstructorElement
-                  text={data.name}
-                  price={data.price}
-                  thumbnail={data.image}
+                  type="top"
+                  isLocked={true}
+                  text={`${props.ingredients[0].name} (верх)`}
+                  price={props.ingredients[0].price}
+                  thumbnail={props.ingredients[0].image}
                 />
               </div>
-            );
-          }
-          return null;
-        })}
-      </div>
+            </div>
+          </div>
 
-      <div className={constructorStyles.outer_style}>
-        <div className="ml-4 mr-4 mt-4">
-          <ConstructorElement
-            type="bottom"
-            isLocked={true}
-            text={`${props.dataArray![props.dataArray!.length - 1].name} (низ)`}
-            price={props.dataArray![props.dataArray!.length - 1].price}
-            thumbnail={props.dataArray![props.dataArray!.length - 1].image}
-          />
-        </div>
-      </div>
+          <div className={constructorStyles["inner_style"]}>
+            {props.ingredients.map((ingredient, index) => {
+              if (ingredient.type !== "bun") {
+                const lastIndex = props.ingredients!.length - 1;
+                return (
+                  <div
+                    key={ingredient._id}
+                    className={`${constructorStyles["ingredient"]} ml-4 mr-4 ${
+                      lastIndex !== index ? "mb-4" : ""
+                    }`}
+                  >
+                    <DragIcon type="primary" />
 
-      <div className={`${constructorStyles.cart} mt-10`}>
-        <div className={`${constructorStyles.total} mr-10`}>
-          <p className="text text_type_digits-medium">500</p>
-          <CurrencyIcon type="primary" />
+                    <div
+                      className={
+                        constructorStyles["constructor-element-wrapper"]
+                      }
+                    >
+                      <ConstructorElement
+                        text={ingredient.name}
+                        price={ingredient.price}
+                        thumbnail={ingredient.image}
+                      />
+                    </div>
+                  </div>
+                );
+              }
+
+              return null;
+            })}
+          </div>
+
+          <div className={constructorStyles["outer_style"]}>
+            <div className="ml-4 mr-4 mt-4">
+              <div className={constructorStyles["constructor-element-wrapper"]}>
+                <ConstructorElement
+                  type="bottom"
+                  isLocked={true}
+                  text={`${props.ingredients[0].name} (низ)`}
+                  price={props.ingredients[0].price}
+                  thumbnail={props.ingredients[0].image}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className={`${constructorStyles["cart"]} mt-10`}>
+            <div className={`${constructorStyles["cart__total"]} mr-10`}>
+              <p className="text text_type_digits-medium">500</p>
+              <CurrencyIcon type="primary" />
+            </div>
+            <Button
+              type="primary"
+              size="large"
+              onClick={() => setShowModal(true)}
+            >
+              Оформить заказ
+            </Button>
+          </div>
         </div>
+<<<<<<< HEAD
+      )}
+=======
       </div>
+>>>>>>> main
     </>
   );
 }
