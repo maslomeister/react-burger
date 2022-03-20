@@ -1,14 +1,14 @@
 .outer_style {
   display: flex;
   flex-flow: column;
-  align-items: end;
+  align-items: flex-end;
   width: calc(600px - 8px);
 }
 
 .inner_style {
   display: flex;
   flex-flow: column;
-  align-items: end;
+  align-items: flex-end;
   overflow-y: auto;
   max-height: 465px;
 }
@@ -26,7 +26,7 @@
   display: flex;
   flex-flow: row;
   align-items: center;
-  justify-content: end;
+  justify-content: flex-end;
   width: calc(600px - 8px);
 }
 
