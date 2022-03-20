@@ -1,4 +1,10 @@
-const Data = [
+interface Tab {
+  _id: number;
+  name: string;
+  value: string;
+  type: string;
+}
+const Tabs: Array<Tab> = [
   {
     _id: 1,
     name: "Булки",
@@ -19,4 +25,4 @@ const Data = [
   },
 ];
 
-export default Data;
+export default Tabs;
