@@ -29,10 +29,10 @@ function Modal(props: ModalProps) {
       }
     };
 
-    console.log("mounted");
     if (props.show) {
       document.body.addEventListener("keydown", closeOnESC);
     }
+
     return () => {
       if (!props.show) {
         document.body.removeEventListener("keydown", closeOnESC);
