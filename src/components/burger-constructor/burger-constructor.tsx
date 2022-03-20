@@ -11,7 +11,7 @@ import OrderDetails from "../../components/order-details/order-details";
 
 import constructorStyles from "./burger-constructor.module.css";
 
-const DataPropTypes = PropTypes.shape({
+const ingredient = PropTypes.shape({
   _id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
@@ -27,7 +27,8 @@ const DataPropTypes = PropTypes.shape({
 });
 
 const propTypes = {
-  dataArray: PropTypes.arrayOf(DataPropTypes.isRequired),
+  ingredients: PropTypes.arrayOf(ingredient.isRequired),
+  ingredient,
 };
 
 BurgerConstructor.propTypes = propTypes;
@@ -40,90 +41,70 @@ function BurgerConstructor(props: BurgerConstructorPropTypes) {
   return (
     <>
       <OrderDetails onClose={() => setShowModal(false)} show={showModal} />
-      {props.dataArray && (
+      {props.ingredients && (
         <div className="mt-25">
-          <div className={constructorStyles.outer_style}>
+          <div className={constructorStyles["outer_style"]}>
             <div className="ml-4 mr-4 mb-4">
-              <div className={constructorStyles.constructor_element_wrapper}>
+              <div className={constructorStyles["constructor-element-wrapper"]}>
                 <ConstructorElement
                   type="top"
                   isLocked={true}
-                  text={`${props.dataArray[0].name} (верх)`}
-                  price={props.dataArray[0].price}
-                  thumbnail={props.dataArray[0].image}
+                  text={`${props.ingredients[0].name} (верх)`}
+                  price={props.ingredients[0].price}
+                  thumbnail={props.ingredients[0].image}
                 />
               </div>
             </div>
           </div>
 
-          <div className={constructorStyles.inner_style}>
-            {props.dataArray.map((data, index) => {
-              if (data.type !== "bun") {
-                const lastIndex = props.dataArray!.length - 1;
-                if (index === lastIndex) {
-                  return (
-                    <div
-                      key={data._id}
-                      className={`${constructorStyles.Ingredient} ml-4 mr-4`}
-                    >
-                      <DragIcon type="primary" />
+          <div className={constructorStyles["inner_style"]}>
+            {props.ingredients.map((ingredient, index) => {
+              if (ingredient.type !== "bun") {
+                const lastIndex = props.ingredients!.length - 1;
+                return (
+                  <div
+                    key={ingredient._id}
+                    className={`${constructorStyles["ingredient"]} ml-4 mr-4 ${
+                      lastIndex !== index ? "mb-4" : ""
+                    }`}
+                  >
+                    <DragIcon type="primary" />
 
-                      <div
-                        className={
-                          constructorStyles.constructor_element_wrapper
-                        }
-                      >
-                        <ConstructorElement
-                          text={data.name}
-                          price={data.price}
-                          thumbnail={data.image}
-                        />
-                      </div>
-                    </div>
-                  );
-                } else {
-                  return (
                     <div
-                      key={data._id}
-                      className={`${constructorStyles.Ingredient} ml-4 mr-4 mb-4`}
+                      className={
+                        constructorStyles["constructor-element-wrapper"]
+                      }
                     >
-                      <DragIcon type="primary" />
-                      <div
-                        className={
-                          constructorStyles.constructor_element_wrapper
-                        }
-                      >
-                        <ConstructorElement
-                          text={data.name}
-                          price={data.price}
-                          thumbnail={data.image}
-                        />
-                      </div>
+                      <ConstructorElement
+                        text={ingredient.name}
+                        price={ingredient.price}
+                        thumbnail={ingredient.image}
+                      />
                     </div>
-                  );
-                }
+                  </div>
+                );
               }
 
               return null;
             })}
           </div>
 
-          <div className={constructorStyles.outer_style}>
+          <div className={constructorStyles["outer_style"]}>
             <div className="ml-4 mr-4 mt-4">
-              <div className={constructorStyles.constructor_element_wrapper}>
+              <div className={constructorStyles["constructor-element-wrapper"]}>
                 <ConstructorElement
                   type="bottom"
                   isLocked={true}
-                  text={`${props.dataArray[0].name} (низ)`}
-                  price={props.dataArray[0].price}
-                  thumbnail={props.dataArray[0].image}
+                  text={`${props.ingredients[0].name} (низ)`}
+                  price={props.ingredients[0].price}
+                  thumbnail={props.ingredients[0].image}
                 />
               </div>
             </div>
           </div>
 
-          <div className={`${constructorStyles.Cart} mt-10`}>
-            <div className={`${constructorStyles.Cart_total} mr-10`}>
+          <div className={`${constructorStyles["cart"]} mt-10`}>
+            <div className={`${constructorStyles["cart__total"]} mr-10`}>
               <p className="text text_type_digits-medium">500</p>
               <CurrencyIcon type="primary" />
             </div>

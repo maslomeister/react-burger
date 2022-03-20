@@ -16,7 +16,10 @@ function ModalOverlay(props: ModalOverlayProps) {
   }
 
   return createPortal(
-    <div className={modalOverlayStyles.Main} onClick={props.onClose}>
+    <div
+      className={modalOverlayStyles["modal-overlay"]}
+      onClick={props.onClose}
+    >
       {props.children}
     </div>,
     modalRoot

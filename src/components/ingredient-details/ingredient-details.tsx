@@ -21,15 +21,17 @@ function IngredientDetails(props: IngredientDetailsProps) {
       title="Детали ингредиента"
       closeIconType="primary"
     >
-      <div className={ingredientDetailsStyles.Main}>
+      <div className={ingredientDetailsStyles["ingredient-details"]}>
         <img alt="previewImage" src={props.imageSrc} />
         <p
-          className={`${ingredientDetailsStyles.Main_name} text text_type_main-medium mt-4`}
+          className={`${ingredientDetailsStyles["ingredient-details__text"]} text text_type_main-medium mt-4`}
         >
           {props.name}
         </p>
-        <div className={`${ingredientDetailsStyles.Main_nutrition} mb-15 mt-8`}>
-          <div className={ingredientDetailsStyles.Main_item}>
+        <div
+          className={`${ingredientDetailsStyles["ingredient-details__nutrition"]} mb-15 mt-8`}
+        >
+          <div className={ingredientDetailsStyles["nutrition__item"]}>
             <p
               className={`${ingredientDetailsStyles.text} text text_type_main-small text_color_inactive`}
             >
@@ -39,7 +41,7 @@ function IngredientDetails(props: IngredientDetailsProps) {
               {props.calories}
             </p>
           </div>
-          <div className={ingredientDetailsStyles.Main_item}>
+          <div className={ingredientDetailsStyles["nutrition__item"]}>
             <p className="text text_type_main-small text_color_inactive">
               Белки, г
             </p>
@@ -47,7 +49,7 @@ function IngredientDetails(props: IngredientDetailsProps) {
               {props.proteins}
             </p>
           </div>
-          <div className={ingredientDetailsStyles.Main_item}>
+          <div className={ingredientDetailsStyles["nutrition__item"]}>
             <p className="text text_type_main-small text_color_inactive">
               Жиры, г
             </p>
@@ -55,7 +57,7 @@ function IngredientDetails(props: IngredientDetailsProps) {
               {props.fat}
             </p>
           </div>
-          <div className={ingredientDetailsStyles.Main_item}>
+          <div className={ingredientDetailsStyles["nutrition__item"]}>
             <p className="text text_type_main-small text_color_inactive">
               Углеводы, г
             </p>

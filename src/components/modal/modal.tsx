@@ -42,12 +42,15 @@ function Modal(props: ModalProps) {
 
   return (
     <ModalOverlay onClose={props.onClose} show={props.show} title={props.title}>
-      <div className={modalStyles.Main} onClick={(e) => e.stopPropagation()}>
+      <div
+        className={modalStyles["modal"]}
+        onClick={(e) => e.stopPropagation()}
+      >
         {props.title ? (
-          <div className={`${modalStyles.Main_title} ml-10 mr-10 mt-10`}>
+          <div className={`${modalStyles["modal_title"]} ml-10 mr-10 mt-10`}>
             <p className="text text_type_main-medium">{props.title}</p>
             <div
-              className={modalStyles.Main___closeIconFlex}
+              className={modalStyles["close-icon_flex"]}
               onClick={props.onClose}
             >
               <CloseIcon type={props.closeIconType} />
@@ -55,7 +58,7 @@ function Modal(props: ModalProps) {
           </div>
         ) : (
           <div
-            className={`${modalStyles.Main___closeIconAbsolute} mr-10 mt-15`}
+            className={`${modalStyles["close-icon_absolute"]} mr-10 mt-15`}
             onClick={props.onClose}
           >
             <CloseIcon type={props.closeIconType} />

@@ -12,9 +12,9 @@ interface OrderDetailsProps {
 function OrderDetails(props: OrderDetailsProps) {
   return (
     <Modal onClose={props.onClose} show={props.show} closeIconType={"primary"}>
-      <div className={orderDetailsStyles.Main}>
+      <div className={orderDetailsStyles["order-details"]}>
         <div
-          className={`${orderDetailsStyles.Main_orderNumberShadow} text text_type_digits-large mt-30`}
+          className={`${orderDetailsStyles["order-number_shadow"]} text text_type_digits-large mt-30`}
         >
           034536
         </div>
@@ -22,10 +22,10 @@ function OrderDetails(props: OrderDetailsProps) {
           идентификатор заказа
         </div>
         <div
-          className={`${orderDetailsStyles.Main_background} mb-15 mt-15`}
+          className={`${orderDetailsStyles["check-mark-icon__background-size"]} mb-15 mt-15`}
           style={{ background: `url(${checkIconBackground})` }}
         >
-          <div className={orderDetailsStyles.Main_checkMarkIconBackground}>
+          <div className={orderDetailsStyles["check-mark-icon_background"]}>
             <CheckMarkIcon type="primary" />
           </div>
         </div>
