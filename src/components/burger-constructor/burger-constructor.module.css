@@ -35,3 +35,9 @@
   flex-flow: row;
   align-items: center;
 }
+
+.cart_price > svg {
+  display: flex;
+  width: 36px;
+  height: 36px;
+}

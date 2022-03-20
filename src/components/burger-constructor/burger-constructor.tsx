@@ -106,7 +106,9 @@ function BurgerConstructor(props: BurgerConstructorPropTypes) {
           <div className={`${constructorStyles["cart"]} mt-10`}>
             <div className={`${constructorStyles["cart__total"]} mr-10`}>
               <p className="text text_type_digits-medium">500</p>
-              <CurrencyIcon type="primary" />
+              <div className={`${constructorStyles["cart_price"]} ml-2`}>
+                <CurrencyIcon type="primary" />
+              </div>
             </div>
             <Button
               type="primary"

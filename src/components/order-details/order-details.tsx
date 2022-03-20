@@ -22,7 +22,7 @@ function OrderDetails(props: OrderDetailsProps) {
           идентификатор заказа
         </div>
         <div
-          className={`${orderDetailsStyles["check-mark-icon__background-size"]} mb-15 mt-15`}
+          className={`${orderDetailsStyles["check-mark-icon_background-size"]} mb-15 mt-15`}
           style={{ background: `url(${checkIconBackground})` }}
         >
           <div className={orderDetailsStyles["check-mark-icon_background"]}>
