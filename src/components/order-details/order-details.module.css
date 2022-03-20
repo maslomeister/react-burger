@@ -1,21 +1,21 @@
-.Main {
+.order-details {
   display: flex;
   flex-flow: column;
   align-items: center;
   justify-content: center;
 }
 
-.Main_orderNumberShadow {
+.order-number_shadow {
   text-shadow: 0px 0px 16px rgba(51, 51, 255, 0.25),
     0px 0px 8px rgba(51, 51, 255, 0.25), 0px 4px 32px rgba(51, 51, 255, 0.5);
 }
 
-.Main_background {
+.check-mark-icon__background-size {
   width: 107px;
   height: 102px;
 }
 
-.Main_checkMarkIconBackground {
+.check-mark-icon_background {
   display: flex;
   flex-flow: column;
   align-items: center;

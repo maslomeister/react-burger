@@ -4,7 +4,7 @@
   height: 100px;
 }
 
-.header_inner {
+.header-inner {
   background-color: #1c1c21;
   width: 1281px;
   margin: auto;
@@ -19,14 +19,14 @@
   flex-flow: row;
 }
 
-.item {
+.menu__item {
   display: flex;
   align-items: center;
   color: #8585ad;
   list-style-type: none;
 }
 
-.item_active {
+.menu__item_active {
   display: flex;
   align-items: center;
   color: #f2f2f3;

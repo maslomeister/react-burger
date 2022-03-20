@@ -1,16 +1,16 @@
-.Main {
+.ingredient-details {
   display: flex;
   flex-flow: column;
   align-items: center;
   justify-content: center;
 }
 
-.Main_text {
+.ingredient-details__text {
   width: 520px;
   text-align: center;
 }
 
-.Main_nutrition {
+.ingredient-details__nutrition {
   display: flex;
   flex-flow: row;
   justify-content: center;
@@ -19,7 +19,7 @@
   width: 520px;
 }
 
-.Main_item {
+.nutrition__item {
   display: flex;
   flex-direction: column;
   justify-content: space-between;

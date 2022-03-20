@@ -1,4 +1,4 @@
-.Main {
+.modal {
   position: relative;
   background: #1c1c21;
   border: 1px solid rgba(76, 76, 255, 0.2);
@@ -12,18 +12,18 @@
   cursor: auto;
 }
 
-.Main_title {
+.modal_title {
   display: flex;
   flex-flow: row;
   align-items: center;
   justify-content: space-between;
 }
 
-.Main___closeIconFlex {
+.close-icon_flex {
   cursor: pointer;
 }
 
-.Main___closeIconAbsolute {
+.close-icon_absolute {
   position: absolute;
   top: 0;
   right: 0;

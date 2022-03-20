@@ -1,4 +1,4 @@
-.Tabs {
+.tabs {
   display: flex;
 }
 
@@ -8,11 +8,7 @@
   max-height: 700px;
 }
 
-.Tabs_container {
-  display: flex;
-}
-
-.Item_container {
+.item-container {
   display: flex;
   flex-flow: row wrap;
 }
