@@ -10,13 +10,12 @@
   margin: auto;
   height: 100px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
-.menu {
+.menu-left {
+  flex: 1;
   display: flex;
-  flex-flow: row;
+  justify-content: flex-start;
 }
 
 .menu__item {
@@ -24,6 +23,27 @@
   align-items: center;
   color: #8585ad;
   list-style-type: none;
+}
+
+.menu-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.logo {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.element:first-child > div {
+  margin-right: auto;
+}
+
+.element:last-child > span {
+  margin-left: auto;
 }
 
 .menu__item_active {

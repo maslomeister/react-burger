@@ -11,7 +11,7 @@ function AppHeader() {
   return (
     <header className={headerStyles["header"]}>
       <nav className={headerStyles["header-inner"]}>
-        <ul className={`${headerStyles["menu"]} mb-4 mt-4`}>
+        <ul className={`${headerStyles["menu-left"]} mb-4 mt-4`}>
           <li
             className={`${headerStyles["menu__item_active"]} ml-5 mr-5 mb-5 mt-5`}
           >
@@ -27,8 +27,10 @@ function AppHeader() {
             </a>
           </li>
         </ul>
-        <Logo />
-        <ul className={`${headerStyles["menu"]} mb-4 mt-4`}>
+        <div className={headerStyles["logo"]}>
+          <Logo />
+        </div>
+        <ul className={`${headerStyles["menu-right"]} mb-4 mt-4`}>
           <li className={`${headerStyles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
             <ProfileIcon type="primary" />
             <a className="text text_type_main-default ml-2" href="/">
