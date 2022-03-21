@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredientItem from "../burger-ingredients-item/burger-ingredients-item";
 import IngredientDetails from "../../components/ingredient-details/ingredient-details";
+import scrollIntoView from "smooth-scroll-into-view-if-needed";
 import Tabs from "../../utils/tabs-data";
 
 import ingredientsStyles from "./burger-ingredients.module.css";
@@ -34,6 +35,8 @@ BurgerIngredients.propTypes = propTypes;
 type BurgerIngredientsPropTypes = PropTypes.InferProps<typeof propTypes>;
 
 function BurgerIngredients(props: BurgerIngredientsPropTypes) {
+  const tabsRef = useRef<HTMLDivElement>(null);
+
   const [state, setState] = useState({
     modalShow: false,
     modalImage: "",
@@ -43,7 +46,84 @@ function BurgerIngredients(props: BurgerIngredientsPropTypes) {
     modalFat: 0,
     modalCarbohydrates: 0,
     currentTab: "one",
+    scrollToTab: "one",
   });
+
+  const [isScrolling, _setIsScrolling] = useState(false);
+  const isScrollingRef = useRef(isScrolling);
+
+  const setIsScrolling = (data: boolean) => {
+    isScrollingRef.current = data;
+    _setIsScrolling(data);
+  };
+
+  const scrollIntoViewAsync = async (scroolTo: Element) => {
+    setIsScrolling(true);
+    scrollIntoView(scroolTo, {
+      behavior: "smooth",
+      block: "start",
+    }).then(() => {
+      setIsScrolling(false);
+    });
+  };
+
+  const scrollTabIntoView = (value: string) => {
+    const { current } = tabsRef;
+
+    if (current) {
+      const [firstTab, secondTab, thidTab] = [
+        current.children[0],
+        current.children[1],
+        current.children[2],
+      ];
+
+      switch (value) {
+        case "one":
+          scrollIntoViewAsync(firstTab);
+          break;
+
+        case "two":
+          scrollIntoViewAsync(secondTab);
+          break;
+
+        case "three":
+          scrollIntoViewAsync(thidTab);
+          break;
+      }
+    }
+  };
+  const catchScroll = (e: Event) => {
+    const { current } = tabsRef;
+
+    if (current && !isScrollingRef.current) {
+      const firstTabTop = current.children[0].getBoundingClientRect().top;
+
+      if (firstTabTop > 30 && firstTabTop <= 300) {
+        return setState((prevState) => ({
+          ...prevState,
+          currentTab: "one",
+        }));
+      } else if (firstTabTop > -500 && firstTabTop <= 30) {
+        return setState((prevState) => ({
+          ...prevState,
+          currentTab: "two",
+        }));
+      } else if (firstTabTop <= -500) {
+        return setState((prevState) => ({
+          ...prevState,
+          currentTab: "three",
+        }));
+      }
+    }
+  };
+
+  useEffect(() => {
+    const { current } = tabsRef;
+    current?.addEventListener("scroll", catchScroll);
+    return () => {
+      current?.removeEventListener("scroll", catchScroll);
+    };
+  }, []);
 
   return (
     <>
@@ -70,22 +150,23 @@ function BurgerIngredients(props: BurgerIngredientsPropTypes) {
               key={tab._id}
               value={tab.value}
               active={state.currentTab === tab.value}
-              onClick={() =>
+              onClick={() => {
                 setState((prevState) => ({
                   ...prevState,
                   currentTab: tab.value,
-                }))
-              }
+                }));
+                scrollTabIntoView(tab.value);
+              }}
             >
               {tab.name}
             </Tab>
           ))}
       </div>
       {props.ingredients && (
-        <div className={ingredientsStyles["components"]}>
+        <div className={ingredientsStyles["components"]} ref={tabsRef}>
           {Tabs &&
             Tabs.map((tab) => (
-              <section key={tab._id}>
+              <section key={tab._id} className={`${tab._id}`}>
                 <p className="text text_type_main-medium">{tab.name}</p>
                 <div className={`${ingredientsStyles["item-container"]} ml-4`}>
                   {props.ingredients &&
