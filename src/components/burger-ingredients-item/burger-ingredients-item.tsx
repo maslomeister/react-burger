@@ -49,7 +49,7 @@ function BurgerIngredientItem({
     >
       <motion.div>
         <motion.img
-          className={`${itemStyles["item_image"]} ml-4 mr-5`}
+          className={`${itemStyles["item__image"]} ml-4 mr-5`}
           alt="previewImage"
           src={imageSrc}
           variants={imageMotion}
