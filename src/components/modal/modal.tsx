@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -23,6 +24,8 @@ const defaultProps = {
 Modal.defaultProps = defaultProps;
 
 function Modal({ onClose, children, title, show, closeIconType }: ModalProps) {
+  const modalRoot: Element = document.getElementById("modal-root") as Element;
+
   useEffect(() => {
     const closeOnESC = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -37,7 +40,7 @@ function Modal({ onClose, children, title, show, closeIconType }: ModalProps) {
     };
   }, [show]);
 
-  return (
+  return createPortal(
     <ModalOverlay onClose={onClose} show={show} title={title}>
       <motion.div
         className={modalStyles["modal"]}
@@ -68,7 +71,8 @@ function Modal({ onClose, children, title, show, closeIconType }: ModalProps) {
         )}
         {children}
       </motion.div>
-    </ModalOverlay>
+    </ModalOverlay>,
+    modalRoot
   );
 }
 

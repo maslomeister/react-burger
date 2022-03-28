@@ -1,4 +1,3 @@
-import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
 import modalOverlayStyles from "./modal-overlay.module.css";
@@ -11,10 +10,8 @@ interface ModalOverlayProps {
 }
 
 function ModalOverlay({ onClose, children, show }: ModalOverlayProps) {
-  const modalRoot: Element = document.getElementById("modal-root") as Element;
-
-  return createPortal(
-    <AnimatePresence exitBeforeEnter>
+  return (
+    <AnimatePresence>
       {show && (
         <motion.div
           className={modalOverlayStyles["modal-overlay"]}
@@ -30,8 +27,7 @@ function ModalOverlay({ onClose, children, show }: ModalOverlayProps) {
           {children}
         </motion.div>
       )}
-    </AnimatePresence>,
-    modalRoot
+    </AnimatePresence>
   );
 }
 
