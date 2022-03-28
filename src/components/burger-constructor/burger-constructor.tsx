@@ -39,11 +39,10 @@ function BurgerConstructor() {
     setShowModal(true);
     setOrderState({ ...orderState, isLoading: true });
 
-    let ingredientsIds = burgerConstructorState.ingredients.map(
-      ({ _id }) => _id
-    );
-
-    ingredientsIds.push(burgerConstructorState.bun._id);
+    const ingredientsIds = [
+      ...burgerConstructorState.ingredients.map(({ _id }) => _id),
+      burgerConstructorState.bun._id,
+    ];
 
     const requestOptions = {
       method: "POST",
@@ -115,10 +114,10 @@ function BurgerConstructor() {
               const lastIndex =
                 index === burgerConstructorState.ingredients!.length - 1;
               const item = {
-                _id: ingredient._id,
-                image: ingredient.image,
-                text: ingredient.text,
-                price: ingredient.price,
+                _id: ingredient!._id,
+                image: ingredient!.image,
+                text: ingredient!.text,
+                price: ingredient!.price,
               };
               return (
                 <div
