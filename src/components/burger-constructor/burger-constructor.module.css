@@ -1,7 +1,7 @@
 .burger-constructor {
   display: flex;
   flex-flow: column;
-  height: calc(100vh - 245px);
+  height: calc(100vh - 200px);
 }
 
 .outer_style {
