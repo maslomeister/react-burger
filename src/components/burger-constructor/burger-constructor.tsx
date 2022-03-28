@@ -53,7 +53,6 @@ function BurgerConstructor() {
       body: JSON.stringify({ ingredients: ingredientsIds }),
     };
 
-    console.log(requestOptions);
     fetch(createOrderUrl, requestOptions)
       .then((res) => res.json())
       .then((data) => {
