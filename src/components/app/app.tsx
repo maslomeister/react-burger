@@ -5,30 +5,15 @@ import { Route, Routes } from "react-router-dom";
 import AppHeader from "../../components/app-header/app-header";
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor";
 import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients";
-import { BurgerConstructorContext } from "../../components/services/appContext";
+import {
+  initialState,
+  BurgerConstructorContext,
+} from "../../components/services/appContext";
 import { burgerConstructorReducer } from "../../components/reducers/reducers";
 
 import appStyles from "./app.module.css";
 
 const serverUrl = "https://norma.nomoreparties.space/api/ingredients";
-
-interface IngredientType {
-  _id: string;
-  image: string;
-  text: string;
-  price: number;
-}
-interface InitialStateType {
-  ingredients: IngredientType[];
-  bun: IngredientType;
-  totalPrice: number;
-}
-
-const initialState: InitialStateType = {
-  ingredients: [],
-  bun: {} as IngredientType,
-  totalPrice: 0,
-};
 
 const item = PropTypes.shape({
   _id: PropTypes.string.isRequired,
