@@ -1,3 +1,17 @@
+type Only<T, U> = {
+  [P in keyof T]: T[P];
+} & {
+  [P in keyof U]: never;
+};
+
+type Either<T, U> = Only<T, U> | Only<U, T>;
+
+type RequireAtLeastOne<T, Keys extends keyof T = keyof T> =
+    Pick<T, Exclude<keyof T, Keys>> 
+    & {
+        [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>
+    }[Keys]
+
 interface IngredientType {
   _id: string;
   image: string;
@@ -11,9 +25,16 @@ interface InitialStateType {
   totalPrice: number;
 }
 
+interface PayloadObject {
+  _id: string;
+  image: string;
+  text: string;
+  price: number;
+}
+
 interface ActionType {
   type: ("ADD_BUN" | "ADD_INGREDIENT" | "REMOVE_INGREDIENT");
-  payload: any;
+  payload: PayloadObject;
 }
 
 export const burgerConstructorReducer = (state: InitialStateType, action: ActionType):InitialStateType => {
@@ -29,22 +50,22 @@ export const burgerConstructorReducer = (state: InitialStateType, action: Action
         },
       }
 
-      let newTotal = newState.bun.price * 2;
+      const newTotal = newState.bun.price * 2;
       newState.totalPrice += newTotal;
       return newState;
     }
     case "ADD_INGREDIENT": {
       let newState =  {...state, ingredients: [
         ...state.ingredients,
-        action.payload.newElem
+        action.payload
       ]}
       
-      newState.totalPrice +=  action.payload.newElem.price;
+      newState.totalPrice +=  action.payload.price;
       return newState ; 
     }
     case "REMOVE_INGREDIENT":
-      let ingredient = state.ingredients.filter(item => item._id === action.payload._id)
-      let filteredIngredients = state.ingredients.filter(item => item._id !== action.payload._id)
+      const ingredient = state.ingredients.filter(item => item._id === action.payload._id)
+      const filteredIngredients = state.ingredients.filter(item => item._id !== action.payload._id)
 
       let newState =  {
         ...state, 

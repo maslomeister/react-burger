@@ -108,12 +108,10 @@ function App() {
           return burgerConstructorDispatcher({
             type: "ADD_INGREDIENT",
             payload: {
-              newElem: {
-                _id: item._id,
-                image: item.image,
-                text: item.name,
-                price: item.price,
-              },
+              _id: item._id,
+              image: item.image,
+              text: item.name,
+              price: item.price,
             },
           });
         }
