@@ -1,4 +1,7 @@
+import { motion } from "framer-motion";
+
 import Modal from "../../components/modal/modal";
+import NutritionItem from "./components/nutrition-item/nutrition-item";
 
 import ingredientDetailsStyles from "./ingredient-details.module.css";
 
@@ -13,62 +16,50 @@ interface IngredientDetailsProps {
   calories: number;
 }
 
-function IngredientDetails(props: IngredientDetailsProps) {
+export default function IngredientDetails({
+  onClose,
+  show,
+  imageSrc,
+  name,
+  proteins,
+  fat,
+  carbohydrates,
+  calories,
+}: IngredientDetailsProps) {
   return (
     <Modal
-      onClose={props.onClose}
-      show={props.show}
+      onClose={onClose}
+      show={show}
       title="Детали ингредиента"
       closeIconType="primary"
     >
       <div className={ingredientDetailsStyles["ingredient-details"]}>
-        <img alt="previewImage" src={props.imageSrc} />
+        <motion.img
+          alt="previewImage"
+          src={imageSrc}
+          initial={{ rotate: -2 }}
+          animate={{ rotate: 2 }}
+          transition={{
+            duration: 1,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "mirror",
+          }}
+        />
         <p
           className={`${ingredientDetailsStyles["ingredient-details__text"]} text text_type_main-medium mt-4`}
         >
-          {props.name}
+          {name}
         </p>
         <div
           className={`${ingredientDetailsStyles["ingredient-details__nutrition"]} mb-15 mt-8`}
         >
-          <div className={ingredientDetailsStyles["nutrition__item"]}>
-            <p
-              className={`${ingredientDetailsStyles.text} text text_type_main-small text_color_inactive`}
-            >
-              Калории, ккал
-            </p>
-            <p className="text text_type_digits-default text_color_inactive">
-              {props.calories}
-            </p>
-          </div>
-          <div className={ingredientDetailsStyles["nutrition__item"]}>
-            <p className="text text_type_main-small text_color_inactive">
-              Белки, г
-            </p>
-            <p className="text text_type_digits-default text_color_inactive">
-              {props.proteins}
-            </p>
-          </div>
-          <div className={ingredientDetailsStyles["nutrition__item"]}>
-            <p className="text text_type_main-small text_color_inactive">
-              Жиры, г
-            </p>
-            <p className="text text_type_digits-default text_color_inactive">
-              {props.fat}
-            </p>
-          </div>
-          <div className={ingredientDetailsStyles["nutrition__item"]}>
-            <p className="text text_type_main-small text_color_inactive">
-              Углеводы, г
-            </p>
-            <p className="text text_type_digits-default text_color_inactive">
-              {props.carbohydrates}
-            </p>
-          </div>
+          <NutritionItem name={"Калории,ккал"} value={calories} />
+          <NutritionItem name={"Белки, г"} value={proteins} />
+          <NutritionItem name={"Жиры, г"} value={fat} />
+          <NutritionItem name={"Углеводы, г"} value={carbohydrates} />
         </div>
       </div>
     </Modal>
   );
 }
-
-export default IngredientDetails;

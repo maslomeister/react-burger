@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 import {
   CurrencyIcon,
   Counter,
@@ -5,33 +7,63 @@ import {
 
 import itemStyles from "./burger-ingredients-item.module.css";
 
-interface BurgerIngredientPropTypes {
+interface BurgerIngredientItemPropTypes {
   imageSrc: string;
   name: string;
   price: number;
   onClick: () => void;
 }
 
-function BurgerIngredientItem(props: BurgerIngredientPropTypes) {
+const imageMotion = {
+  hover: {
+    scale: 1.3,
+    transition: {
+      type: "spring",
+      stiffness: 600,
+    },
+  },
+};
+
+const textMotion = {
+  hover: {
+    scale: 1.1,
+    transition: {
+      type: "spring",
+      stiffness: 300,
+    },
+  },
+};
+
+function BurgerIngredientItem({
+  onClick,
+  imageSrc,
+  name,
+  price,
+}: BurgerIngredientItemPropTypes) {
   return (
-    <div
-      className={`${itemStyles.Item} ml-4 mr-5 mb-10 mt-6`}
-      onClick={props.onClick}
+    <motion.div
+      className={`${itemStyles["item"]} ml-4 mr-5 mb-10 mt-6`}
+      onClick={onClick}
+      whileHover="hover"
+      variants={textMotion}
     >
-      <img
-        className={`${itemStyles.Item} ml-4 mr-5`}
-        alt="previewImage"
-        src={props.imageSrc}
-      />
-      <div className={`${itemStyles.Item_price} mb-1 mt-1`}>
-        <p className="text text_type_digits-small mr-2">{props.price}</p>
+      <motion.div>
+        <motion.img
+          className={`${itemStyles["item__image"]} ml-4 mr-5`}
+          alt="previewImage"
+          src={imageSrc}
+          variants={imageMotion}
+        />
+      </motion.div>
+      <div className={`${itemStyles["item_price"]} mb-1 mt-1`}>
+        <p className="text text_type_digits-small mr-2">{price}</p>
         <CurrencyIcon type="primary" />
       </div>
-      <p className={`${itemStyles.Item_name} text text_type_main-small`}>
-        {props.name}
+      <p className={`${itemStyles["item_name"]} text text_type_main-small`}>
+        {name}
       </p>
       <Counter count={1} size="default" />
-    </div>
+    </motion.div>
   );
 }
 

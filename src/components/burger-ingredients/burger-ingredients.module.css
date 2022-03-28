@@ -5,12 +5,16 @@
 .components {
   overflow-y: auto;
   max-width: 600px;
-  max-height: 700px;
+  max-height: calc(1003px - 336px);
+  /* сделать высоту на всю страницу max-height: calc(100vh - 300px); */
+  scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 .item-container {
   display: flex;
   flex-flow: row wrap;
+  width: 576px;
 }
 
 p {

@@ -29,7 +29,7 @@ code {
 /* ===== Scrollbar CSS ===== */
 /* Firefox */
 * {
-  scrollbar-width: auto;
+  scrollbar-width: thin;
   scrollbar-color: #8585ad #2f2f37;
 }
 

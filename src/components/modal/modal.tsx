@@ -1,4 +1,6 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import { createPortal } from "react-dom";
+import { motion } from "framer-motion";
 
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "../../components/modal-overlay/modal-overlay";
@@ -8,11 +10,11 @@ import modalStyles from "./modal.module.css";
 declare type TIconTypes = "secondary" | "primary" | "error" | "success";
 
 interface ModalProps {
-  children: any;
+  children: React.ReactNode;
   title: string;
-  onClose: () => void;
   show: boolean;
   closeIconType: TIconTypes;
+  onClose: () => void;
 }
 
 const defaultProps = {
@@ -21,52 +23,56 @@ const defaultProps = {
 
 Modal.defaultProps = defaultProps;
 
-function Modal(props: ModalProps) {
+function Modal({ onClose, children, title, show, closeIconType }: ModalProps) {
+  const modalRoot: Element = document.getElementById("modal-root") as Element;
+
   useEffect(() => {
     const closeOnESC = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        props.onClose();
+        onClose();
       }
     };
 
-    if (props.show) {
-      document.body.addEventListener("keydown", closeOnESC);
-    }
+    document.body.addEventListener("keydown", closeOnESC);
 
     return () => {
-      if (!props.show) {
-        document.body.removeEventListener("keydown", closeOnESC);
-      }
+      document.body.removeEventListener("keydown", closeOnESC);
     };
-  }, [props.show]);
+  }, [show]);
 
-  return (
-    <ModalOverlay onClose={props.onClose} show={props.show} title={props.title}>
-      <div
+  return createPortal(
+    <ModalOverlay onClose={onClose} show={show} title={title}>
+      <motion.div
         className={modalStyles["modal"]}
         onClick={(e) => e.stopPropagation()}
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0, opacity: 0 }}
+        transition={{
+          type: "spring",
+          stiffness: 260,
+          damping: 20,
+        }}
       >
-        {props.title ? (
+        {title ? (
           <div className={`${modalStyles["modal_title"]} ml-10 mr-10 mt-10`}>
-            <p className="text text_type_main-medium">{props.title}</p>
-            <div
-              className={modalStyles["close-icon_flex"]}
-              onClick={props.onClose}
-            >
-              <CloseIcon type={props.closeIconType} />
+            <p className="text text_type_main-medium">{title}</p>
+            <div className={modalStyles["close-icon_flex"]} onClick={onClose}>
+              <CloseIcon type={closeIconType} />
             </div>
           </div>
         ) : (
           <div
             className={`${modalStyles["close-icon_absolute"]} mr-10 mt-15`}
-            onClick={props.onClose}
+            onClick={onClose}
           >
-            <CloseIcon type={props.closeIconType} />
+            <CloseIcon type={closeIconType} />
           </div>
         )}
-        {props.children}
-      </div>
-    </ModalOverlay>
+        {children}
+      </motion.div>
+    </ModalOverlay>,
+    modalRoot
   );
 }
 
