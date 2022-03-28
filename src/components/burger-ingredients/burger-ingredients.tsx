@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredientItem from "../burger-ingredients-item/burger-ingredients-item";
@@ -34,7 +35,9 @@ BurgerIngredients.propTypes = propTypes;
 //Используется для того чтобы TS автоматически получил типы которые мы указали через prop-types
 type BurgerIngredientsPropTypes = PropTypes.InferProps<typeof propTypes>;
 
-function BurgerIngredients(props: BurgerIngredientsPropTypes) {
+export default function BurgerIngredients({
+  ingredients,
+}: BurgerIngredientsPropTypes) {
   const tabsRef = useRef<HTMLDivElement>(null);
 
   const [state, setState] = useState({
@@ -126,7 +129,7 @@ function BurgerIngredients(props: BurgerIngredientsPropTypes) {
   }, []);
 
   return (
-    <>
+    <AnimatePresence>
       <IngredientDetails
         onClose={() =>
           setState((prevState) => ({
@@ -142,63 +145,72 @@ function BurgerIngredients(props: BurgerIngredientsPropTypes) {
         fat={state.modalFat}
         carbohydrates={state.modalCarbohydrates}
       />
-      <p className="text text_type_main-large mb-5 mt-10">Соберите бургер</p>
-      <div className={`${ingredientsStyles["tabs"]} mb-10`}>
-        {Tabs &&
-          Tabs.map((tab) => (
-            <Tab
-              key={tab._id}
-              value={tab.value}
-              active={state.currentTab === tab.value}
-              onClick={() => {
-                setState((prevState) => ({
-                  ...prevState,
-                  currentTab: tab.value,
-                }));
-                scrollTabIntoView(tab.value);
-              }}
-            >
-              {tab.name}
-            </Tab>
-          ))}
-      </div>
-      {props.ingredients && (
-        <div className={ingredientsStyles["components"]} ref={tabsRef}>
+      <motion.div
+        key="modal"
+        initial={{ x: "-200%" }}
+        animate={{ x: 0 }}
+        transition={{
+          type: "tween",
+        }}
+      >
+        <p className="text text_type_main-large mb-5 mt-10">Соберите бургер</p>
+        <div className={`${ingredientsStyles["tabs"]} mb-10`}>
           {Tabs &&
             Tabs.map((tab) => (
-              <section key={tab._id} className={`${tab._id}`}>
-                <p className="text text_type_main-medium">{tab.name}</p>
-                <div className={`${ingredientsStyles["item-container"]} ml-4`}>
-                  {props.ingredients &&
-                    props.ingredients
-                      .filter((data) => data.type === tab.type)
-                      .map((data) => (
-                        <BurgerIngredientItem
-                          key={data._id}
-                          imageSrc={data.image}
-                          price={data.price}
-                          name={data.name}
-                          onClick={() =>
-                            setState((prevState) => ({
-                              ...prevState,
-                              modalShow: !state.modalShow,
-                              modalImage: data.image_large,
-                              modalName: data.name,
-                              modalCalories: data.calories,
-                              modalProteins: data.proteins,
-                              modalFat: data.fat,
-                              modalCarbohydrates: data.carbohydrates,
-                            }))
-                          }
-                        />
-                      ))}
-                </div>
-              </section>
+              <Tab
+                key={tab._id}
+                value={tab.value}
+                active={state.currentTab === tab.value}
+                onClick={() => {
+                  setState((prevState) => ({
+                    ...prevState,
+                    currentTab: tab.value,
+                  }));
+                  scrollTabIntoView(tab.value);
+                }}
+              >
+                {tab.name}
+              </Tab>
             ))}
         </div>
-      )}
-    </>
+        {ingredients && (
+          <div className={ingredientsStyles["components"]} ref={tabsRef}>
+            {Tabs &&
+              Tabs.map((tab) => (
+                <section key={tab._id} className={`${tab._id}`}>
+                  <p className="text text_type_main-medium">{tab.name}</p>
+                  <div
+                    className={`${ingredientsStyles["item-container"]} ml-4`}
+                  >
+                    {ingredients &&
+                      ingredients
+                        .filter((data) => data.type === tab.type)
+                        .map((data) => (
+                          <BurgerIngredientItem
+                            key={data._id}
+                            imageSrc={data.image_large}
+                            price={data.price}
+                            name={data.name}
+                            onClick={() =>
+                              setState((prevState) => ({
+                                ...prevState,
+                                modalShow: !state.modalShow,
+                                modalImage: data.image_large,
+                                modalName: data.name,
+                                modalCalories: data.calories,
+                                modalProteins: data.proteins,
+                                modalFat: data.fat,
+                                modalCarbohydrates: data.carbohydrates,
+                              }))
+                            }
+                          />
+                        ))}
+                  </div>
+                </section>
+              ))}
+          </div>
+        )}
+      </motion.div>
+    </AnimatePresence>
   );
 }
-
-export default BurgerIngredients;
