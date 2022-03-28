@@ -1,4 +1,4 @@
-import { useState, useEffect, useReducer, Reducer } from "react";
+import { useState, useEffect, useReducer } from "react";
 import PropTypes from "prop-types";
 import { Route, Routes } from "react-router-dom";
 
@@ -105,7 +105,7 @@ function App() {
       });
       state.items.map((item) => {
         if (item?.type !== "bun") {
-          burgerConstructorDispatcher({
+          return burgerConstructorDispatcher({
             type: "ADD_INGREDIENT",
             payload: {
               newElem: {
@@ -117,6 +117,7 @@ function App() {
             },
           });
         }
+        return null;
       });
     }
   }, [state.items]);

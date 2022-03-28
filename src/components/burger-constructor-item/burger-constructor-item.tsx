@@ -1,6 +1,3 @@
-import React from "react";
-import { useMotionValue, Reorder, useDragControls } from "framer-motion";
-
 import {
   ConstructorElement,
   DragIcon,

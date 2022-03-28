@@ -1,11 +1,9 @@
-import { useState, useEffect, useContext } from "react";
-import PropTypes from "prop-types";
+import { useState, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import {
   ConstructorElement,
   Button,
-  CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
 import OrderDetails from "../../components/order-details/order-details";
