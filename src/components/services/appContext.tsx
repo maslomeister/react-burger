@@ -13,7 +13,7 @@ interface InitialStateType {
 }
 
 interface ActionType {
-  type: string;
+  type: "ADD_BUN" | "ADD_INGREDIENT" | "REMOVE_INGREDIENT";
   payload: any;
 }
 
