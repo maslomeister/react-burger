@@ -1,3 +1,9 @@
+.burger-constructor {
+  display: flex;
+  flex-flow: column;
+  height: calc(100vh - 245px);
+}
+
 .outer_style {
   display: flex;
   flex-flow: column;
@@ -9,7 +15,7 @@
   display: flex;
   flex-flow: column;
   align-items: flex-end;
-  overflow-y: auto;
+  overflow-y: scroll;
   max-height: 465px;
 }
 
@@ -28,16 +34,4 @@
   align-items: center;
   justify-content: flex-end;
   width: calc(600px - 8px);
-}
-
-.cart__total {
-  display: flex;
-  flex-flow: row;
-  align-items: center;
-}
-
-.cart_price > svg {
-  display: flex;
-  width: 36px;
-  height: 36px;
 }
