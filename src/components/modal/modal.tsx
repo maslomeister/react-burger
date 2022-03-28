@@ -9,7 +9,7 @@ import modalStyles from "./modal.module.css";
 declare type TIconTypes = "secondary" | "primary" | "error" | "success";
 
 interface ModalProps {
-  children: any;
+  children: React.ReactNode;
   title: string;
   show: boolean;
   closeIconType: TIconTypes;
