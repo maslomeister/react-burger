@@ -1,23 +1,29 @@
 import { createContext } from "react";
 
-interface IngredientType {
+export interface IngredientType {
   _id: string;
   image: string;
   text: string;
   price: number;
 }
-interface InitialStateType {
+
+export interface PayloadObject {
+  _id: string;
+  image?: string;
+  text?: string;
+  price?: number;
+}
+export interface InitialStateType {
   ingredients: IngredientType[];
   bun: IngredientType;
   totalPrice: number;
 }
-
-interface ActionType {
+export interface ActionType {
   type: "ADD_BUN" | "ADD_INGREDIENT" | "REMOVE_INGREDIENT";
-  payload: any;
+  payload: PayloadObject;
 }
 
-const initialState: InitialStateType = {
+export const initialState: InitialStateType = {
   ingredients: [],
   bun: {} as IngredientType,
   totalPrice: 0,
