@@ -17,9 +17,13 @@ type Item = {
 
 interface BurgerConstructorItemPropTypes {
   item: Item;
+  handleClose: () => void;
 }
 
-function BurgerConstructorItem({ item }: BurgerConstructorItemPropTypes) {
+function BurgerConstructorItem({
+  item,
+  handleClose,
+}: BurgerConstructorItemPropTypes) {
   return (
     <div className={constructorItemStyles["ingredient"]}>
       <div className={constructorItemStyles["_draggable"]}>
@@ -31,6 +35,7 @@ function BurgerConstructorItem({ item }: BurgerConstructorItemPropTypes) {
           text={item.text}
           price={item.price}
           thumbnail={item.image}
+          handleClose={handleClose}
         />
       </div>
     </div>
