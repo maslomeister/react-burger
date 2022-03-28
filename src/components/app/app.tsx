@@ -1,4 +1,5 @@
 import { useState, useEffect, useReducer, Reducer } from "react";
+import PropTypes from "prop-types";
 import { Route, Routes } from "react-router-dom";
 
 import AppHeader from "../../components/app-header/app-header";
@@ -29,12 +30,39 @@ const initialState: InitialStateType = {
   totalPrice: 0,
 };
 
+const item = PropTypes.shape({
+  _id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  proteins: PropTypes.number.isRequired,
+  fat: PropTypes.number.isRequired,
+  carbohydrates: PropTypes.number.isRequired,
+  calories: PropTypes.number.isRequired,
+  price: PropTypes.number.isRequired,
+  image: PropTypes.string.isRequired,
+  image_mobile: PropTypes.string.isRequired,
+  image_large: PropTypes.string.isRequired,
+  __v: PropTypes.number.isRequired,
+});
+
+const propTypes = {
+  items: PropTypes.arrayOf(item.isRequired),
+  item,
+  isLoading: PropTypes.bool,
+  hasError: PropTypes.bool,
+  error: PropTypes.string,
+};
+
+App.propTypes = propTypes;
+
+type AppTypes = PropTypes.InferProps<typeof propTypes>;
+
 function App() {
-  const [state, setState] = useState({
+  const [state, setState] = useState<AppTypes>({
     isLoading: false,
     hasError: false,
     error: "",
-    data: [],
+    items: [],
   });
 
   const [burgerConstructorState, burgerConstructorDispatcher] = useReducer(
@@ -49,7 +77,7 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          setState({ ...state, data: data.data, isLoading: false });
+          setState({ ...state, items: data.data, isLoading: false });
         } else {
           setState({ ...state, isLoading: false, hasError: true });
         }
@@ -62,6 +90,36 @@ function App() {
   useEffect(() => {
     getData();
   }, []);
+
+  // Пока не прикрутил dnd использую это
+  useEffect(() => {
+    if (state.items && state.items.length !== 0) {
+      burgerConstructorDispatcher({
+        type: "ADD_BUN",
+        payload: {
+          _id: state.items[0]._id,
+          image: state.items[0].image,
+          text: state.items[0].name,
+          price: state.items[0].price,
+        },
+      });
+      state.items.map((item) => {
+        if (item?.type !== "bun") {
+          burgerConstructorDispatcher({
+            type: "ADD_INGREDIENT",
+            payload: {
+              newElem: {
+                _id: item._id,
+                image: item.image,
+                text: item.name,
+                price: item.price,
+              },
+            },
+          });
+        }
+      });
+    }
+  }, [state.items]);
 
   return (
     <div className="App">
@@ -83,10 +141,10 @@ function App() {
                     Данные не смогли загрузиться: {state.error}
                   </p>
                 </div>
-              ) : state.data.length !== 0 ? (
+              ) : state.items && state.items.length !== 0 ? (
                 <section className={appStyles["row"]}>
                   <div className={`mr-10`}>
-                    <BurgerIngredients ingredients={state.data} />
+                    <BurgerIngredients ingredients={state.items} />
                   </div>
                   <div>
                     <BurgerConstructorContext.Provider
