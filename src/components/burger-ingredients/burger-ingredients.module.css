@@ -8,6 +8,7 @@
   max-height: calc(1003px - 336px);
   /* сделать высоту на всю страницу max-height: calc(100vh - 300px); */
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 .item-container {
