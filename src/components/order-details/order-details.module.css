@@ -11,14 +11,21 @@
 }
 
 .check-mark-icon_background-size {
+  position: relative;
   width: 107px;
   height: 102px;
 }
 
-.check-mark-icon_background {
+.check-mark-icon_size {
   display: flex;
-  flex-flow: column;
-  align-items: center;
   justify-content: center;
-  height: 100px;
+  align-items: center;
+  height: 48px;
+  width: 107px;
+  height: 102px;
+}
+
+.check-mark-icon_size > svg {
+  width: 48px;
+  height: 48px;
 }
