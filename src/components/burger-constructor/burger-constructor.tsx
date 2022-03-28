@@ -1,91 +1,142 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
+import { motion, AnimatePresence } from "framer-motion";
 
 import {
   ConstructorElement,
-  DragIcon,
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
 import OrderDetails from "../../components/order-details/order-details";
+import TotalPrice from "./components/total-price";
+import { BurgerConstructorContext } from "../../components/services/appContext";
 
 import constructorStyles from "./burger-constructor.module.css";
 
-const ingredient = PropTypes.shape({
-  _id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  proteins: PropTypes.number.isRequired,
-  fat: PropTypes.number.isRequired,
-  carbohydrates: PropTypes.number.isRequired,
-  calories: PropTypes.number.isRequired,
-  price: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
-  image_mobile: PropTypes.string.isRequired,
-  image_large: PropTypes.string.isRequired,
-  __v: PropTypes.number.isRequired,
-});
+const createOrderUrl = "https://norma.nomoreparties.space/api/orders";
 
-const propTypes = {
-  ingredients: PropTypes.arrayOf(ingredient.isRequired),
-  ingredient,
-};
+function BurgerConstructor() {
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [orderState, setOrderState] = useState({
+    isLoading: false,
+    hasError: false,
+    error: "",
+    orderId: 0,
+  });
+  const { burgerConstructorState, burgerConstructorDispatcher } = useContext(
+    BurgerConstructorContext
+  );
 
-BurgerConstructor.propTypes = propTypes;
+  function removeIngredient(id: string) {
+    burgerConstructorDispatcher({
+      type: "REMOVE_INGREDIENT",
+      payload: {
+        _id: id,
+      },
+    });
+  }
 
-//Используется для того чтобы TS автоматически получил типы которые мы указали через prop-types
-type BurgerConstructorPropTypes = PropTypes.InferProps<typeof propTypes>;
+  function createOrder() {
+    setShowModal(true);
+    setOrderState({ ...orderState, isLoading: true });
 
-function BurgerConstructor(props: BurgerConstructorPropTypes) {
-  const [showModal, setShowModal] = useState(false);
+    let ingredientsIds = burgerConstructorState.ingredients.map(
+      ({ _id }) => _id
+    );
+
+    ingredientsIds.push(burgerConstructorState.bun._id);
+
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ingredients: ingredientsIds }),
+    };
+
+    console.log(requestOptions);
+    fetch(createOrderUrl, requestOptions)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setOrderState({
+            ...orderState,
+            isLoading: false,
+            orderId: data.order.number,
+          });
+        } else {
+          setOrderState({ ...orderState, isLoading: false, hasError: true });
+        }
+      })
+      .catch((e) => {
+        setOrderState({
+          ...orderState,
+          isLoading: false,
+          hasError: true,
+          error: e,
+        });
+      });
+  }
+
   return (
-    <>
-      <OrderDetails onClose={() => setShowModal(false)} show={showModal} />
-      {props.ingredients && (
-        <div className="mt-25">
+    <AnimatePresence>
+      <OrderDetails
+        onClose={() => setShowModal(false)}
+        show={showModal}
+        isLoading={orderState.isLoading}
+        orderId={orderState.orderId}
+        hasError={orderState.hasError}
+        error={orderState.error}
+      />
+
+      {burgerConstructorState.ingredients && (
+        <motion.div
+          key="burger-constructor"
+          className={`${constructorStyles["burger-constructor"]} mb-14 mt-25`}
+          initial={{ x: "+200%" }}
+          exit={{ x: 0 }}
+          animate={{ x: 0 }}
+          transition={{
+            type: "tween",
+            delay: 0.3,
+          }}
+        >
           <div className={constructorStyles["outer_style"]}>
             <div className="ml-4 mr-4 mb-4">
               <div className={constructorStyles["constructor-element-wrapper"]}>
                 <ConstructorElement
                   type="top"
                   isLocked={true}
-                  text={`${props.ingredients[0].name} (верх)`}
-                  price={props.ingredients[0].price}
-                  thumbnail={props.ingredients[0].image}
+                  text={`${burgerConstructorState.bun.text} (вверх)`}
+                  price={burgerConstructorState.bun.price}
+                  thumbnail={burgerConstructorState.bun.image}
                 />
               </div>
             </div>
           </div>
 
           <div className={constructorStyles["inner_style"]}>
-            {props.ingredients.map((ingredient, index) => {
-              if (ingredient.type !== "bun") {
-                const lastIndex = props.ingredients!.length - 1;
-                return (
-                  <div
-                    key={ingredient._id}
-                    className={`${constructorStyles["ingredient"]} ml-4 mr-4 ${
-                      lastIndex !== index ? "mb-4" : ""
-                    }`}
-                  >
-                    <DragIcon type="primary" />
-
-                    <div
-                      className={
-                        constructorStyles["constructor-element-wrapper"]
-                      }
-                    >
-                      <ConstructorElement
-                        text={ingredient.name}
-                        price={ingredient.price}
-                        thumbnail={ingredient.image}
-                      />
-                    </div>
-                  </div>
-                );
-              }
-
-              return null;
+            {burgerConstructorState.ingredients.map((ingredient, index) => {
+              const lastIndex =
+                index === burgerConstructorState.ingredients!.length - 1;
+              const item = {
+                _id: ingredient._id,
+                image: ingredient.image,
+                text: ingredient.text,
+                price: ingredient.price,
+              };
+              return (
+                <div
+                  className={`ml-4 mr-4 ${lastIndex ? "" : "mb-4"}`}
+                  key={ingredient._id}
+                >
+                  <BurgerConstructorItem
+                    item={item}
+                    handleClose={() => {
+                      removeIngredient(ingredient._id);
+                    }}
+                  />
+                </div>
+              );
             })}
           </div>
 
@@ -95,32 +146,23 @@ function BurgerConstructor(props: BurgerConstructorPropTypes) {
                 <ConstructorElement
                   type="bottom"
                   isLocked={true}
-                  text={`${props.ingredients[0].name} (низ)`}
-                  price={props.ingredients[0].price}
-                  thumbnail={props.ingredients[0].image}
+                  text={`${burgerConstructorState.bun.text} (низ)`}
+                  price={burgerConstructorState.bun.price}
+                  thumbnail={burgerConstructorState.bun.image}
                 />
               </div>
             </div>
           </div>
 
           <div className={`${constructorStyles["cart"]} mt-10`}>
-            <div className={`${constructorStyles["cart__total"]} mr-10`}>
-              <p className="text text_type_digits-medium">500</p>
-              <div className={`${constructorStyles["cart_price"]} ml-2`}>
-                <CurrencyIcon type="primary" />
-              </div>
-            </div>
-            <Button
-              type="primary"
-              size="large"
-              onClick={() => setShowModal(true)}
-            >
+            <TotalPrice price={burgerConstructorState.totalPrice} />
+            <Button type="primary" size="large" onClick={createOrder}>
               Оформить заказ
             </Button>
           </div>
-        </div>
+        </motion.div>
       )}
-    </>
+    </AnimatePresence>
   );
 }
 
