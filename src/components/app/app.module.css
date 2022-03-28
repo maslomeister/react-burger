@@ -1,10 +1,15 @@
 .row {
-  width: 1241px;
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
   align-content: center;
   margin: auto;
+  scrollbar-width: none; /* for Firefox */
+  overflow-x: scroll;
+}
+
+.row::-webkit-scrollbar {
+  display: none; /* for Chrome, Safari, and Opera */
 }
 
 .loading {
