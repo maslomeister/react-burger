@@ -94,7 +94,6 @@ function BurgerConstructor() {
           animate={{ x: 0 }}
           transition={{
             type: "tween",
-            delay: 0.3,
           }}
         >
           <div className={constructorStyles["outer_style"]}>
