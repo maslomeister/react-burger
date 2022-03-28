@@ -30,14 +30,10 @@ function Modal({ onClose, children, title, show, closeIconType }: ModalProps) {
       }
     };
 
-    if (show) {
-      document.body.addEventListener("keydown", closeOnESC);
-    }
+    document.body.addEventListener("keydown", closeOnESC);
 
     return () => {
-      if (!show) {
-        document.body.removeEventListener("keydown", closeOnESC);
-      }
+      document.body.removeEventListener("keydown", closeOnESC);
     };
   }, [show]);
 
