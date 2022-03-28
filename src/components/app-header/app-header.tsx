@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 import {
   Logo,
   BurgerIcon,
@@ -16,15 +18,15 @@ function AppHeader() {
             className={`${headerStyles["menu__item_active"]} ml-5 mr-5 mb-5 mt-5`}
           >
             <BurgerIcon type="primary" />
-            <a className="text text_type_main-default ml-2" href="/">
+            <NavLink className="text text_type_main-default ml-2" to="/">
               Конструктор
-            </a>
+            </NavLink>
           </li>
           <li className={`${headerStyles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
             <ListIcon type="primary" />
-            <a className="text text_type_main-default ml-2" href="/">
+            <NavLink className="text text_type_main-default ml-2" to="/orders">
               Лента заказов
-            </a>
+            </NavLink>
           </li>
         </ul>
         <div className={headerStyles["logo"]}>
@@ -33,9 +35,9 @@ function AppHeader() {
         <ul className={`${headerStyles["menu-right"]} mb-4 mt-4`}>
           <li className={`${headerStyles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
             <ProfileIcon type="primary" />
-            <a className="text text_type_main-default ml-2" href="/">
+            <NavLink className="text text_type_main-default ml-2" to="/account">
               Личный кабинет
-            </a>
+            </NavLink>
           </li>
         </ul>
       </nav>
