@@ -11,7 +11,7 @@
   cursor: pointer;
 }
 
-.item_image {
+.item__image {
   display: flex;
   flex-flow: column;
   align-items: center;
