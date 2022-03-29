@@ -25,7 +25,12 @@ export interface ActionType {
 
 export const initialState: InitialStateType = {
   ingredients: [],
-  bun: {} as IngredientType,
+  bun: {
+    _id: "",
+    image: "",
+    text: "",
+    price: 0,
+  },
   totalPrice: 0,
 };
 
