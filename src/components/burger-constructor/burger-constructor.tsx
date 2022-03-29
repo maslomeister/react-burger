@@ -109,7 +109,7 @@ function BurgerConstructor() {
             </div>
           </div>
 
-          <div className={constructorStyles["inner_style"]}>
+          <ul className={constructorStyles["inner_style"]}>
             {burgerConstructorState.ingredients.map((ingredient, index) => {
               const lastIndex =
                 index === burgerConstructorState.ingredients!.length - 1;
@@ -120,7 +120,7 @@ function BurgerConstructor() {
                 price: ingredient!.price,
               };
               return (
-                <div
+                <li
                   className={`ml-4 mr-4 ${lastIndex ? "" : "mb-4"}`}
                   key={ingredient._id}
                 >
@@ -130,10 +130,10 @@ function BurgerConstructor() {
                       removeIngredient(ingredient._id);
                     }}
                   />
-                </div>
+                </li>
               );
             })}
-          </div>
+          </ul>
 
           <div className={constructorStyles["outer_style"]}>
             <div className="ml-4 mr-4 mt-4">
