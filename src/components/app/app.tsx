@@ -10,10 +10,9 @@ import {
   BurgerConstructorContext,
 } from "../../components/services/appContext";
 import { burgerConstructorReducer } from "../../components/reducers/reducers";
+import { getIngredients, Item } from "../../utils/burger-api";
 
 import appStyles from "./app.module.css";
-
-const serverUrl = "https://norma.nomoreparties.space/api/ingredients";
 
 const item = PropTypes.shape({
   _id: PropTypes.string.isRequired,
@@ -31,7 +30,7 @@ const item = PropTypes.shape({
 });
 
 const propTypes = {
-  items: PropTypes.arrayOf(item.isRequired),
+  ingredients: PropTypes.arrayOf(item.isRequired),
   item,
   isLoading: PropTypes.bool,
   hasError: PropTypes.bool,
@@ -44,11 +43,12 @@ type AppTypes = PropTypes.InferProps<typeof propTypes>;
 
 function App() {
   const [state, setState] = useState<AppTypes>({
-    isLoading: false,
+    isLoading: true,
     hasError: false,
     error: "",
-    items: [],
   });
+
+  const [ingredients, setIngredients] = useState<Item[]>([]);
 
   const [burgerConstructorState, burgerConstructorDispatcher] = useReducer(
     burgerConstructorReducer,
@@ -56,39 +56,28 @@ function App() {
     undefined
   );
 
-  const getData = async () => {
-    setState({ ...state, hasError: false, isLoading: true });
-    fetch(serverUrl)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setState({ ...state, items: data.data, isLoading: false });
-        } else {
-          setState({ ...state, isLoading: false, hasError: true });
-        }
-      })
-      .catch((e) => {
-        setState({ ...state, hasError: true, error: e, isLoading: false });
-      });
-  };
-
   useEffect(() => {
-    getData();
+    getIngredients()
+      .then(setIngredients)
+      .catch(() => {
+        setState({ ...state, hasError: true });
+      })
+      .finally(() => setState({ ...state, hasError: false, isLoading: false }));
   }, []);
 
   // Пока не прикрутил dnd использую это
   useEffect(() => {
-    if (state.items && state.items.length !== 0) {
+    if (ingredients && ingredients.length !== 0) {
       burgerConstructorDispatcher({
         type: "ADD_BUN",
         payload: {
-          _id: state.items[0]._id,
-          image: state.items[0].image,
-          text: state.items[0].name,
-          price: state.items[0].price,
+          _id: ingredients[0]._id,
+          image: ingredients[0].image,
+          text: ingredients[0].name,
+          price: ingredients[0].price,
         },
       });
-      state.items.map((item) => {
+      ingredients.map((item) => {
         if (item?.type !== "bun") {
           return burgerConstructorDispatcher({
             type: "ADD_INGREDIENT",
@@ -103,7 +92,7 @@ function App() {
         return null;
       });
     }
-  }, [state.items]);
+  }, [ingredients]);
 
   return (
     <div className="App">
@@ -125,10 +114,10 @@ function App() {
                     Данные не смогли загрузиться: {state.error}
                   </p>
                 </div>
-              ) : state.items && state.items.length !== 0 ? (
+              ) : ingredients && ingredients.length !== 0 ? (
                 <section className={appStyles["row"]}>
                   <div className={`mr-10`}>
-                    <BurgerIngredients ingredients={state.items} />
+                    <BurgerIngredients ingredients={ingredients} />
                   </div>
                   <div>
                     <BurgerConstructorContext.Provider

@@ -9,10 +9,9 @@ import BurgerConstructorItem from "../burger-constructor-item/burger-constructor
 import OrderDetails from "../../components/order-details/order-details";
 import TotalPrice from "./components/total-price";
 import { BurgerConstructorContext } from "../../components/services/appContext";
+import { createOrderApi } from "../../utils/burger-api";
 
 import constructorStyles from "./burger-constructor.module.css";
-
-const createOrderUrl = "https://norma.nomoreparties.space/api/orders";
 
 function BurgerConstructor() {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -20,8 +19,9 @@ function BurgerConstructor() {
     isLoading: false,
     hasError: false,
     error: "",
-    orderId: 0,
   });
+  const [orderId, setOrderId] = useState(0);
+
   const { burgerConstructorState, burgerConstructorDispatcher } = useContext(
     BurgerConstructorContext
   );
@@ -50,27 +50,14 @@ function BurgerConstructor() {
       body: JSON.stringify({ ingredients: ingredientsIds }),
     };
 
-    fetch(createOrderUrl, requestOptions)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setOrderState({
-            ...orderState,
-            isLoading: false,
-            orderId: data.order.number,
-          });
-        } else {
-          setOrderState({ ...orderState, isLoading: false, hasError: true });
-        }
-      })
+    createOrderApi(requestOptions)
+      .then(setOrderId)
       .catch((e) => {
-        setOrderState({
-          ...orderState,
-          isLoading: false,
-          hasError: true,
-          error: e,
-        });
-      });
+        setOrderState({ ...orderState, hasError: true, error: e });
+      })
+      .finally(() =>
+        setOrderState({ ...orderState, hasError: false, isLoading: false })
+      );
   }
 
   return (
@@ -79,7 +66,7 @@ function BurgerConstructor() {
         <OrderDetails
           onClose={() => setShowModal(false)}
           isLoading={orderState.isLoading}
-          orderId={orderState.orderId}
+          orderId={orderId}
           hasError={orderState.hasError}
           error={orderState.error}
         />
