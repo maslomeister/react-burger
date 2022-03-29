@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -26,7 +26,7 @@ const data = PropTypes.shape({
 });
 
 const propTypes = {
-  ingredients: PropTypes.arrayOf(data.isRequired),
+  ingredients: PropTypes.arrayOf(data.isRequired).isRequired,
   data,
 };
 
@@ -39,6 +39,23 @@ export default function BurgerIngredients({
   ingredients,
 }: BurgerIngredientsPropTypes) {
   const tabsRef = useRef<HTMLDivElement>(null);
+
+  const buns = useMemo(
+    () => ingredients.filter((ingredient) => ingredient.type === "bun"),
+    [ingredients]
+  );
+
+  const mains = useMemo(
+    () => ingredients.filter((ingredient) => ingredient.type === "main"),
+    [ingredients]
+  );
+
+  const sauces = useMemo(
+    () => ingredients.filter((ingredient) => ingredient.type === "sauce"),
+    [ingredients]
+  );
+
+  const ingredientsCategories = [buns, sauces, mains];
 
   const [state, setState] = useState({
     modalShow: false,
@@ -95,7 +112,8 @@ export default function BurgerIngredients({
       }
     }
   };
-  const catchScroll = (e: Event) => {
+
+  const catchScroll = () => {
     const { current } = tabsRef;
 
     if (current && !isScrollingRef.current) {
@@ -154,9 +172,9 @@ export default function BurgerIngredients({
         }}
       >
         <p className="text text_type_main-large mb-5 mt-10">Соберите бургер</p>
-        <div className={`${ingredientsStyles["tabs"]} mb-10`}>
-          {Tabs &&
-            Tabs.map((tab) => (
+        <nav>
+          <ul className={`${ingredientsStyles["tabs"]} mb-10`}>
+            {Tabs.map((tab) => (
               <Tab
                 key={tab._id}
                 value={tab.value}
@@ -172,44 +190,38 @@ export default function BurgerIngredients({
                 {tab.name}
               </Tab>
             ))}
+          </ul>
+        </nav>
+
+        <div className={ingredientsStyles["components"]} ref={tabsRef}>
+          {Tabs.map((tab, index) => (
+            <section key={tab._id} className={`${tab._id}`}>
+              <p className="text text_type_main-medium">{tab.name}</p>
+              <div className={`${ingredientsStyles["item-container"]} ml-4`}>
+                {ingredientsCategories[index].map((data) => (
+                  <BurgerIngredientItem
+                    key={data._id}
+                    imageSrc={data.image_large}
+                    price={data.price}
+                    name={data.name}
+                    onClick={() =>
+                      setState((prevState) => ({
+                        ...prevState,
+                        modalShow: !state.modalShow,
+                        modalImage: data.image_large,
+                        modalName: data.name,
+                        modalCalories: data.calories,
+                        modalProteins: data.proteins,
+                        modalFat: data.fat,
+                        modalCarbohydrates: data.carbohydrates,
+                      }))
+                    }
+                  />
+                ))}
+              </div>
+            </section>
+          ))}
         </div>
-        {ingredients && (
-          <div className={ingredientsStyles["components"]} ref={tabsRef}>
-            {Tabs &&
-              Tabs.map((tab) => (
-                <section key={tab._id} className={`${tab._id}`}>
-                  <p className="text text_type_main-medium">{tab.name}</p>
-                  <div
-                    className={`${ingredientsStyles["item-container"]} ml-4`}
-                  >
-                    {ingredients &&
-                      ingredients
-                        .filter((data) => data.type === tab.type)
-                        .map((data) => (
-                          <BurgerIngredientItem
-                            key={data._id}
-                            imageSrc={data.image_large}
-                            price={data.price}
-                            name={data.name}
-                            onClick={() =>
-                              setState((prevState) => ({
-                                ...prevState,
-                                modalShow: !state.modalShow,
-                                modalImage: data.image_large,
-                                modalName: data.name,
-                                modalCalories: data.calories,
-                                modalProteins: data.proteins,
-                                modalFat: data.fat,
-                                modalCarbohydrates: data.carbohydrates,
-                              }))
-                            }
-                          />
-                        ))}
-                  </div>
-                </section>
-              ))}
-          </div>
-        )}
       </motion.div>
     </AnimatePresence>
   );
