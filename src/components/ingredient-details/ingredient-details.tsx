@@ -6,7 +6,6 @@ import NutritionItem from "./components/nutrition-item/nutrition-item";
 import ingredientDetailsStyles from "./ingredient-details.module.css";
 
 interface IngredientDetailsProps {
-  show: boolean;
   onClose: () => void;
   imageSrc: string;
   name: string;
@@ -18,7 +17,6 @@ interface IngredientDetailsProps {
 
 export default function IngredientDetails({
   onClose,
-  show,
   imageSrc,
   name,
   proteins,
@@ -27,12 +25,7 @@ export default function IngredientDetails({
   calories,
 }: IngredientDetailsProps) {
   return (
-    <Modal
-      onClose={onClose}
-      show={show}
-      title="Детали ингредиента"
-      closeIconType="primary"
-    >
+    <Modal onClose={onClose} title="Детали ингредиента" closeIconType="primary">
       <div className={ingredientDetailsStyles["ingredient-details"]}>
         <motion.img
           alt="previewImage"

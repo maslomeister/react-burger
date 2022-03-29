@@ -12,7 +12,6 @@ declare type TIconTypes = "secondary" | "primary" | "error" | "success";
 interface ModalProps {
   children: React.ReactNode;
   title: string;
-  show: boolean;
   closeIconType: TIconTypes;
   onClose: () => void;
 }
@@ -23,7 +22,7 @@ const defaultProps = {
 
 Modal.defaultProps = defaultProps;
 
-function Modal({ onClose, children, title, show, closeIconType }: ModalProps) {
+function Modal({ onClose, children, title, closeIconType }: ModalProps) {
   const modalRoot: Element = document.getElementById("modal-root") as Element;
 
   useEffect(() => {
@@ -38,10 +37,10 @@ function Modal({ onClose, children, title, show, closeIconType }: ModalProps) {
     return () => {
       document.body.removeEventListener("keydown", closeOnESC);
     };
-  }, [show]);
+  }, []);
 
   return createPortal(
-    <ModalOverlay onClose={onClose} show={show} title={title}>
+    <ModalOverlay onClose={onClose} title={title}>
       <motion.div
         className={modalStyles["modal"]}
         onClick={(e) => e.stopPropagation()}

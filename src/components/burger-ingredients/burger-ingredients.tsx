@@ -148,21 +148,22 @@ export default function BurgerIngredients({
 
   return (
     <AnimatePresence>
-      <IngredientDetails
-        onClose={() =>
-          setState((prevState) => ({
-            ...prevState,
-            modalShow: false,
-          }))
-        }
-        show={state.modalShow}
-        imageSrc={state.modalImage}
-        name={state.modalName}
-        calories={state.modalCalories}
-        proteins={state.modalProteins}
-        fat={state.modalFat}
-        carbohydrates={state.modalCarbohydrates}
-      />
+      {state.modalShow && (
+        <IngredientDetails
+          onClose={() =>
+            setState((prevState) => ({
+              ...prevState,
+              modalShow: false,
+            }))
+          }
+          imageSrc={state.modalImage}
+          name={state.modalName}
+          calories={state.modalCalories}
+          proteins={state.modalProteins}
+          fat={state.modalFat}
+          carbohydrates={state.modalCarbohydrates}
+        />
+      )}
       <motion.div
         key="modal"
         initial={{ x: "-200%" }}

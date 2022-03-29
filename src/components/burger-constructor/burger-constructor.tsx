@@ -75,14 +75,15 @@ function BurgerConstructor() {
 
   return (
     <AnimatePresence>
-      <OrderDetails
-        onClose={() => setShowModal(false)}
-        show={showModal}
-        isLoading={orderState.isLoading}
-        orderId={orderState.orderId}
-        hasError={orderState.hasError}
-        error={orderState.error}
-      />
+      {showModal && (
+        <OrderDetails
+          onClose={() => setShowModal(false)}
+          isLoading={orderState.isLoading}
+          orderId={orderState.orderId}
+          hasError={orderState.hasError}
+          error={orderState.error}
+        />
+      )}
 
       {burgerConstructorState.ingredients && (
         <motion.div

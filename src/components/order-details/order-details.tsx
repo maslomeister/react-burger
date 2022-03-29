@@ -5,7 +5,6 @@ import Modal from "../../components/modal/modal";
 import orderDetailsStyles from "./order-details.module.css";
 
 interface OrderDetailsProps {
-  show: boolean;
   isLoading: boolean;
   hasError: boolean;
   error: string;
@@ -18,11 +17,10 @@ function OrderDetails({
   isLoading,
   hasError,
   error,
-  show,
   orderId,
 }: OrderDetailsProps) {
   return (
-    <Modal onClose={onClose} show={show} closeIconType="primary">
+    <Modal onClose={onClose} closeIconType="primary">
       {!isLoading && !hasError ? (
         <div className={orderDetailsStyles["order-details"]}>
           <div
