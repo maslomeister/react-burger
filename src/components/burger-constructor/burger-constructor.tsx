@@ -5,7 +5,7 @@ import {
   ConstructorElement,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
+import BurgerConstructorItem from "./components/burger-constructor-item/burger-constructor-item";
 import OrderDetails from "../../components/order-details/order-details";
 import TotalPrice from "./components/total-price";
 import { BurgerConstructorContext } from "../../components/services/appContext";
@@ -25,6 +25,13 @@ function BurgerConstructor() {
   const { burgerConstructorState, burgerConstructorDispatcher } = useContext(
     BurgerConstructorContext
   );
+
+  const item = {
+    _id: burgerConstructorState.bun._id,
+    image: burgerConstructorState.bun.image,
+    text: burgerConstructorState.bun.text,
+    price: burgerConstructorState.bun.price,
+  };
 
   function removeIngredient(id: string) {
     burgerConstructorDispatcher({
@@ -84,17 +91,12 @@ function BurgerConstructor() {
           }}
         >
           <div className={constructorStyles["outer_style"]}>
-            <div className="ml-4 mr-4 mb-4">
-              <div className={constructorStyles["constructor-element-wrapper"]}>
-                <ConstructorElement
-                  type="top"
-                  isLocked={true}
-                  text={`${burgerConstructorState.bun.text} (вверх)`}
-                  price={burgerConstructorState.bun.price}
-                  thumbnail={burgerConstructorState.bun.image}
-                />
-              </div>
-            </div>
+            <BurgerConstructorItem
+                    bottomPadding={true}
+                    top={"top"}
+                    draggable={false}
+                    item={item}
+                  />
           </div>
 
           <ul className={constructorStyles["inner_style"]}>
@@ -108,12 +110,12 @@ function BurgerConstructor() {
                 price: ingredient!.price,
               };
               return (
-                <li
-                  className={`ml-4 mr-4 ${lastIndex ? "" : "mb-4"}`}
-                  key={ingredient._id}
-                >
+                <li key={ingredient._id} >
                   <BurgerConstructorItem
+                    bottomPadding={!lastIndex}
+                    key={ingredient._id}
                     item={item}
+                    draggable={true}
                     handleClose={() => {
                       removeIngredient(ingredient._id);
                     }}
@@ -124,17 +126,12 @@ function BurgerConstructor() {
           </ul>
 
           <div className={constructorStyles["outer_style"]}>
-            <div className="ml-4 mr-4 mt-4">
-              <div className={constructorStyles["constructor-element-wrapper"]}>
-                <ConstructorElement
-                  type="bottom"
-                  isLocked={true}
-                  text={`${burgerConstructorState.bun.text} (низ)`}
-                  price={burgerConstructorState.bun.price}
-                  thumbnail={burgerConstructorState.bun.image}
-                />
-              </div>
-            </div>
+            <BurgerConstructorItem
+                    topPadding={true}
+                    top={"bottom"}
+                    draggable={false}
+                    item={item}
+                  />
           </div>
 
           <div className={`${constructorStyles["cart"]} mt-10`}>

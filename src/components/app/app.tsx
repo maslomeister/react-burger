@@ -46,9 +46,8 @@ function App() {
     isLoading: true,
     hasError: false,
     error: "",
+    ingredients: [],
   });
-
-  const [ingredients, setIngredients] = useState<Item[]>([]);
 
   const [burgerConstructorState, burgerConstructorDispatcher] = useReducer(
     burgerConstructorReducer,
@@ -56,28 +55,33 @@ function App() {
     undefined
   );
 
+  
+
   useEffect(() => {
     getIngredients()
-      .then(setIngredients)
-      .catch(() => {
-        setState({ ...state, hasError: true });
+      .then((ingredients) => {
+        setState({...state, hasError: false, isLoading: false, error: "", ingredients: ingredients });
       })
-      .finally(() => setState({ ...state, hasError: false, isLoading: false }));
+      .catch((err) => {
+        setState((state) =>({ ...state, hasError: true, error: err }));
+      })
+      .finally(() => setState((state) =>({ ...state, isLoading: false })));
   }, []);
+
 
   // Пока не прикрутил dnd использую это
   useEffect(() => {
-    if (ingredients && ingredients.length !== 0) {
+    if (state.ingredients && state.ingredients.length !== 0) {
       burgerConstructorDispatcher({
         type: "ADD_BUN",
         payload: {
-          _id: ingredients[0]._id,
-          image: ingredients[0].image,
-          text: ingredients[0].name,
-          price: ingredients[0].price,
+          _id: state.ingredients[0]._id,
+          image: state.ingredients[0].image,
+          text: state.ingredients[0].name,
+          price: state.ingredients[0].price,
         },
       });
-      ingredients.map((item) => {
+      state.ingredients.map((item) => {
         if (item?.type !== "bun") {
           return burgerConstructorDispatcher({
             type: "ADD_INGREDIENT",
@@ -92,7 +96,7 @@ function App() {
         return null;
       });
     }
-  }, [ingredients]);
+  }, [state.ingredients]);
 
   return (
     <div className="App">
@@ -114,10 +118,10 @@ function App() {
                     Данные не смогли загрузиться: {state.error}
                   </p>
                 </div>
-              ) : ingredients && ingredients.length !== 0 ? (
+              ) : state.ingredients && state.ingredients.length !== 0 ? (
                 <section className={appStyles["row"]}>
                   <div className={`mr-10`}>
-                    <BurgerIngredients ingredients={ingredients} />
+                    <BurgerIngredients ingredients={state.ingredients} />
                   </div>
                   <div>
                     <BurgerConstructorContext.Provider

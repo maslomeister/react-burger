@@ -1,9 +1,9 @@
-import { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import BurgerIngredientItem from "../burger-ingredients-item/burger-ingredients-item";
+import BurgerIngredientItem from "./components/burger-ingredients-item/burger-ingredients-item";
 import IngredientDetails from "../../components/ingredient-details/ingredient-details";
 import scrollIntoView from "smooth-scroll-into-view-if-needed";
 import Tabs from "../../utils/tabs-data";
@@ -35,9 +35,7 @@ BurgerIngredients.propTypes = propTypes;
 //Используется для того чтобы TS автоматически получил типы которые мы указали через prop-types
 type BurgerIngredientsPropTypes = PropTypes.InferProps<typeof propTypes>;
 
-export default function BurgerIngredients({
-  ingredients,
-}: BurgerIngredientsPropTypes) {
+function BurgerIngredients({ ingredients }: BurgerIngredientsPropTypes) {
   const tabsRef = useRef<HTMLDivElement>(null);
 
   const buns = useMemo(
@@ -227,3 +225,5 @@ export default function BurgerIngredients({
     </AnimatePresence>
   );
 }
+
+export default BurgerIngredients;

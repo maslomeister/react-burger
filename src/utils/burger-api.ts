@@ -28,23 +28,23 @@ interface RequestOptions {
 }
 
 const checkResponse = (res: Response) => {
-  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err) )
+  return res.ok ? res.json() : res.json().then((err) => {throw new Error(`Не пришел ответ от сервера: ${err}`);} )
 }
 
-export const getIngredients = async () => {
+export const getIngredients = () => {
   return fetch(`${BURGER_API_URL}/ingredients`)
   .then(checkResponse)
   .then(data => {
     if(data.success) return data.data;
-    return Promise.reject(data);
+    throw new Error('Внутрення ошибка апи');
   })
 }
 
-export const createOrderApi = async (requestOptions: RequestOptions) => {
+export const createOrderApi = (requestOptions: RequestOptions) => {
   return fetch(`${BURGER_API_URL}/orders`, requestOptions)
   .then(checkResponse)
   .then(data => {
     if(data.success) return data.order.number;
-    return Promise.reject(data);
+    throw new Error('Внутрення ошибка апи');
   })
 }

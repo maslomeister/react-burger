@@ -1,9 +1,11 @@
+import React from "react";
 import { motion } from "framer-motion";
 
 import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { imageMotion, textMotion } from './motion-config';
 
 import itemStyles from "./burger-ingredients-item.module.css";
 
@@ -13,26 +15,6 @@ interface BurgerIngredientItemPropTypes {
   price: number;
   onClick: () => void;
 }
-
-const imageMotion = {
-  hover: {
-    scale: 1.3,
-    transition: {
-      type: "spring",
-      stiffness: 600,
-    },
-  },
-};
-
-const textMotion = {
-  hover: {
-    scale: 1.1,
-    transition: {
-      type: "spring",
-      stiffness: 300,
-    },
-  },
-};
 
 function BurgerIngredientItem({
   onClick,
@@ -67,4 +49,5 @@ function BurgerIngredientItem({
   );
 }
 
-export default BurgerIngredientItem;
+//export default BurgerIngredientItem;
+export default React.memo(BurgerIngredientItem);
