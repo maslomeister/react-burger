@@ -35,6 +35,7 @@ export const orderDetails = createSlice({
         state.orderNumber = action.payload;
       })
       .addCase(getOrderNumber.rejected, (state, action) => {
+        state.orderNumber = 0;
         state.status = "failed";
         if (action.error.message) state.error = action.error.message;
       });
