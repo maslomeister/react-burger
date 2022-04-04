@@ -142,10 +142,9 @@ function BurgerConstructor() {
                 {innerIngredients.map((ingredient, index) => {
                   const newItem = {
                     ...ingredient,
-                    index: index, //property you want to add in props object
+                    index: index,
                   };
                   const lastIndex = index === innerIngredients!.length - 1;
-                  //console.log(_ingredient);
                   return (
                     <li key={newItem._uniqueId}>
                       <BurgerConstructorItem
