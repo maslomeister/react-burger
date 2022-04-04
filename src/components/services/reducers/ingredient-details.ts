@@ -43,14 +43,8 @@ export const ingredientDetails = createSlice({
       state.modalFat = action.payload.modalFat;
       state.modalCarbohydrates = action.payload.modalCarbohydrates;
     },
-    resetModalData: (state) => {
-      state.showModal = false;
-      state.modalImage = initialState.modalImage;
-      state.modalName = initialState.modalName;
-      state.modalCalories = initialState.modalCalories;
-      state.modalProteins = initialState.modalProteins;
-      state.modalFat = initialState.modalFat;
-      state.modalCarbohydrates = initialState.modalCarbohydrates;
+    resetModalData: () => {
+      return initialState;
     },
   },
 });

@@ -14,12 +14,15 @@ import {
 import ingredientsStyles from "./burger-ingredients.module.css";
 
 function BurgerIngredients() {
-  const [showModal, setShowModal] = useState<boolean>(false);
   const tabsRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
 
   const ingredients = useAppSelector(
     (state) => state.burgerIngredients.ingredients
+  );
+
+  const showModal = useAppSelector(
+    (state) => state.ingredientDetails.showModal
   );
 
   const buns = useMemo(
@@ -38,7 +41,7 @@ function BurgerIngredients() {
   );
 
   const modalData = useCallback(
-    (ingredient) => {
+    (ingredient) => () => {
       dispatch(
         addDataToModal({
           modalImage: ingredient.image_large,
@@ -49,14 +52,12 @@ function BurgerIngredients() {
           modalCarbohydrates: ingredient.carbohydrates,
         })
       );
-      setShowModal(true);
     },
     [dispatch]
   );
 
   const removeDataFromModal = useCallback(() => {
     dispatch(resetModalData());
-    setShowModal(false);
   }, [dispatch]);
 
   const ingredientsCategories = [buns, sauces, mains];
@@ -89,7 +90,7 @@ function BurgerIngredients() {
                   <BurgerIngredientItem
                     key={ingredient._id}
                     ingredient={ingredient}
-                    onClick={() => modalData(ingredient)}
+                    onClick={modalData(ingredient)}
                   />
                 ))}
               </div>

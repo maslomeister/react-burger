@@ -2,12 +2,9 @@ import { memo } from "react";
 import { motion } from "framer-motion";
 import { useDrag } from "react-dnd";
 
-import {
-  CurrencyIcon,
-  Counter,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { imageMotion, textMotion } from "./motion-config";
-import { useAppSelector } from "../../../services/hooks";
+import IngredientCounter from "./ingredient-counter/ingredient-counter";
 
 import itemStyles from "./burger-ingredients-item.module.css";
 
@@ -35,19 +32,6 @@ function BurgerIngredientItem({
   ingredient,
   onClick,
 }: BurgerIngredientItemPropTypes) {
-  const counterIndex = useAppSelector((state) =>
-    state.constructorIngredients.counters.findIndex(
-      (obj) => obj._id === ingredient._id
-    )
-  );
-
-  const getCount = useAppSelector(
-    (state) => state.constructorIngredients.counters[counterIndex]?.count
-  );
-
-  let count = 0;
-  count = getCount != null ? getCount : 0;
-
   const [, dragRef] = useDrag({
     type: "ingredient",
     item: ingredient,
@@ -76,7 +60,7 @@ function BurgerIngredientItem({
       <p className={`${itemStyles["item_name"]} text text_type_main-small`}>
         {ingredient.name}
       </p>
-      {count !== 0 && <Counter count={count} size="default" />}
+      <IngredientCounter ingredientId={ingredient._id} />
     </motion.div>
   );
 }
