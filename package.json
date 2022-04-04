@@ -12,6 +12,7 @@
     "@types/react": "^17.0.40",
     "@types/react-dom": "^17.0.13",
     "@ya.praktikum/react-developer-burger-ui-components": "^1.13.1",
+    "fast-memoize": "^2.5.2",
     "framer-motion": "^6.2.8",
     "react": "^17.0.2",
     "react-dnd": "^15.1.2",

@@ -16,7 +16,7 @@ interface BurgerConstructorItemTypes {
   index: number;
   bottomPadding: boolean;
   moveCard: (dragIndex: number, hoverIndex: number) => void;
-  handleClose?: () => void;
+  handleClose: () => void;
 }
 
 function BurgerInnerItem({
@@ -76,7 +76,6 @@ function BurgerInnerItem({
       const clientOffset = monitor.getClientOffset();
 
       const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
-      console.log(hoverClientY, hoverMiddleY);
 
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return;

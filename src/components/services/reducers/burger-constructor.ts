@@ -2,21 +2,16 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { NewIngredient } from "../../../utils/burger-api";
 import missingIcon from "../../../assets/images/missing-icon.svg";
 
-interface BunCounter {
-  _id: string;
-  count: number;
-}
-
 interface Counter {
   _id: string;
   count: number;
+  type: string;
 }
 
 interface SliceState {
   ingredients: NewIngredient[];
   counters: Counter[];
   bun: NewIngredient;
-  bunCounter: BunCounter;
   totalPrice: number;
 }
 
@@ -43,10 +38,6 @@ const initialState: SliceState = {
     image_large: "",
     __v: 0,
   },
-  bunCounter: {
-    _id: "",
-    count: 0,
-  },
   totalPrice: 0,
 };
 
@@ -69,14 +60,18 @@ export const constructorIngredients = createSlice({
       state.ingredients.push(action.payload);
 
       const counterIndex = state.counters.findIndex(
-        (obj) => obj._id === action.payload._id
+        (item) => item._id === action.payload._id
       );
 
       if (counterIndex !== -1) {
         state.counters[counterIndex].count =
           state.counters[counterIndex].count + 1;
       } else {
-        state.counters.push({ _id: action.payload._id, count: 1 });
+        state.counters.push({
+          _id: action.payload._id,
+          count: 1,
+          type: action.payload.type,
+        });
       }
 
       const newPrice = state.totalPrice + action.payload.price;
@@ -91,10 +86,15 @@ export const constructorIngredients = createSlice({
       );
 
       const counterIndex = state.counters.findIndex(
-        (obj) => obj._id === action.payload._id
+        (item) => item._id === action.payload._id
       );
 
-      if (counterIndex !== -1) {
+      if (state.counters[counterIndex].count === 1) {
+        const filteredCounters = state.counters.filter(
+          (item) => item._id !== action.payload._id
+        );
+        state.counters = filteredCounters;
+      } else if (counterIndex !== -1) {
         state.counters[counterIndex].count =
           state.counters[counterIndex].count - 1;
       }
@@ -116,16 +116,29 @@ export const constructorIngredients = createSlice({
       state.ingredients = newIngredients;
     },
     addOrReplaceBun: (state, action: PayloadAction<NewIngredient>) => {
+      if (state.counters.find((item) => item._id === action.payload._id))
+        return;
+
       let oldPrice = 0;
       let newPrice = 0;
 
-      if (state.bunCounter._id === "") {
-      } else if (state.bunCounter._id !== action.payload._id) {
+      const oldCounterIndex = state.counters.findIndex(
+        (item) => item.type === "bun"
+      );
+
+      if (oldCounterIndex !== -1) {
         oldPrice = state.bun.price * 2;
+        const filteredIngredients = state.counters.filter(
+          (item) => item._id !== state.bun._id
+        );
+        state.counters = filteredIngredients;
       }
 
-      state.bunCounter.count = 1;
-      state.bunCounter._id = action.payload._id;
+      state.counters.push({
+        _id: action.payload._id,
+        count: 1,
+        type: action.payload.type,
+      });
 
       newPrice = state.totalPrice - oldPrice + action.payload.price * 2;
 

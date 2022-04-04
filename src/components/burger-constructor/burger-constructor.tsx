@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDrop } from "react-dnd";
 import { v4 as uuidv4 } from "uuid";
@@ -11,7 +11,7 @@ import OrderDetails from "../../components/order-details/order-details";
 import ErrorModal from "../../components/error-modal/error-modal";
 import TotalPrice from "./components/total-price/total-price";
 import { Ingredient, NewIngredient } from "../../utils/burger-api";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../services/hooks";
 import {
   addIngredient,
   removeIngredient,
@@ -33,8 +33,6 @@ function BurgerConstructor() {
   const { ingredients, bun, totalPrice } = useAppSelector(
     (state) => state.constructorIngredients
   );
-
-  const innerIngredients = ingredients.filter((item) => item.type !== "bun");
 
   const { orderNumber, status, error } = useAppSelector(
     (state) => state.orderDetails
@@ -70,7 +68,7 @@ function BurgerConstructor() {
       setShowErrorModal(true);
       return;
     }
-    if (innerIngredients.length === 0) {
+    if (ingredients.length === 0) {
       setErrorModal("Бургер не может быть пустым");
       setShowErrorModal(true);
       return;
@@ -81,7 +79,7 @@ function BurgerConstructor() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        ingredients: [...innerIngredients.map(({ _id }) => _id), bun._id],
+        ingredients: [...ingredients.map(({ _id }) => _id), bun._id],
       }),
     };
 
@@ -140,12 +138,12 @@ function BurgerConstructor() {
               </div>
 
               <ul className={constructorStyles["inner_style"]} ref={dropRef}>
-                {innerIngredients.map((ingredient, index) => {
+                {ingredients.map((ingredient, index) => {
                   const newItem = {
                     ...ingredient,
                     index: index,
                   };
-                  const lastIndex = index === innerIngredients!.length - 1;
+                  const lastIndex = index === ingredients!.length - 1;
                   return (
                     <li key={newItem._uniqueId}>
                       <BurgerInnerItem

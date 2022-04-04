@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 import Modal from "../../components/modal/modal";
 import NutritionItem from "./components/nutrition-item/nutrition-item";
-import { useAppSelector } from "../app/hooks";
+import { useAppSelector } from "../services/hooks";
 
 import ingredientDetailsStyles from "./ingredient-details.module.css";
 

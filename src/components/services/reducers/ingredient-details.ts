@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface SliceState {
-  // modalShow: boolean;
+  showModal: boolean;
   modalImage: string;
   modalName: string;
   modalCalories: number;
@@ -11,7 +11,7 @@ interface SliceState {
 }
 
 const initialState: SliceState = {
-  // modalShow: false,
+  showModal: false,
   modalImage: "",
   modalName: "",
   modalCalories: 0,
@@ -35,6 +35,7 @@ export const ingredientDetails = createSlice({
         modalCarbohydrates: number;
       }>
     ) => {
+      state.showModal = true;
       state.modalImage = action.payload.modalImage;
       state.modalName = action.payload.modalName;
       state.modalCalories = action.payload.modalCalories;
@@ -43,6 +44,7 @@ export const ingredientDetails = createSlice({
       state.modalCarbohydrates = action.payload.modalCarbohydrates;
     },
     resetModalData: (state) => {
+      state.showModal = false;
       state.modalImage = initialState.modalImage;
       state.modalName = initialState.modalName;
       state.modalCalories = initialState.modalCalories;

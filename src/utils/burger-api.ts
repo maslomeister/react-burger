@@ -44,6 +44,17 @@ export interface RequestOptions {
   body: string;
 }
 
+const checksuccess = (
+  data: { success: string; data: any },
+  returnData: any
+) => {
+  return data.success
+    ? returnData
+    : () => {
+        throw new Error("Внутренняя ошибка апи");
+      };
+};
+
 const checkResponse = (res: Response) => {
   return res.ok
     ? res.json()
@@ -55,13 +66,11 @@ const checkResponse = (res: Response) => {
 export const getIngredients = async () => {
   const res = await fetch(`${BURGER_API_URL}/ingredients`);
   const data = await checkResponse(res);
-  if (data.success) return data.data;
-  throw new Error("Внутрення ошибка апи");
+  return checksuccess(data, data.data);
 };
 
 export const createOrder = async (requestOptions: RequestOptions) => {
   const res = await fetch(`${BURGER_API_URL}/orders`, requestOptions);
   const data = await checkResponse(res);
-  if (data.success) return data.order.number;
-  throw new Error("Внутрення ошибка апи");
+  return checksuccess(data, data.order.number);
 };

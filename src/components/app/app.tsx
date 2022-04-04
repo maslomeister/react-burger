@@ -4,7 +4,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { AnimatePresence } from "framer-motion";
 
-import { useAppDispatch, useAppSelector } from "./hooks";
+import { useAppDispatch, useAppSelector } from "../services/hooks";
 import AppHeader from "../../components/app-header/app-header";
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor";
 import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients";
@@ -61,7 +61,7 @@ function App() {
     <div className="App">
       <AppHeader />
       <Routes>
-        <Route path="/" element={content} />
+        <Route path="/" element={<>{content}</>} />
         <Route path="/orders" element={<></>} />
         <Route path="/account" element={<></>} />
       </Routes>
