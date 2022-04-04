@@ -1,25 +1,40 @@
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { useDrag } from "react-dnd";
-import memoize from "fast-memoize";
 
 import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { imageMotion, textMotion } from "./motion-config";
-import { useAppSelector, useAppDispatch } from "../../../services/hooks";
-import { addDataToModal } from "../../../services/reducers/ingredient-details";
-import { Ingredient } from "../../../../utils/burger-api";
+import { useAppSelector } from "../../../services/hooks";
 
 import itemStyles from "./burger-ingredients-item.module.css";
 
-interface BurgerIngredientItemPropTypes {
-  ingredient: Ingredient;
+interface Ingredient {
+  _id: string;
+  name: string;
+  type: string;
+  proteins: number;
+  fat: number;
+  carbohydrates: number;
+  calories: number;
+  price: number;
+  image: string;
+  image_mobile: string;
+  image_large: string;
+  __v: number;
 }
 
-function BurgerIngredientItem({ ingredient }: BurgerIngredientItemPropTypes) {
-  const dispatch = useAppDispatch();
+interface BurgerIngredientItemPropTypes {
+  ingredient: Ingredient;
+  onClick: () => void;
+}
+
+function BurgerIngredientItem({
+  ingredient,
+  onClick,
+}: BurgerIngredientItemPropTypes) {
   const counterIndex = useAppSelector((state) =>
     state.constructorIngredients.counters.findIndex(
       (obj) => obj._id === ingredient._id
@@ -38,27 +53,10 @@ function BurgerIngredientItem({ ingredient }: BurgerIngredientItemPropTypes) {
     item: ingredient,
   });
 
-  const modalData = useMemo(
-    () =>
-      memoize((ingredient: Ingredient) => () => {
-        dispatch(
-          addDataToModal({
-            modalImage: ingredient.image_large,
-            modalName: ingredient.name,
-            modalCalories: ingredient.calories,
-            modalProteins: ingredient.price,
-            modalFat: ingredient.fat,
-            modalCarbohydrates: ingredient.carbohydrates,
-          })
-        );
-      }),
-    [dispatch]
-  );
-
   return (
     <motion.div
       className={`${itemStyles["item"]} ml-4 mr-5 mb-10 mt-6`}
-      onClick={modalData(ingredient)}
+      onClick={onClick}
       whileHover="hover"
       variants={textMotion}
       ref={dragRef}
