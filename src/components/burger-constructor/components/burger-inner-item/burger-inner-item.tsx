@@ -8,7 +8,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NewIngredient } from "../../../../utils/burger-api";
 
-import innerItemStyles from "./burger-inner-item.module.css";
+import innerItemStyles from "../burger-item.module.css";
 
 interface BurgerConstructorItemTypes {
   ingredient: NewIngredient;

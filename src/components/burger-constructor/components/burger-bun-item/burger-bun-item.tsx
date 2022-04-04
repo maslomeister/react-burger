@@ -3,7 +3,7 @@ import { memo } from "react";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NewIngredient } from "../../../../utils/burger-api";
 
-import bunItemStyles from "./burger-bun-item.module.css";
+import bunItemStyles from "../burger-item.module.css";
 
 interface BurgerConstructorItemTypes {
   ingredient: NewIngredient;
