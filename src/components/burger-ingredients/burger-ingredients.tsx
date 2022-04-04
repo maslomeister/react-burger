@@ -1,4 +1,4 @@
-import { memo, useRef, useMemo, useCallback, useState } from "react";
+import { memo, useRef, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import IngredientDetails from "../../components/ingredient-details/ingredient-details";
