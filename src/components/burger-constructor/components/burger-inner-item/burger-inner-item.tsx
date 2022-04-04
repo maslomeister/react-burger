@@ -8,31 +8,25 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NewIngredient } from "../../../../utils/burger-api";
 
-import constructorItemStyles from "./burger-constructor-item.module.css";
+import innerItemStyles from "./burger-inner-item.module.css";
 
-interface BurgerConstructorItemPropTypes {
+interface BurgerConstructorItemTypes {
   ingredient: NewIngredient;
-  dropRef?: React.MutableRefObject<any>;
-  draggable?: boolean;
-  index?: number;
-  top?: string;
-  bottomPadding?: boolean;
-  topPadding?: boolean;
-  moveCard?: (dragIndex: number, hoverIndex: number) => void;
+  draggable: boolean;
+  index: number;
+  bottomPadding: boolean;
+  moveCard: (dragIndex: number, hoverIndex: number) => void;
   handleClose?: () => void;
 }
 
-function BurgerConstructorItem({
+function BurgerInnerItem({
   ingredient,
   draggable,
-  top,
   index,
   bottomPadding,
-  topPadding,
-  dropRef,
   moveCard,
   handleClose,
-}: BurgerConstructorItemPropTypes) {
+}: BurgerConstructorItemTypes) {
   const ref = useRef<HTMLDivElement>(null);
   const _dropRef = useRef<HTMLDivElement>(null);
   const [{ beingDragged }, drag, dragPreview] = useDrag({
@@ -49,11 +43,9 @@ function BurgerConstructorItem({
     { handlerId: Identifier | null }
   >({
     accept: "sorting",
-    collect(monitor) {
-      return {
-        handlerId: monitor.getHandlerId(),
-      };
-    },
+    collect: (monitor) => ({
+      handlerId: monitor.getHandlerId(),
+    }),
     hover(item: NewIngredient, monitor) {
       if (_dropRef === undefined) {
         return;
@@ -109,31 +101,23 @@ function BurgerConstructorItem({
   const opacity = beingDragged ? 0 : 1;
   return (
     <div
-      className={`ml-4 mr-4 ${bottomPadding ? "mb-4" : ""} ${
-        topPadding ? "mt-4" : ""
-      }`}
+      className={`ml-4 mr-4 ${bottomPadding ? "mb-4" : ""}`}
       style={{ opacity }}
     >
-      <div className={constructorItemStyles["ingredient"]} ref={_dropRef}>
+      <div className={innerItemStyles["ingredient"]} ref={_dropRef}>
         {draggable && (
           <div
             ref={ref}
             data-handler-id={handlerId}
-            className={constructorItemStyles["_draggable"]}
+            className={innerItemStyles["_draggable"]}
           >
             <DragIcon type="primary" />
           </div>
         )}
 
-        <div className={constructorItemStyles["constructor-element-wrapper"]}>
+        <div className={innerItemStyles["constructor-element-wrapper"]}>
           <ConstructorElement
-            type={
-              top === "top" ? "top" : top === "bottom" ? "bottom" : undefined
-            }
-            isLocked={draggable ? undefined : true}
-            text={`${ingredient.name} ${
-              top === "top" ? "(верх)" : top === "bottom" ? "(низ)" : ""
-            }`}
+            text={ingredient.name}
             price={ingredient.price}
             thumbnail={ingredient.image}
             handleClose={handleClose}
@@ -144,4 +128,4 @@ function BurgerConstructorItem({
   );
 }
 
-export default memo(BurgerConstructorItem);
+export default memo(BurgerInnerItem);

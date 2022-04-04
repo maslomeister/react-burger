@@ -4,7 +4,9 @@ import { useDrop } from "react-dnd";
 import { v4 as uuidv4 } from "uuid";
 
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import BurgerConstructorItem from "./components/burger-constructor-item/burger-constructor-item";
+// import BurgerConstructorItem from "./components/burger-constructor-item/burger-constructor-item";
+import BurgerBunItem from "./components/burger-bun-item/burger-bun-item";
+import BurgerInnerItem from "./components/burger-inner-item/burger-inner-item";
 import OrderDetails from "../../components/order-details/order-details";
 import ErrorModal from "../../components/error-modal/error-modal";
 import TotalPrice from "./components/total-price/total-price";
@@ -23,9 +25,9 @@ import constructorStyles from "./burger-constructor.module.css";
 
 function BurgerConstructor() {
   const dropRef = useRef(null);
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState(false);
   const [errorModal, setErrorModal] = useState("");
-  const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
   const dispatch = useAppDispatch();
 
   const { ingredients, bun, totalPrice } = useAppSelector(
@@ -56,7 +58,7 @@ function BurgerConstructor() {
     }),
   });
 
-  const borderColor = isHover ? "lightgreen" : "transparent";
+  const borderColor = isHover ? "#8585AD" : "transparent";
 
   function _removeIngredient(ingredient: NewIngredient) {
     dispatch(removeIngredient(ingredient));
@@ -75,12 +77,12 @@ function BurgerConstructor() {
     }
     setShowModal(true);
 
-    const ingredientsIds = [...innerIngredients.map(({ _id }) => _id), bun._id];
-
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ingredients: ingredientsIds }),
+      body: JSON.stringify({
+        ingredients: [...innerIngredients.map(({ _id }) => _id), bun._id],
+      }),
     };
 
     dispatch(getOrderNumber(requestOptions));
@@ -117,7 +119,7 @@ function BurgerConstructor() {
       <motion.div
         key="burger-constructor"
         ref={dropTarget}
-        style={{ border: `1px solid ${borderColor}` }}
+        style={{ border: `2px dashed ${borderColor}`, borderRadius: 30 }}
         className={`${constructorStyles["burger-constructor"]} mb-14 mt-25`}
         initial={{ x: "+200%" }}
         exit={{ x: 0 }}
@@ -130,10 +132,9 @@ function BurgerConstructor() {
           <>
             <div className="burgerComponents">
               <div className={constructorStyles["outer_style"]}>
-                <BurgerConstructorItem
+                <BurgerBunItem
                   bottomPadding={true}
                   top={"top"}
-                  draggable={false}
                   ingredient={bun}
                 />
               </div>
@@ -147,14 +148,13 @@ function BurgerConstructor() {
                   const lastIndex = index === innerIngredients!.length - 1;
                   return (
                     <li key={newItem._uniqueId}>
-                      <BurgerConstructorItem
+                      <BurgerInnerItem
                         bottomPadding={!lastIndex}
                         key={newItem._id}
                         index={index}
                         moveCard={moveCard}
                         ingredient={newItem}
                         draggable={true}
-                        dropRef={dropRef}
                         handleClose={() => {
                           _removeIngredient(newItem);
                         }}
@@ -165,10 +165,9 @@ function BurgerConstructor() {
               </ul>
 
               <div className={constructorStyles["outer_style"]}>
-                <BurgerConstructorItem
+                <BurgerBunItem
                   topPadding={true}
                   top={"bottom"}
-                  draggable={false}
                   ingredient={bun}
                 />
               </div>
