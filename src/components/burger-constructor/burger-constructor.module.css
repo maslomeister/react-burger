@@ -13,6 +13,11 @@
   width: calc(600px - 8px);
 }
 
+.conditional {
+  width: calc(600px);
+  overflow-y: hidden;
+}
+
 .helper {
   display: flex;
   flex-flow: row;
@@ -32,6 +37,7 @@
   align-items: flex-end;
   overflow-y: scroll;
   max-height: 465px;
+  width: 600px;
 }
 
 .ingredient {

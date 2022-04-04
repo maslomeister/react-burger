@@ -1,10 +1,9 @@
-import { useState, useCallback, useRef, useMemo } from "react";
+import { useState, useCallback, useRef, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDrop } from "react-dnd";
 import { v4 as uuidv4 } from "uuid";
 
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
-// import BurgerConstructorItem from "./components/burger-constructor-item/burger-constructor-item";
 import BurgerBunItem from "./components/burger-bun-item/burger-bun-item";
 import BurgerInnerItem from "./components/burger-inner-item/burger-inner-item";
 import OrderDetails from "../../components/order-details/order-details";
@@ -29,6 +28,7 @@ function BurgerConstructor() {
   const [errorModal, setErrorModal] = useState("");
   const [showErrorModal, setShowErrorModal] = useState(false);
   const dispatch = useAppDispatch();
+  let conditonalStyle;
 
   const { ingredients, bun, totalPrice } = useAppSelector(
     (state) => state.constructorIngredients
@@ -58,11 +58,14 @@ function BurgerConstructor() {
 
   const borderColor = isHover ? "#8585AD" : "transparent";
 
-  function _removeIngredient(ingredient: NewIngredient) {
-    dispatch(removeIngredient(ingredient));
-  }
+  const _removeIngredient = useCallback(
+    (ingredient: NewIngredient) => () => {
+      dispatch(removeIngredient(ingredient));
+    },
+    [dispatch]
+  );
 
-  function createOrder() {
+  const createOrder = () => {
     if (!bun.price) {
       setErrorModal("Нельзя оформить бургер без булки");
       setShowErrorModal(true);
@@ -84,7 +87,7 @@ function BurgerConstructor() {
     };
 
     dispatch(getOrderNumber(requestOptions));
-  }
+  };
 
   function hideModal() {
     setShowModal(false);
@@ -92,11 +95,17 @@ function BurgerConstructor() {
   }
 
   const moveCard = useCallback(
-    (dragIndex: number, hoverIndex: number) => {
+    (dragIndex: number, hoverIndex: number) => () => {
       dispatch(moveIngredient({ hoverIndex, dragIndex }));
     },
     [dispatch]
   );
+
+  if (ingredients.length > 5) {
+    conditonalStyle = "";
+  } else {
+    conditonalStyle = constructorStyles["conditional"];
+  }
 
   return (
     <AnimatePresence>
@@ -137,7 +146,10 @@ function BurgerConstructor() {
                 />
               </div>
 
-              <ul className={constructorStyles["inner_style"]} ref={dropRef}>
+              <ul
+                className={constructorStyles["inner_style"] + conditonalStyle}
+                ref={dropRef}
+              >
                 {ingredients.map((ingredient, index) => {
                   const newItem = {
                     ...ingredient,
@@ -153,9 +165,7 @@ function BurgerConstructor() {
                         moveCard={moveCard}
                         ingredient={newItem}
                         draggable={true}
-                        handleClose={() => {
-                          _removeIngredient(newItem);
-                        }}
+                        handleClose={_removeIngredient(newItem)}
                       />
                     </li>
                   );
