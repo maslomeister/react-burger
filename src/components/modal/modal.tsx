@@ -37,11 +37,12 @@ function Modal({ onClose, children, title, closeIconType }: ModalProps) {
     return () => {
       document.body.removeEventListener("keydown", closeOnESC);
     };
-  }, []);
+  }, [onClose]);
 
   return createPortal(
     <ModalOverlay onClose={onClose} title={title}>
       <motion.div
+        key="modal"
         className={modalStyles["modal"]}
         onClick={(e) => e.stopPropagation()}
         initial={{ scale: 0, opacity: 0 }}
