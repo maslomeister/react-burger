@@ -21,7 +21,7 @@ const buttonType = (link: string, active: string) => {
 };
 
 function AppHeader() {
-  const [activeLink, setActiveLink] = useState("");
+  const [activeLink, setActiveLink] = useState("1");
   return (
     <header className={headerStyles["header"]}>
       <nav className={headerStyles["header-inner"]}>
