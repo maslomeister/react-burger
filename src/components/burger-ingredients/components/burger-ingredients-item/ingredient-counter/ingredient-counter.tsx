@@ -1,5 +1,5 @@
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useAppSelector } from "../../../../services/hooks";
+import { useAppSelector } from "../../../../../services/hooks";
 
 interface Types {
   ingredientId: string;

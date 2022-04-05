@@ -10,15 +10,15 @@ import OrderDetails from "../../components/order-details/order-details";
 import ErrorModal from "../../components/error-modal/error-modal";
 import TotalPrice from "./components/total-price/total-price";
 import { Ingredient, NewIngredient } from "../../utils/burger-api";
-import { useAppDispatch, useAppSelector } from "../services/hooks";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import {
   addIngredient,
   removeIngredient,
   moveIngredient,
   addOrReplaceBun,
   resetState,
-} from "../services/reducers/burger-constructor";
-import { getOrderNumber } from "../services/reducers/order-details";
+} from "../../services/reducers/burger-constructor";
+import { getOrderNumber } from "../../services/reducers/order-details";
 
 import constructorStyles from "./burger-constructor.module.css";
 
@@ -95,7 +95,7 @@ function BurgerConstructor() {
   }
 
   const moveCard = useCallback(
-    (dragIndex: number, hoverIndex: number) => () => {
+    (dragIndex: number, hoverIndex: number) => {
       dispatch(moveIngredient({ hoverIndex, dragIndex }));
     },
     [dispatch]

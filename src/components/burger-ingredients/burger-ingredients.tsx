@@ -4,12 +4,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import IngredientDetails from "../../components/ingredient-details/ingredient-details";
 import BurgerIngredientItem from "./components/burger-ingredients-item/burger-ingredients-item";
 import Tabs from "../../utils/tabs-data";
-import { useAppSelector, useAppDispatch } from "../services/hooks";
+import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import BurgerIngredientsTabs from "./components/burger-ingredients-tabs/burger-ingredients-tabs";
 import {
   addDataToModal,
   resetModalData,
-} from "../services/reducers/ingredient-details";
+} from "../../services/reducers/ingredient-details";
 
 import ingredientsStyles from "./burger-ingredients.module.css";
 

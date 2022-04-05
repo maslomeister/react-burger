@@ -4,11 +4,11 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { AnimatePresence } from "framer-motion";
 
-import { useAppDispatch, useAppSelector } from "../services/hooks";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import AppHeader from "../../components/app-header/app-header";
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor";
 import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients";
-import { fetchIngredients } from "../services/reducers/burger-ingredients";
+import { fetchIngredients } from "../../services/reducers/burger-ingredients";
 import AnimatedLoading from "../animated-loading/animated-loading";
 
 import appStyles from "./app.module.css";

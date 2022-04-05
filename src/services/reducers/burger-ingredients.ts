@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getIngredients, Ingredient } from "../../../utils/burger-api";
+import { getIngredients, Ingredient } from "../../utils/burger-api";
 
 interface SliceState {
   ingredients: Ingredient[];

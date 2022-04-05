@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { NewIngredient } from "../../../utils/burger-api";
-import missingIcon from "../../../assets/images/missing-icon.svg";
+import { NewIngredient } from "../../utils/burger-api";
+import missingIcon from "../../assets/images/missing-icon.svg";
 
 interface Counter {
   _id: string;

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { RequestOptions, createOrder } from "../../../utils/burger-api";
+import { RequestOptions, createOrder } from "../../utils/burger-api";
 
 interface SliceState {
   orderNumber: number;
