@@ -1,5 +1,3 @@
-import React from "react";
-
 import nutritionItemStyles from "./nutrition-item.module.css";
 
 interface NutritionItemTypes {

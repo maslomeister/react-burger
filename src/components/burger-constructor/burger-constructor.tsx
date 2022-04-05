@@ -1,162 +1,203 @@
-import { useState, useContext } from "react";
+import { useState, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useDrop } from "react-dnd";
+import { v4 as uuidv4 } from "uuid";
 
-import {
-  ConstructorElement,
-  Button,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
+import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
+import BurgerBunItem from "./components/burger-bun-item/burger-bun-item";
+import BurgerInnerItem from "./components/burger-inner-item/burger-inner-item";
 import OrderDetails from "../../components/order-details/order-details";
-import TotalPrice from "./components/total-price";
-import { BurgerConstructorContext } from "../../components/services/appContext";
+import ErrorModal from "../../components/error-modal/error-modal";
+import TotalPrice from "./components/total-price/total-price";
+import { Ingredient, NewIngredient } from "../../utils/burger-api";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
+import {
+  addIngredient,
+  removeIngredient,
+  moveIngredient,
+  addOrReplaceBun,
+  resetState,
+} from "../../services/reducers/burger-constructor";
+import { getOrderNumber } from "../../services/reducers/order-details";
 
 import constructorStyles from "./burger-constructor.module.css";
 
-const createOrderUrl = "https://norma.nomoreparties.space/api/orders";
-
 function BurgerConstructor() {
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [orderState, setOrderState] = useState({
-    isLoading: false,
-    hasError: false,
-    error: "",
-    orderId: 0,
-  });
-  const { burgerConstructorState, burgerConstructorDispatcher } = useContext(
-    BurgerConstructorContext
+  const dropRef = useRef(null);
+  const [showModal, setShowModal] = useState(false);
+  const [errorModal, setErrorModal] = useState("");
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const dispatch = useAppDispatch();
+  let conditonalStyle;
+
+  const { ingredients, bun, totalPrice } = useAppSelector(
+    (state) => state.constructorIngredients
   );
 
-  function removeIngredient(id: string) {
-    burgerConstructorDispatcher({
-      type: "REMOVE_INGREDIENT",
-      payload: {
-        _id: id,
-      },
-    });
-  }
+  const { orderNumber, status, error } = useAppSelector(
+    (state) => state.orderDetails
+  );
 
-  function createOrder() {
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: "ingredient",
+    drop(ingredient: Ingredient) {
+      const newIngredient: NewIngredient = {
+        ...ingredient,
+        _uniqueId: uuidv4(),
+      };
+      if (ingredient.type === "bun") {
+        dispatch(addOrReplaceBun(newIngredient));
+      } else {
+        dispatch(addIngredient(newIngredient));
+      }
+    },
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+  });
+
+  const borderColor = isHover ? "#8585AD" : "transparent";
+
+  const _removeIngredient = useCallback(
+    (ingredient: NewIngredient) => () => {
+      dispatch(removeIngredient(ingredient));
+    },
+    [dispatch]
+  );
+
+  const createOrder = () => {
+    if (!bun.price) {
+      setErrorModal("Нельзя оформить бургер без булки");
+      setShowErrorModal(true);
+      return;
+    }
+    if (ingredients.length === 0) {
+      setErrorModal("Бургер не может быть пустым");
+      setShowErrorModal(true);
+      return;
+    }
     setShowModal(true);
-    setOrderState({ ...orderState, isLoading: true });
-
-    const ingredientsIds = [
-      ...burgerConstructorState.ingredients.map(({ _id }) => _id),
-      burgerConstructorState.bun._id,
-    ];
 
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ingredients: ingredientsIds }),
+      body: JSON.stringify({
+        ingredients: [...ingredients.map(({ _id }) => _id), bun._id],
+      }),
     };
 
-    fetch(createOrderUrl, requestOptions)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setOrderState({
-            ...orderState,
-            isLoading: false,
-            orderId: data.order.number,
-          });
-        } else {
-          setOrderState({ ...orderState, isLoading: false, hasError: true });
-        }
-      })
-      .catch((e) => {
-        setOrderState({
-          ...orderState,
-          isLoading: false,
-          hasError: true,
-          error: e,
-        });
-      });
+    dispatch(getOrderNumber(requestOptions));
+  };
+
+  function hideModal() {
+    setShowModal(false);
+    dispatch(resetState());
+  }
+
+  const moveCard = useCallback(
+    (dragIndex: number, hoverIndex: number) => {
+      dispatch(moveIngredient({ hoverIndex, dragIndex }));
+    },
+    [dispatch]
+  );
+
+  if (ingredients.length > 5) {
+    conditonalStyle = "";
+  } else {
+    conditonalStyle = constructorStyles["conditional"];
   }
 
   return (
     <AnimatePresence>
-      <OrderDetails
-        onClose={() => setShowModal(false)}
-        show={showModal}
-        isLoading={orderState.isLoading}
-        orderId={orderState.orderId}
-        hasError={orderState.hasError}
-        error={orderState.error}
-      />
-
-      {burgerConstructorState.ingredients && (
-        <motion.div
-          key="burger-constructor"
-          className={`${constructorStyles["burger-constructor"]} mb-14 mt-25`}
-          initial={{ x: "+200%" }}
-          exit={{ x: 0 }}
-          animate={{ x: 0 }}
-          transition={{
-            type: "tween",
-          }}
-        >
-          <div className={constructorStyles["outer_style"]}>
-            <div className="ml-4 mr-4 mb-4">
-              <div className={constructorStyles["constructor-element-wrapper"]}>
-                <ConstructorElement
-                  type="top"
-                  isLocked={true}
-                  text={`${burgerConstructorState.bun.text} (вверх)`}
-                  price={burgerConstructorState.bun.price}
-                  thumbnail={burgerConstructorState.bun.image}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className={constructorStyles["inner_style"]}>
-            {burgerConstructorState.ingredients.map((ingredient, index) => {
-              const lastIndex =
-                index === burgerConstructorState.ingredients!.length - 1;
-              const item = {
-                _id: ingredient!._id,
-                image: ingredient!.image,
-                text: ingredient!.text,
-                price: ingredient!.price,
-              };
-              return (
-                <div
-                  className={`ml-4 mr-4 ${lastIndex ? "" : "mb-4"}`}
-                  key={ingredient._id}
-                >
-                  <BurgerConstructorItem
-                    item={item}
-                    handleClose={() => {
-                      removeIngredient(ingredient._id);
-                    }}
-                  />
-                </div>
-              );
-            })}
-          </div>
-
-          <div className={constructorStyles["outer_style"]}>
-            <div className="ml-4 mr-4 mt-4">
-              <div className={constructorStyles["constructor-element-wrapper"]}>
-                <ConstructorElement
-                  type="bottom"
-                  isLocked={true}
-                  text={`${burgerConstructorState.bun.text} (низ)`}
-                  price={burgerConstructorState.bun.price}
-                  thumbnail={burgerConstructorState.bun.image}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className={`${constructorStyles["cart"]} mt-10`}>
-            <TotalPrice price={burgerConstructorState.totalPrice} />
-            <Button type="primary" size="large" onClick={createOrder}>
-              Оформить заказ
-            </Button>
-          </div>
-        </motion.div>
+      {showErrorModal && (
+        <ErrorModal
+          onClose={() => setShowErrorModal(false)}
+          error={errorModal}
+        />
       )}
+      {showModal && (
+        <OrderDetails
+          onClose={hideModal}
+          orderId={orderNumber}
+          status={status}
+          error={error}
+        />
+      )}
+      <motion.div
+        key="burger-constructor"
+        ref={dropTarget}
+        style={{ border: `2px dashed ${borderColor}`, borderRadius: 30 }}
+        className={`${constructorStyles["burger-constructor"]} mb-14 mt-25`}
+        initial={{ x: "+200%" }}
+        exit={{ x: 0 }}
+        animate={{ x: 0 }}
+        transition={{
+          type: "tween",
+        }}
+      >
+        {ingredients.length !== 0 || bun.price !== 0 ? (
+          <>
+            <div className="burgerComponents">
+              <div className={constructorStyles["outer_style"]}>
+                <BurgerBunItem
+                  bottomPadding={true}
+                  top={"top"}
+                  ingredient={bun}
+                />
+              </div>
+
+              <ul
+                className={constructorStyles["inner_style"] + conditonalStyle}
+                ref={dropRef}
+              >
+                {ingredients.map((ingredient, index) => {
+                  const newItem = {
+                    ...ingredient,
+                    index: index,
+                  };
+                  const lastIndex = index === ingredients!.length - 1;
+                  return (
+                    <li key={newItem._uniqueId}>
+                      <BurgerInnerItem
+                        bottomPadding={!lastIndex}
+                        key={newItem._id}
+                        index={index}
+                        moveCard={moveCard}
+                        ingredient={newItem}
+                        draggable={true}
+                        handleClose={_removeIngredient(newItem)}
+                      />
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <div className={constructorStyles["outer_style"]}>
+                <BurgerBunItem
+                  topPadding={true}
+                  top={"bottom"}
+                  ingredient={bun}
+                />
+              </div>
+            </div>
+
+            <div className={`${constructorStyles["cart"]} mb-10 mt-10`}>
+              <TotalPrice price={totalPrice} />
+              <Button type="primary" size="large" onClick={createOrder}>
+                Оформить заказ
+              </Button>
+            </div>
+          </>
+        ) : (
+          <div className={constructorStyles["helper"]}>
+            <div
+              className={`${constructorStyles["helper_shadow"]} text text_type_main-large mb-30 mt-30`}
+            >
+              Для создания бургера перетащите на этот текст ингредиент слева
+            </div>
+          </div>
+        )}
+      </motion.div>
     </AnimatePresence>
   );
 }

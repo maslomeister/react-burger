@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -8,7 +8,7 @@ interface TotalPriceType {
   price: number;
 }
 
-export default function TotalPrice({ price }: TotalPriceType) {
+function TotalPrice({ price }: TotalPriceType) {
   return (
     <div className={`${totalPriceStyles["cart__total"]} mr-10`}>
       <p className="text text_type_digits-medium">{price}</p>
@@ -18,3 +18,5 @@ export default function TotalPrice({ price }: TotalPriceType) {
     </div>
   );
 }
+
+export default memo(TotalPrice);
