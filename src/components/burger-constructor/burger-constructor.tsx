@@ -1,7 +1,6 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDrop } from "react-dnd";
-import { v4 as uuidv4 } from "uuid";
 
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerBunItem from "./components/burger-bun-item/burger-bun-item";
@@ -17,8 +16,8 @@ import {
   moveIngredient,
   addOrReplaceBun,
   resetState,
-} from "../../services/reducers/burger-constructor";
-import { getOrderNumber } from "../../services/reducers/order-details";
+} from "../../services/burger-constructor";
+import { getOrderNumber } from "../../services/order-details";
 
 import constructorStyles from "./burger-constructor.module.css";
 
@@ -30,9 +29,16 @@ function BurgerConstructor() {
   const dispatch = useAppDispatch();
   let conditonalStyle;
 
-  const { ingredients, bun, totalPrice } = useAppSelector(
+  const { ingredients, bun } = useAppSelector(
     (state) => state.constructorIngredients
   );
+
+  const totalPrice = useMemo(() => {
+    return (
+      (bun.price ? bun.price * 2 : 0) +
+      ingredients.reduce((s, v) => s + v.price, 0)
+    );
+  }, [bun.price, ingredients]);
 
   const { orderNumber, status, error } = useAppSelector(
     (state) => state.orderDetails
@@ -41,15 +47,9 @@ function BurgerConstructor() {
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
     drop(ingredient: Ingredient) {
-      const newIngredient: NewIngredient = {
-        ...ingredient,
-        _uniqueId: uuidv4(),
-      };
-      if (ingredient.type === "bun") {
-        dispatch(addOrReplaceBun(newIngredient));
-      } else {
-        dispatch(addIngredient(newIngredient));
-      }
+      ingredient.type === "bun"
+        ? dispatch(addOrReplaceBun(ingredient))
+        : dispatch(addIngredient(ingredient));
     },
     collect: (monitor) => ({
       isHover: monitor.isOver(),

@@ -15,7 +15,6 @@ function BurgerIngredientsTabs({ tabsRef }: TabsTypes) {
 
   const [state, setState] = useState({
     currentTab: "one",
-    scrollToTab: "one",
   });
 
   const [isScrolling, _setIsScrolling] = useState(false);

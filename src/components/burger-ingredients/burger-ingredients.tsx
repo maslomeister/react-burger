@@ -9,9 +9,13 @@ import BurgerIngredientsTabs from "./components/burger-ingredients-tabs/burger-i
 import {
   addDataToModal,
   resetModalData,
-} from "../../services/reducers/ingredient-details";
+} from "../../services/ingredient-details";
 
 import ingredientsStyles from "./burger-ingredients.module.css";
+
+interface CounterType extends Record<string, any> {
+  id?: number;
+}
 
 function BurgerIngredients() {
   const tabsRef = useRef<HTMLDivElement>(null);
@@ -19,6 +23,10 @@ function BurgerIngredients() {
 
   const ingredients = useAppSelector(
     (state) => state.burgerIngredients.ingredients
+  );
+
+  const constructorIngredients = useAppSelector(
+    (state) => state.constructorIngredients
   );
 
   const showModal = useAppSelector(
@@ -39,6 +47,17 @@ function BurgerIngredients() {
     () => ingredients.filter((ingredient) => ingredient.type === "sauce"),
     [ingredients]
   );
+
+  const ingredientsCounter = useMemo(() => {
+    const { bun, ingredients } = constructorIngredients;
+    const counters: CounterType = {};
+    ingredients.forEach((ingredient) => {
+      if (!counters[ingredient._id]) counters[ingredient._id] = 0;
+      counters[ingredient._id]++;
+    });
+    if (bun) counters[bun._id] = 2;
+    return counters;
+  }, [constructorIngredients]);
 
   const modalData = useCallback(
     (ingredient) => () => {
@@ -91,6 +110,7 @@ function BurgerIngredients() {
                     key={ingredient._id}
                     ingredient={ingredient}
                     onClick={modalData(ingredient)}
+                    counter={ingredientsCounter[ingredient._id]}
                   />
                 ))}
               </div>

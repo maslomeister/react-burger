@@ -10,11 +10,13 @@ import { Ingredient } from "../../../../utils/burger-api";
 import itemStyles from "./burger-ingredients-item.module.css";
 
 interface BurgerIngredientItemPropTypes {
+  counter: number;
   ingredient: Ingredient;
   onClick: () => void;
 }
 
 function BurgerIngredientItem({
+  counter,
   ingredient,
   onClick,
 }: BurgerIngredientItemPropTypes) {
@@ -46,7 +48,7 @@ function BurgerIngredientItem({
       <p className={`${itemStyles["item_name"]} text text_type_main-small`}>
         {ingredient.name}
       </p>
-      <IngredientCounter ingredientId={ingredient._id} />
+      <IngredientCounter count={counter} />
     </motion.div>
   );
 }
