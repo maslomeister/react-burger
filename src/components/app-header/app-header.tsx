@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 import {
   Logo,
@@ -21,43 +20,33 @@ const buttonType = (link: string, active: string) => {
 };
 
 function AppHeader() {
-  const [activeLink, setActiveLink] = useState("1");
+  const location = useLocation();
   return (
     <header className={styles["header"]}>
       <nav className={styles["header-inner"]}>
         <ul className={`${styles["menu-left"]} mb-4 mt-4`}>
           <li className={`${styles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
-            <NavLink
-              className={setActive}
-              to="/"
-              onClick={() => setActiveLink("1")}
-            >
-              <BurgerIcon type={buttonType(activeLink, "1")} />
+            <BurgerIcon type={buttonType("/", location.pathname)} />
+            <NavLink className={setActive} to="/">
               Конструктор
             </NavLink>
           </li>
           <li className={`${styles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
-            <ListIcon type={buttonType(activeLink, "2")} />
-            <NavLink
-              className={setActive}
-              to="/orders"
-              onClick={() => setActiveLink("2")}
-            >
+            <ListIcon type={buttonType("/orders", location.pathname)} />
+            <NavLink className={setActive} to="/orders">
               Лента заказов
             </NavLink>
           </li>
         </ul>
         <div className={styles["logo"]}>
-          <Logo />
+          <NavLink className={setActive} to="/">
+            <Logo />
+          </NavLink>
         </div>
         <ul className={`${styles["menu-right"]} mb-4 mt-4`}>
           <li className={`${styles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
-            <ProfileIcon type={buttonType(activeLink, "3")} />
-            <NavLink
-              className={setActive}
-              to="/account"
-              onClick={() => setActiveLink("3")}
-            >
+            <ProfileIcon type={buttonType("/profile", location.pathname)} />
+            <NavLink className={setActive} to="/profile">
               Личный кабинет
             </NavLink>
           </li>
