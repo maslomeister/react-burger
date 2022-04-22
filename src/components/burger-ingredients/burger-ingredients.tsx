@@ -11,7 +11,7 @@ import {
   resetModalData,
 } from "../../services/ingredient-details";
 
-import ingredientsStyles from "./burger-ingredients.module.css";
+import styles from "./burger-ingredients.module.css";
 
 interface CounterType extends Record<string, any> {
   id?: number;
@@ -100,11 +100,11 @@ function BurgerIngredients() {
         <p className="text text_type_main-large mb-5 mt-10">Соберите бургер</p>
         <BurgerIngredientsTabs tabsRef={tabsRef} />
 
-        <div className={ingredientsStyles["components"]} ref={tabsRef}>
+        <div className={styles["components"]} ref={tabsRef}>
           {Tabs.map((tab, index) => (
             <section key={tab._id} className={`${tab._id}`}>
               <p className="text text_type_main-medium">{tab.name}</p>
-              <div className={`${ingredientsStyles["item-container"]} ml-4`}>
+              <div className={`${styles["item-container"]} ml-4`}>
                 {ingredientsCategories[index].map((ingredient) => (
                   <BurgerIngredientItem
                     key={ingredient._id}

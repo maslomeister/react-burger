@@ -5,13 +5,13 @@ import checkIconBackgroundOuter from "../../assets/images/order-details/outer-ic
 import checkIconBackgroundMiddle from "../../assets/images/order-details/middle-icon.svg";
 import checkIconBackgroundInner from "../../assets/images/order-details/inner-icon.svg";
 
-import animatedLoadingStyles from "./animated-loading.module.css";
+import styles from "./animated-loading.module.css";
 
 export default function AnimatedLoading() {
   return (
     <>
       <motion.img
-        className={animatedLoadingStyles["check-mark-icon_background-center"]}
+        className={styles["check-mark-icon_background-center"]}
         src={checkIconBackgroundOuter}
         alt="outerBackground"
         initial={{ rotate: 0 }}
@@ -25,7 +25,7 @@ export default function AnimatedLoading() {
         }}
       />
       <motion.img
-        className={animatedLoadingStyles["check-mark-icon_background-center"]}
+        className={styles["check-mark-icon_background-center"]}
         src={checkIconBackgroundMiddle}
         alt="middleBackground"
         initial={{ rotate: 0 }}
@@ -39,7 +39,7 @@ export default function AnimatedLoading() {
         }}
       />
       <motion.img
-        className={animatedLoadingStyles["check-mark-icon_background-center"]}
+        className={styles["check-mark-icon_background-center"]}
         src={checkIconBackgroundInner}
         alt="innerBackground"
         initial={{ rotate: 0 }}
