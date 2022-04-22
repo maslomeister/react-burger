@@ -2,7 +2,7 @@ import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-component
 import AnimatedLoading from "../../components/animated-loading/animated-loading";
 import Modal from "../../components/modal/modal";
 
-import orderDetailsStyles from "./order-details.module.css";
+import styles from "./order-details.module.css";
 
 interface OrderDetailsProps {
   status: string;
@@ -15,14 +15,14 @@ function OrderDetails({ onClose, status, error, orderId }: OrderDetailsProps) {
   let content;
   if (status === "loading") {
     content = (
-      <div className={orderDetailsStyles["order-details"]}>
+      <div className={styles["order-details"]}>
         <div
-          className={`${orderDetailsStyles["order-number_shadow"]} text text_type_main-large mt-30`}
+          className={`${styles["order-number_shadow"]} text text_type_main-large mt-30`}
         >
           Загрузка
         </div>
         <div
-          className={`${orderDetailsStyles["check-mark-icon_background-size"]} mb-15 mt-15`}
+          className={`${styles["check-mark-icon_background-size"]} mb-15 mt-15`}
         >
           <AnimatedLoading />
         </div>
@@ -30,9 +30,9 @@ function OrderDetails({ onClose, status, error, orderId }: OrderDetailsProps) {
     );
   } else if (status === "succeeded") {
     content = (
-      <div className={orderDetailsStyles["order-details"]}>
+      <div className={styles["order-details"]}>
         <div
-          className={`${orderDetailsStyles["order-number_shadow"]} text text_type_digits-large mt-30`}
+          className={`${styles["order-number_shadow"]} text text_type_digits-large mt-30`}
         >
           {orderId}
         </div>
@@ -42,9 +42,9 @@ function OrderDetails({ onClose, status, error, orderId }: OrderDetailsProps) {
         </div>
 
         <div
-          className={`${orderDetailsStyles["check-mark-icon_background-size"]} mb-15 mt-15`}
+          className={`${styles["check-mark-icon_background-size"]} mb-15 mt-15`}
         >
-          <div className={orderDetailsStyles["check-mark-icon_size"]}>
+          <div className={styles["check-mark-icon_size"]}>
             <CheckMarkIcon type="primary" />
           </div>
           <AnimatedLoading />
@@ -61,14 +61,14 @@ function OrderDetails({ onClose, status, error, orderId }: OrderDetailsProps) {
     );
   } else if (status === "failed") {
     content = (
-      <div className={orderDetailsStyles["order-details"]}>
+      <div className={styles["order-details"]}>
         <div
-          className={`${orderDetailsStyles["order-number_shadow"]} text text_type_main-large mt-30`}
+          className={`${styles["order-number_shadow"]} text text_type_main-large mt-30`}
         >
           Произошла ошибка
         </div>
         <div
-          className={`${orderDetailsStyles["order-number_shadow"]} text text_type_main-medium mb-15 mt-15`}
+          className={`${styles["order-number_shadow"]} text text_type_main-medium mb-15 mt-15`}
         >
           {error}
         </div>

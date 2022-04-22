@@ -4,7 +4,7 @@ import Tabs from "../../../../utils/tabs-data";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import ingredientsTabsStyles from "./burger-ingredients-tabs.module.css";
+import styles from "./burger-ingredients-tabs.module.css";
 
 interface TabsTypes {
   tabsRef: React.RefObject<HTMLDivElement>;
@@ -104,7 +104,7 @@ function BurgerIngredientsTabs({ tabsRef }: TabsTypes) {
 
   return (
     <nav>
-      <ul className={`${ingredientsTabsStyles["tabs"]} mb-10`}>
+      <ul className={`${styles["tabs"]} mb-10`}>
         {Tabs.map((tab) => (
           <Tab
             key={tab._id}

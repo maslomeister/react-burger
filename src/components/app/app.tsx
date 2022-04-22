@@ -11,7 +11,7 @@ import BurgerIngredients from "../../components/burger-ingredients/burger-ingred
 import { fetchIngredients } from "../../services/burger-ingredients";
 import AnimatedLoading from "../animated-loading/animated-loading";
 
-import appStyles from "./app.module.css";
+import styles from "./app.module.css";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -27,7 +27,7 @@ function App() {
   let content;
   if (status === "loading") {
     content = (
-      <div className={appStyles["loading"]}>
+      <div className={styles["loading"]}>
         <p className="text text_type_main-large">Данные загружаются</p>
         <AnimatePresence>
           <AnimatedLoading />
@@ -36,7 +36,7 @@ function App() {
     );
   } else if (status === "succeeded") {
     content = (
-      <section className={appStyles["row"]}>
+      <section className={styles["row"]}>
         <DndProvider backend={HTML5Backend}>
           <div className={`mr-10`}>
             <BurgerIngredients />
@@ -49,7 +49,7 @@ function App() {
     );
   } else if (status === "failed") {
     content = (
-      <div className={appStyles["loading"]}>
+      <div className={styles["loading"]}>
         <p className="text text_type_main-large">
           Данные не смогли загрузиться: {error}
         </p>

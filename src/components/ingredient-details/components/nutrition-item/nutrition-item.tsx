@@ -1,4 +1,4 @@
-import nutritionItemStyles from "./nutrition-item.module.css";
+import styles from "./nutrition-item.module.css";
 
 interface NutritionItemTypes {
   name: string;
@@ -7,9 +7,9 @@ interface NutritionItemTypes {
 
 export default function NutritionItem({ name, value }: NutritionItemTypes) {
   return (
-    <div className={nutritionItemStyles["nutrition__item"]}>
+    <div className={styles["nutrition__item"]}>
       <p
-        className={`${nutritionItemStyles.text} text text_type_main-small text_color_inactive`}
+        className={`${styles.text} text text_type_main-small text_color_inactive`}
       >
         {name}
       </p>

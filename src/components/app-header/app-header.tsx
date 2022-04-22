@@ -8,11 +8,11 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import headerStyles from "./app-header.module.css";
+import styles from "./app-header.module.css";
 
 const setActive = ({ isActive }: { isActive: Boolean }) =>
   "text text_type_main-default ml-2 " +
-  (isActive ? headerStyles["menu__item_active"] : headerStyles["menu__item"]);
+  (isActive ? styles["menu__item_active"] : styles["menu__item"]);
 
 //Наверное можно лучше
 const buttonType = (link: string, active: string) => {
@@ -23,10 +23,10 @@ const buttonType = (link: string, active: string) => {
 function AppHeader() {
   const [activeLink, setActiveLink] = useState("1");
   return (
-    <header className={headerStyles["header"]}>
-      <nav className={headerStyles["header-inner"]}>
-        <ul className={`${headerStyles["menu-left"]} mb-4 mt-4`}>
-          <li className={`${headerStyles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
+    <header className={styles["header"]}>
+      <nav className={styles["header-inner"]}>
+        <ul className={`${styles["menu-left"]} mb-4 mt-4`}>
+          <li className={`${styles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
             <NavLink
               className={setActive}
               to="/"
@@ -36,7 +36,7 @@ function AppHeader() {
               Конструктор
             </NavLink>
           </li>
-          <li className={`${headerStyles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
+          <li className={`${styles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
             <ListIcon type={buttonType(activeLink, "2")} />
             <NavLink
               className={setActive}
@@ -47,11 +47,11 @@ function AppHeader() {
             </NavLink>
           </li>
         </ul>
-        <div className={headerStyles["logo"]}>
+        <div className={styles["logo"]}>
           <Logo />
         </div>
-        <ul className={`${headerStyles["menu-right"]} mb-4 mt-4`}>
-          <li className={`${headerStyles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
+        <ul className={`${styles["menu-right"]} mb-4 mt-4`}>
+          <li className={`${styles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
             <ProfileIcon type={buttonType(activeLink, "3")} />
             <NavLink
               className={setActive}

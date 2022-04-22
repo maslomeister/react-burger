@@ -19,7 +19,7 @@ import {
 } from "../../services/burger-constructor";
 import { getOrderNumber } from "../../services/order-details";
 
-import constructorStyles from "./burger-constructor.module.css";
+import styles from "./burger-constructor.module.css";
 
 function BurgerConstructor() {
   const dropRef = useRef(null);
@@ -104,7 +104,7 @@ function BurgerConstructor() {
   if (ingredients.length > 5) {
     conditonalStyle = "";
   } else {
-    conditonalStyle = constructorStyles["conditional"];
+    conditonalStyle = styles["conditional"];
   }
 
   return (
@@ -127,7 +127,7 @@ function BurgerConstructor() {
         key="burger-constructor"
         ref={dropTarget}
         style={{ border: `2px dashed ${borderColor}`, borderRadius: 30 }}
-        className={`${constructorStyles["burger-constructor"]} mb-14 mt-25`}
+        className={`${styles["burger-constructor"]} mb-14 mt-25`}
         initial={{ x: "+200%" }}
         exit={{ x: 0 }}
         animate={{ x: 0 }}
@@ -138,7 +138,7 @@ function BurgerConstructor() {
         {ingredients.length !== 0 || bun.price !== 0 ? (
           <>
             <div className="burgerComponents">
-              <div className={constructorStyles["outer_style"]}>
+              <div className={styles["outer_style"]}>
                 <BurgerBunItem
                   bottomPadding={true}
                   top={"top"}
@@ -147,7 +147,7 @@ function BurgerConstructor() {
               </div>
 
               <ul
-                className={constructorStyles["inner_style"] + conditonalStyle}
+                className={styles["inner_style"] + conditonalStyle}
                 ref={dropRef}
               >
                 {ingredients.map((ingredient, index) => {
@@ -172,7 +172,7 @@ function BurgerConstructor() {
                 })}
               </ul>
 
-              <div className={constructorStyles["outer_style"]}>
+              <div className={styles["outer_style"]}>
                 <BurgerBunItem
                   topPadding={true}
                   top={"bottom"}
@@ -181,7 +181,7 @@ function BurgerConstructor() {
               </div>
             </div>
 
-            <div className={`${constructorStyles["cart"]} mb-10 mt-10`}>
+            <div className={`${styles["cart"]} mb-10 mt-10`}>
               <TotalPrice price={totalPrice} />
               <Button type="primary" size="large" onClick={createOrder}>
                 Оформить заказ
@@ -189,9 +189,9 @@ function BurgerConstructor() {
             </div>
           </>
         ) : (
-          <div className={constructorStyles["helper"]}>
+          <div className={styles["helper"]}>
             <div
-              className={`${constructorStyles["helper_shadow"]} text text_type_main-large mb-30 mt-30`}
+              className={`${styles["helper_shadow"]} text text_type_main-large mb-30 mt-30`}
             >
               Для создания бургера перетащите на этот текст ингредиент слева
             </div>
