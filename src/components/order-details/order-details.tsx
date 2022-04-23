@@ -1,6 +1,6 @@
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import AnimatedLoading from "../../components/animated-loading/animated-loading";
-import Modal from "../../components/modal/modal";
+import { AnimatedLoading } from "../../components/animated-loading/animated-loading";
+import { Modal } from "../../components/modal/modal";
 
 import styles from "./order-details.module.css";
 
@@ -11,7 +11,12 @@ interface OrderDetailsProps {
   onClose: () => void;
 }
 
-function OrderDetails({ onClose, status, error, orderId }: OrderDetailsProps) {
+export function OrderDetails({
+  onClose,
+  status,
+  error,
+  orderId,
+}: OrderDetailsProps) {
   let content;
   if (status === "loading") {
     content = (
@@ -47,7 +52,9 @@ function OrderDetails({ onClose, status, error, orderId }: OrderDetailsProps) {
           <div className={styles["check-mark-icon_size"]}>
             <CheckMarkIcon type="primary" />
           </div>
-          <AnimatedLoading />
+          <div className={styles["loading-icon_absolute"]}>
+            <AnimatedLoading />
+          </div>
         </div>
 
         <p className="text text text_type_main-default mb-2">
@@ -81,5 +88,3 @@ function OrderDetails({ onClose, status, error, orderId }: OrderDetailsProps) {
     </Modal>
   );
 }
-
-export default OrderDetails;

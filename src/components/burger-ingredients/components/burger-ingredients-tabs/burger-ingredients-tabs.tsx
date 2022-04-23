@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useRef, useState, useCallback } from "react";
 import scrollIntoView from "smooth-scroll-into-view-if-needed";
-import Tabs from "../../../../utils/tabs-data";
 
+import { Tabs } from "../../../../utils/tabs-data";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from "./burger-ingredients-tabs.module.css";
@@ -120,4 +120,4 @@ function BurgerIngredientsTabs({ tabsRef }: TabsTypes) {
   );
 }
 
-export default memo(BurgerIngredientsTabs);
+export const BurgerIngredientsTabsMemoized = memo(BurgerIngredientsTabs);

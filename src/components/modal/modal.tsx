@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import ModalOverlay from "../../components/modal-overlay/modal-overlay";
+import { ModalOverlay } from "../../components/modal-overlay/modal-overlay";
 
 import styles from "./modal.module.css";
 
@@ -22,7 +22,7 @@ const defaultProps = {
 
 Modal.defaultProps = defaultProps;
 
-function Modal({ onClose, children, title, closeIconType }: ModalProps) {
+export function Modal({ onClose, children, title, closeIconType }: ModalProps) {
   const modalRoot: Element = document.getElementById("modal-root") as Element;
 
   useEffect(() => {
@@ -75,5 +75,3 @@ function Modal({ onClose, children, title, closeIconType }: ModalProps) {
     modalRoot
   );
 }
-
-export default Modal;

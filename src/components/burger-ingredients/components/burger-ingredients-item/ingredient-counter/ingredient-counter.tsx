@@ -4,6 +4,6 @@ interface Types {
   count: number;
 }
 
-export default function IngredientCounter({ count }: Types) {
+export function IngredientCounter({ count }: Types) {
   return <>{count && <Counter count={count} size="default" />}</>;
 }

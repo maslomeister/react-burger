@@ -3,12 +3,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useDrop } from "react-dnd";
 
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import BurgerBunItem from "./components/burger-bun-item/burger-bun-item";
-import BurgerInnerItem from "./components/burger-inner-item/burger-inner-item";
-import OrderDetails from "../../components/order-details/order-details";
-import ErrorModal from "../../components/error-modal/error-modal";
-import TotalPrice from "./components/total-price/total-price";
-import { Ingredient, NewIngredient } from "../../utils/burger-api";
+import { BurgerBunItemMemoized } from "./components/burger-bun-item/burger-bun-item";
+import { BurgerInnerItemMemoized } from "./components/burger-inner-item/burger-inner-item";
+import { OrderDetails } from "../../components/order-details/order-details";
+import { ErrorModal } from "../../components/error-modal/error-modal";
+import { TotalPriceMemoized } from "./components/total-price/total-price";
+import { Ingredient, NewIngredient } from "../../utils/api";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import {
   addIngredient,
@@ -128,18 +128,12 @@ function BurgerConstructor() {
         ref={dropTarget}
         style={{ border: `2px dashed ${borderColor}`, borderRadius: 30 }}
         className={`${styles["burger-constructor"]} mb-14 mt-25`}
-        initial={{ x: "+200%" }}
-        exit={{ x: 0 }}
-        animate={{ x: 0 }}
-        transition={{
-          type: "tween",
-        }}
       >
         {ingredients.length !== 0 || bun.price !== 0 ? (
           <>
             <div className="burgerComponents">
               <div className={styles["outer_style"]}>
-                <BurgerBunItem
+                <BurgerBunItemMemoized
                   bottomPadding={true}
                   top={"top"}
                   ingredient={bun}
@@ -158,7 +152,7 @@ function BurgerConstructor() {
                   const lastIndex = index === ingredients!.length - 1;
                   return (
                     <li key={newItem._uniqueId}>
-                      <BurgerInnerItem
+                      <BurgerInnerItemMemoized
                         bottomPadding={!lastIndex}
                         key={newItem._id}
                         index={index}
@@ -173,7 +167,7 @@ function BurgerConstructor() {
               </ul>
 
               <div className={styles["outer_style"]}>
-                <BurgerBunItem
+                <BurgerBunItemMemoized
                   topPadding={true}
                   top={"bottom"}
                   ingredient={bun}
@@ -182,7 +176,7 @@ function BurgerConstructor() {
             </div>
 
             <div className={`${styles["cart"]} mb-10 mt-10`}>
-              <TotalPrice price={totalPrice} />
+              <TotalPriceMemoized price={totalPrice} />
               <Button type="primary" size="large" onClick={createOrder}>
                 Оформить заказ
               </Button>

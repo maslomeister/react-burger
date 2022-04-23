@@ -5,7 +5,7 @@ interface NutritionItemTypes {
   value: number;
 }
 
-export default function NutritionItem({ name, value }: NutritionItemTypes) {
+export function NutritionItem({ name, value }: NutritionItemTypes) {
   return (
     <div className={styles["nutrition__item"]}>
       <p

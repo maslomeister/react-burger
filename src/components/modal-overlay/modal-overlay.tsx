@@ -8,7 +8,7 @@ interface ModalOverlayProps {
   title: string;
 }
 
-function ModalOverlay({ onClose, children }: ModalOverlayProps) {
+export function ModalOverlay({ onClose, children }: ModalOverlayProps) {
   return (
     <motion.div
       key="modal-overlay"
@@ -25,5 +25,3 @@ function ModalOverlay({ onClose, children }: ModalOverlayProps) {
     </motion.div>
   );
 }
-
-export default ModalOverlay;

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 
-import { NewIngredient, Ingredient } from "../utils/burger-api";
+import { NewIngredient, Ingredient } from "../utils/api";
 
 import missingIcon from "../assets/images/missing-icon.svg";
 

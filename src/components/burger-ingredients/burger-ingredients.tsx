@@ -1,11 +1,11 @@
 import { memo, useRef, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-import IngredientDetails from "../../components/ingredient-details/ingredient-details";
-import BurgerIngredientItem from "./components/burger-ingredients-item/burger-ingredients-item";
-import Tabs from "../../utils/tabs-data";
+import { IngredientDetails } from "../../components/ingredient-details/ingredient-details";
+import { BurgerIngredientItemMemoized } from "./components/burger-ingredients-item/burger-ingredients-item";
+import { Tabs } from "../../utils/tabs-data";
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
-import BurgerIngredientsTabs from "./components/burger-ingredients-tabs/burger-ingredients-tabs";
+import { BurgerIngredientsTabsMemoized } from "./components/burger-ingredients-tabs/burger-ingredients-tabs";
 import {
   addDataToModal,
   resetModalData,
@@ -89,16 +89,9 @@ function BurgerIngredients() {
         />
       )}
 
-      <motion.div
-        key="burger-ingredients"
-        initial={{ x: "-200%" }}
-        animate={{ x: 0 }}
-        transition={{
-          type: "tween",
-        }}
-      >
+      <div>
         <p className="text text_type_main-large mb-5 mt-10">Соберите бургер</p>
-        <BurgerIngredientsTabs tabsRef={tabsRef} />
+        <BurgerIngredientsTabsMemoized tabsRef={tabsRef} />
 
         <div className={styles["components"]} ref={tabsRef}>
           {Tabs.map((tab, index) => (
@@ -106,7 +99,7 @@ function BurgerIngredients() {
               <p className="text text_type_main-medium">{tab.name}</p>
               <div className={`${styles["item-container"]} ml-4`}>
                 {ingredientsCategories[index].map((ingredient) => (
-                  <BurgerIngredientItem
+                  <BurgerIngredientItemMemoized
                     key={ingredient._id}
                     ingredient={ingredient}
                     onClick={modalData(ingredient)}
@@ -117,9 +110,9 @@ function BurgerIngredients() {
             </section>
           ))}
         </div>
-      </motion.div>
+      </div>
     </AnimatePresence>
   );
 }
 
-export default memo(BurgerIngredients);
+export const BurgerIngredientsMemoized = memo(BurgerIngredients);

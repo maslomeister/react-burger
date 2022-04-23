@@ -4,8 +4,8 @@ import { useDrag } from "react-dnd";
 
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { imageMotion, textMotion } from "./motion-config";
-import IngredientCounter from "./ingredient-counter/ingredient-counter";
-import { Ingredient } from "../../../../utils/burger-api";
+import { IngredientCounter } from "./ingredient-counter/ingredient-counter";
+import { Ingredient } from "../../../../utils/api";
 
 import styles from "./burger-ingredients-item.module.css";
 
@@ -53,4 +53,4 @@ function BurgerIngredientItem({
   );
 }
 
-export default memo(BurgerIngredientItem);
+export const BurgerIngredientItemMemoized = memo(BurgerIngredientItem);

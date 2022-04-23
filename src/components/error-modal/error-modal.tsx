@@ -1,4 +1,4 @@
-import Modal from "../../components/modal/modal";
+import { Modal } from "../../components/modal/modal";
 
 import styles from "./error-modal.module.css";
 
@@ -7,7 +7,7 @@ interface ErrorModalProps {
   onClose: () => void;
 }
 
-function ErrorModal({ onClose, error }: ErrorModalProps) {
+export function ErrorModal({ onClose, error }: ErrorModalProps) {
   return (
     <Modal onClose={onClose} closeIconType="primary">
       <div className={styles["error"]}>
@@ -22,5 +22,3 @@ function ErrorModal({ onClose, error }: ErrorModalProps) {
     </Modal>
   );
 }
-
-export default ErrorModal;
