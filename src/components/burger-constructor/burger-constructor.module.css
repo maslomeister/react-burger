@@ -2,7 +2,7 @@
   display: flex;
   flex-flow: column;
   width: 600px;
-  height: calc(100vh - 203px);
+  height: calc(100vh - 204px);
   justify-content: space-between;
 }
 
