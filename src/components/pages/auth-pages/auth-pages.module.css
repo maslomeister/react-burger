@@ -1,0 +1,52 @@
+.container {
+  height: calc(100vh - 100px);
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.inner-container {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: start;
+}
+
+.profile-container {
+  width: 1240px;
+  margin: auto;
+  display: flex;
+  flex-flow: row;
+}
+
+.profile-items-container {
+  display: flex;
+  width: 320px;
+  flex-flow: column;
+  align-items: start;
+  justify-content: center;
+}
+
+.profile-buttons {
+  display: flex;
+  flex-flow: row;
+  align-items: end;
+  justify-content: end;
+}
+
+.text {
+  display: flex;
+}
+
+.text-link {
+  color: #4c4cff;
+}
+
+.text-error {
+  color: red;
+}
+
+.text-link:hover {
+  text-decoration: underline;
+}

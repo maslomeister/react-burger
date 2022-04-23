@@ -1,0 +1,13 @@
+.row {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-content: center;
+  scrollbar-width: none; /* for Firefox */
+  overflow-x: scroll;
+  z-index: 0;
+}
+
+.row::-webkit-scrollbar {
+  display: none; /* for Chrome, Safari, and Opera */
+}
