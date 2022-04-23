@@ -19,7 +19,7 @@ const buttonType = (link: string, active: string) => {
   return "secondary";
 };
 
-function AppHeader() {
+export function AppHeader() {
   const location = useLocation();
   return (
     <header className={styles["header"]}>
@@ -32,8 +32,8 @@ function AppHeader() {
             </NavLink>
           </li>
           <li className={`${styles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
-            <ListIcon type={buttonType("/orders", location.pathname)} />
-            <NavLink className={setActive} to="/orders">
+            <ListIcon type={buttonType("/profile/orders", location.pathname)} />
+            <NavLink className={setActive} to="/profile/orders">
               Лента заказов
             </NavLink>
           </li>
@@ -55,5 +55,3 @@ function AppHeader() {
     </header>
   );
 }
-
-export default AppHeader;
