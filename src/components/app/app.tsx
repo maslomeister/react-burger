@@ -1,71 +1,72 @@
-import { useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { AnimatePresence } from "framer-motion";
+import { Route, Routes, useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
-import { useAppDispatch, useAppSelector } from "../../services/hooks";
-import AppHeader from "../../components/app-header/app-header";
-import BurgerConstructor from "../../components/burger-constructor/burger-constructor";
-import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients";
-import { fetchIngredients } from "../../services/burger-ingredients";
-import AnimatedLoading from "../animated-loading/animated-loading";
-
-import styles from "./app.module.css";
+import { AppHeader } from "../../components/app-header/app-header";
+import {
+  Login,
+  Register,
+  ForgotPassword,
+  ResetPassword,
+  Profile,
+  Constructor,
+} from "../pages";
+import { ProtectedRoute } from "../protected-route/protected-route";
 
 function App() {
-  const dispatch = useAppDispatch();
-
-  const { status, error } = useAppSelector((state) => state.burgerIngredients);
-
-  useEffect(() => {
-    if (status === "idle") {
-      dispatch(fetchIngredients());
-    }
-  }, [status, dispatch]);
-
-  let content;
-  if (status === "loading") {
-    content = (
-      <div className={styles["loading"]}>
-        <p className="text text_type_main-large">Данные загружаются</p>
-        <AnimatePresence>
-          <AnimatedLoading />
-        </AnimatePresence>
-      </div>
-    );
-  } else if (status === "succeeded") {
-    content = (
-      <section className={styles["row"]}>
-        <DndProvider backend={HTML5Backend}>
-          <div className={`mr-10`}>
-            <BurgerIngredients />
-          </div>
-          <div>
-            <BurgerConstructor />
-          </div>
-        </DndProvider>
-      </section>
-    );
-  } else if (status === "failed") {
-    content = (
-      <div className={styles["loading"]}>
-        <p className="text text_type_main-large">
-          Данные не смогли загрузиться: {error}
-        </p>
-      </div>
-    );
-  }
-
+  const location = useLocation();
   return (
-    <div className="App">
-      <AppHeader />
-      <Routes>
-        <Route path="/" element={<>{content}</>} />
-        <Route path="/orders" element={<></>} />
-        <Route path="/account" element={<></>} />
-      </Routes>
-    </div>
+    <AnimatePresence>
+      <div className="App">
+        <AppHeader />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Constructor />
+              </ProtectedRoute>
+            }
+            key={location.pathname}
+          />
+          <Route path="login" element={<Login />} key={location.pathname} />
+          <Route
+            path="register"
+            element={<Register />}
+            key={location.pathname}
+          />
+          <Route
+            path="forgot-password"
+            element={<ForgotPassword key={location.pathname} />}
+          />
+          <Route
+            path="reset-password"
+            element={<ResetPassword key={location.pathname} />}
+          />
+          <Route
+            path="ingredients/:id"
+            element={<Register key={location.pathname} />}
+          />
+          <Route
+            path="profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+            key={location.pathname}
+          />
+          <Route
+            path="profile/orders"
+            element={
+              <ProtectedRoute>
+                <></>
+              </ProtectedRoute>
+            }
+            key={location.pathname}
+          />
+        </Routes>
+      </div>
+    </AnimatePresence>
   );
 }
 
