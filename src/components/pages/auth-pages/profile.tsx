@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from "../../../services/hooks";
-
 import { resetState } from "../../../services/auth/auth";
-
-import { LoadingScreen } from "../../loading-screen/loading-screen";
 import {
   Input,
   Button,
@@ -14,14 +11,17 @@ import {
   getOrUpdateUserData,
   getNewAccessToken,
 } from "../../../services/auth/auth";
-import {
-  getCookie,
-  userAuthorized,
-  validateName,
-  validateEmail,
-} from "../../../utils/utils";
+import { getCookie, validateName, validateEmail } from "../../../utils/utils";
 
 import styles from "./auth-pages.module.css";
+
+const setActive = (
+  { isActive }: { isActive: boolean },
+  additionalClass: String
+) =>
+  "text text_type_main-default " +
+  (isActive ? "" : "text_color_inactive ") +
+  additionalClass;
 
 export function Profile() {
   let content;
@@ -36,7 +36,6 @@ export function Profile() {
   const [nameInput, setNameInput] = useState("");
   const [emailInputError, setEmailInputError] = useState("");
   const [emailInput, setEmailInput] = useState(user.email);
-
   const [inputFieldsChanged, setInputFieldsChanged] = useState(false);
 
   function validateFields() {
@@ -205,20 +204,25 @@ export function Profile() {
     <div className="mt-30">
       <div className={styles["profile-container"]}>
         <div className={`${styles["profile-items-container"]} mr-15`}>
-          <Link to="/profile" className="text text_type_main-medium mb-6">
+          <NavLink
+            to="/profile"
+            className={(isActive) => setActive(isActive, "mb-6")}
+            end
+          >
             Профиль
-          </Link>
-          <Link
-            to="/orders"
-            className="text text_type_main-medium mb-6 text_color_inactive"
+          </NavLink>
+          <NavLink
+            to="/profile/orders"
+            className={(isActive) => setActive(isActive, "mb-6")}
           >
             История заказов
-          </Link>
-          <Link to="/logout">
-            <p className="text text_type_main-medium mb-20 text_color_inactive">
-              Выход
-            </p>
-          </Link>
+          </NavLink>
+          <NavLink
+            to="/logout"
+            className={(isActive) => setActive(isActive, "mb-20")}
+          >
+            Выход
+          </NavLink>
           <p className="text text_type_main-default text_color_inactive">
             В этом разделе вы можете изменить свои персональные данные
           </p>

@@ -13,7 +13,6 @@ const setActive = ({ isActive }: { isActive: Boolean }) =>
   "text text_type_main-default ml-2 " +
   (isActive ? styles["menu__item_active"] : styles["menu__item"]);
 
-//Наверное можно лучше
 const buttonType = (link: string, active: string) => {
   if (active === link) return "primary";
   return "secondary";
@@ -46,7 +45,7 @@ export function AppHeader() {
         <ul className={`${styles["menu-right"]} mb-4 mt-4`}>
           <li className={`${styles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
             <ProfileIcon type={buttonType("/profile", location.pathname)} />
-            <NavLink className={setActive} to="/profile">
+            <NavLink className={setActive} to="/profile" end>
               Личный кабинет
             </NavLink>
           </li>

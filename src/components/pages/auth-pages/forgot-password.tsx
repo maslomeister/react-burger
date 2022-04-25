@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from "../../../services/hooks";
-import { LoadingScreen } from "../../../components/loading-screen/loading-screen";
-import { loginUserProfile } from "../../../services/auth/auth";
 import {
   Input,
-  PasswordInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { LocationProps } from "../../../utils/api";
 import { userAuthorized, validateEmail } from "../../../utils/utils";
 import { forgotUserPassword } from "../../../services/auth/auth";
 
@@ -18,17 +14,11 @@ import styles from "./auth-pages.module.css";
 export function ForgotPassword() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
   const { user, status, error } = useAppSelector((state) => state.authUser);
+
   const [emailInputError, setEmailInputError] = useState("");
   const [emailInput, setEmailInput] = useState("");
-
-  useEffect(() => {
-    if (userAuthorized(user)) {
-      navigate("/profile", {
-        replace: true,
-      });
-    }
-  }, [navigate, user]);
 
   function validateFields() {
     const emailValidation = validateEmail(emailInput);
@@ -130,8 +120,17 @@ export function ForgotPassword() {
     content = input(true);
   } else if (status === "forgotPassword/failed") {
     content = input(false, error);
+  } else if (
+    status === "getUserData/loading" ||
+    status === "getToken/loading"
+  ) {
+    content = <></>;
   } else {
     content = input(false);
+  }
+
+  if (userAuthorized(user)) {
+    return <Navigate to="/profile" replace={true} />;
   }
 
   return <div className={styles["container"]}>{content}</div>;

@@ -2,11 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from "../../../services/hooks";
-import { LoadingScreen } from "../../../components/loading-screen/loading-screen";
 import { loginUserProfile } from "../../../services/auth/auth";
 import {
   Input,
-  PasswordInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import {
@@ -23,8 +21,9 @@ export function Login() {
   const location = useLocation() as LocationProps;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
   const { user, status, error } = useAppSelector((state) => state.authUser);
-  const [loginPressed, setLoginPressed] = useState(false);
+
   const [emailInputError, setEmailInputError] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const [passwordInputError, setPasswordInputError] = useState("");
@@ -66,7 +65,7 @@ export function Login() {
 
   useEffect(() => {
     if (userAuthorized(user)) {
-      navigate(location.state ? location.state.from : "/profile", {
+      navigate(location.state ? location.state.from : "/", {
         replace: true,
       });
     }

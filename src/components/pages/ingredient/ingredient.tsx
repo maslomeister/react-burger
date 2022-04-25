@@ -46,9 +46,5 @@ export function Ingredient() {
     );
   }
 
-  // if (location.state && location.state.from) {
-  //   return <Constructor />;
-  // }
-
   return <div className={styles["container"]}>{content}</div>;
 }

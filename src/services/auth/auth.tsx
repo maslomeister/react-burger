@@ -12,8 +12,7 @@ import {
 } from "../../utils/api";
 import { setCookie } from "../../utils/utils";
 
-//TODO изменить на 1100
-const tokenLifeTime = 10;
+const tokenLifeTime = 1100;
 
 type User = {
   name: string;
@@ -73,7 +72,7 @@ export const getNewAccessToken = createAsyncThunk(
 );
 
 export const forgotUserPassword = createAsyncThunk(
-  "auth/checkEmail",
+  "auth/forgotPassword",
   async (requestOptions: RequestOptions) => {
     const response = await forgotPassword(requestOptions);
     return response;
@@ -202,7 +201,7 @@ export const authUser = createSlice({
         state.error = "";
       })
       .addCase(forgotUserPassword.fulfilled, (state, action) => {
-        state.status = "forgotPassword/success";
+        state.status = "v/success";
       })
       .addCase(forgotUserPassword.rejected, (state, action) => {
         state.status = "forgotPassword/failed";

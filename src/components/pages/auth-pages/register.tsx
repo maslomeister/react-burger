@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useLocation, Navigate } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from "../../../services/hooks";
 import { createUserProfile } from "../../../services/auth/auth";
 import {
   Input,
-  PasswordInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import {
@@ -21,9 +20,10 @@ import styles from "./auth-pages.module.css";
 export function Register({ from }: { from?: string }) {
   let content;
   const location = useLocation() as LocationProps;
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
   const { user, status, error } = useAppSelector((state) => state.authUser);
+
   const [nameInputError, setNameInputError] = useState("");
   const [nameInput, setNameInput] = useState("");
   const [emailInputError, setEmailInputError] = useState("");
@@ -73,12 +73,6 @@ export function Register({ from }: { from?: string }) {
       createUser();
     }
   };
-
-  useEffect(() => {
-    if (userAuthorized(user)) {
-      navigate(location.state ? location.state.from : "/", { replace: true });
-    }
-  }, [from, location.state, navigate, user]);
 
   const input = (loading: boolean, error?: string) => {
     return (
@@ -168,10 +162,24 @@ export function Register({ from }: { from?: string }) {
 
   if (status === "registerUser/loading") {
     content = input(true);
+  } else if (
+    status === "getUserData/loading" ||
+    status === "getToken/loading"
+  ) {
+    content = <></>;
   } else if (status === "registerUser/failed") {
     content = input(false, error);
   } else {
     content = input(false);
+  }
+
+  if (userAuthorized(user)) {
+    return (
+      <Navigate
+        to={location.state ? location.state.from : "/"}
+        replace={true}
+      />
+    );
   }
 
   return <div className={styles["container"]}>{content}</div>;

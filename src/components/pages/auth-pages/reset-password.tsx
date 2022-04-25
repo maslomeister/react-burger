@@ -1,24 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useLocation, Navigate } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from "../../../services/hooks";
-import { createUserProfile } from "../../../services/auth/auth";
 import {
   Input,
-  PasswordInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { LocationProps } from "../../../utils/api";
 import { userAuthorized, validatePassword } from "../../../utils/utils";
 import { resetPasswordUser } from "../../../services/auth/auth";
-import { setIdle } from "../../../services/auth/auth";
 
 import styles from "./auth-pages.module.css";
 
 export function ResetPassword() {
   let content;
   const location = useLocation() as LocationProps;
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const { user, status, error } = useAppSelector((state) => state.authUser);
@@ -29,10 +25,6 @@ export function ResetPassword() {
   const [confirmationCodeInputError, setConfirmationCodeInputError] =
     useState("");
   const [confirmationCodeInput, setConfirmationCodeInput] = useState("");
-
-  useEffect(() => {
-    dispatch(setIdle());
-  }, []);
 
   function validateFields() {
     const passwordValidation = validatePassword(passwordInput);
@@ -49,19 +41,6 @@ export function ResetPassword() {
       return false;
     }
   }
-
-  useEffect(() => {
-    if (!userAuthorized(user)) {
-      if (location.state?.from === undefined) {
-        navigate("/forgot-password", { replace: true });
-      }
-      if (status === "resetPassword/success") {
-        navigate("/login", { replace: true });
-      }
-    } else {
-      navigate("/profile", { replace: true });
-    }
-  }, [location.state, navigate, user, status]);
 
   const changePassword = async () => {
     const requestOptions = {
@@ -163,6 +142,17 @@ export function ResetPassword() {
     content = input(false, error);
   } else {
     content = input(false);
+  }
+
+  if (!userAuthorized(user)) {
+    if (location.state?.from === undefined) {
+      return <Navigate to="/forgot-password" replace={true} />;
+    }
+    if (status === "resetPassword/success") {
+      return <Navigate to="/login" replace={true} />;
+    }
+  } else {
+    return <Navigate to="/profile" replace={true} />;
   }
 
   return <div className={styles["container"]}>{content}</div>;

@@ -19,6 +19,7 @@ import {
   resetState,
 } from "../../services/burger-constructor";
 import { getOrderNumber } from "../../services/order-details";
+import { userAuthorized } from "../../utils/utils";
 
 import styles from "./burger-constructor.module.css";
 
@@ -70,7 +71,7 @@ function BurgerConstructor() {
   );
 
   const createOrder = () => {
-    if (user) {
+    if (userAuthorized(user)) {
       if (!bun.price) {
         setErrorModal("Нельзя оформить бургер без булки");
         setShowErrorModal(true);
