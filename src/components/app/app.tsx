@@ -13,7 +13,7 @@ import {
   Constructor,
   NotFound,
   Ingredient,
-} from "../pages";
+} from "../../pages";
 import { ProtectedRoute } from "../protected-route/protected-route";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { fetchIngredients } from "../../services/burger-ingredients";

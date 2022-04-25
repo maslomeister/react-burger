@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Link, useLocation, Navigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
-import { useAppSelector, useAppDispatch } from "../../../services/hooks";
-import { createUserProfile } from "../../../services/auth/auth";
+import { useAppSelector, useAppDispatch } from "../../services/hooks";
+import { loginUserProfile } from "../../services/auth/auth";
 import {
   Input,
   Button,
@@ -11,21 +11,19 @@ import {
   userAuthorized,
   validateEmail,
   validatePassword,
-  validateName,
-} from "../../../utils/utils";
-import { LocationProps } from "../../../utils/api";
+} from "../../utils/utils";
+import { LocationProps } from "../../utils/api";
 
 import styles from "./auth-pages.module.css";
 
-export function Register({ from }: { from?: string }) {
+export function Login() {
   let content;
   const location = useLocation() as LocationProps;
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const { user, status, error } = useAppSelector((state) => state.authUser);
 
-  const [nameInputError, setNameInputError] = useState("");
-  const [nameInput, setNameInput] = useState("");
   const [emailInputError, setEmailInputError] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const [passwordInputError, setPasswordInputError] = useState("");
@@ -33,12 +31,8 @@ export function Register({ from }: { from?: string }) {
   const [revealPassword, setRevealPassword] = useState(false);
 
   function validateFields() {
-    const nameValidation = validateName(nameInput);
     const emailValidation = validateEmail(emailInput);
     const passwordValidation = validatePassword(passwordInput);
-    if (!nameValidation.isValid) {
-      setNameInputError(nameValidation.error);
-    }
     if (!emailValidation.isValid) {
       setEmailInputError(emailValidation.error);
     }
@@ -46,66 +40,57 @@ export function Register({ from }: { from?: string }) {
       setPasswordInputError(passwordValidation.error);
     }
 
-    return nameValidation.isValid &&
-      emailValidation.isValid &&
-      passwordValidation.isValid
-      ? true
-      : false;
+    return emailValidation.isValid && passwordValidation.isValid ? true : false;
   }
 
-  const createUser = () => {
+  const loginUser = async () => {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email: emailInput,
         password: passwordInput,
-        name: nameInput,
       }),
     };
 
-    dispatch(createUserProfile(requestOptions));
+    dispatch(loginUserProfile(requestOptions));
   };
 
   const submitForm = (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (validateFields()) {
-      createUser();
+      loginUser();
     }
   };
+
+  useEffect(() => {
+    if (userAuthorized(user)) {
+      navigate(location.state ? location.state.from : "/", {
+        replace: true,
+      });
+    }
+  }, [location.state, navigate, user]);
 
   const input = (loading: boolean, error?: string) => {
     return (
       <>
         <form className={styles["inner-container"]} onSubmit={submitForm}>
+          <p className="text text_type_main-medium mb-6">Вход</p>
           <div className="mb-6">
             <Input
-              type={"text"}
-              placeholder={"Имя"}
-              value={nameInput}
-              disabled={loading ? true : false}
-              error={nameInputError ? true : false}
-              errorText={nameInputError}
-              onChange={(e) => {
-                setNameInputError("");
-                setNameInput(e.target.value);
-              }}
-            />
-          </div>
-          <div className="mb-6">
-            <Input
-              type={"email"}
+              type="email"
               placeholder={"Email"}
-              value={emailInput}
               disabled={loading ? true : false}
               error={emailInputError ? true : false}
               errorText={emailInputError}
+              value={emailInput}
               onChange={(e) => {
                 setEmailInputError("");
                 setEmailInput(e.target.value);
               }}
             />
           </div>
+
           <div className="mb-6">
             <Input
               icon={revealPassword ? "HideIcon" : "ShowIcon"}
@@ -122,6 +107,7 @@ export function Register({ from }: { from?: string }) {
               onIconClick={() => setRevealPassword(!revealPassword)}
             />
           </div>
+
           <div className={error ? "mb-5" : "mb-20"}>
             <Button
               disabled={loading ? true : false}
@@ -129,7 +115,7 @@ export function Register({ from }: { from?: string }) {
               htmlType="submit"
               size="medium"
             >
-              {loading ? <>Идет регистрация</> : <>Зарегестрироваться</>}
+              Войти
             </Button>
           </div>
 
@@ -143,43 +129,51 @@ export function Register({ from }: { from?: string }) {
         </form>
 
         {!loading ? (
-          <div className={`${styles["text"]} mb-4`}>
-            <p className="text text_type_main-default text_color_inactive">
-              Уже зарегестрированы?&nbsp;
-            </p>
-            <Link to={"/login"}>
-              <p
-                className={`${styles["text-link"]} text text_type_main-default`}
-              >
-                Войти
+          <>
+            <div className={`${styles["text"]} mb-4`}>
+              <p className="text text_type_main-default text_color_inactive">
+                Вы новый пользователь?&nbsp;
               </p>
-            </Link>
-          </div>
+
+              <Link to={"/register"}>
+                <p
+                  className={`${styles["text-link"]} text text_type_main-default`}
+                >
+                  Зарегестрироваться
+                </p>
+              </Link>
+            </div>
+
+            <div className={styles["text"]}>
+              <p className="text text_type_main-default text_color_inactive">
+                Забыли пароль?&nbsp;
+              </p>
+
+              <Link to={"/forgot-password"}>
+                <p
+                  className={`${styles["text-link"]} text text_type_main-default`}
+                >
+                  Восстановить пароль
+                </p>
+              </Link>
+            </div>
+          </>
         ) : null}
       </>
     );
   };
 
-  if (status === "registerUser/loading") {
+  if (status === "loginUser/loading") {
     content = input(true);
   } else if (
     status === "getUserData/loading" ||
     status === "getToken/loading"
   ) {
     content = <></>;
-  } else if (status === "registerUser/failed") {
+  } else if (status === "loginUser/failed") {
     content = input(false, error);
   } else {
     content = input(false);
-  }
-
-  if (userAuthorized(user)) {
-    return (
-      <Navigate
-        to={location.state ? location.state.from : "/"}
-        replace={true}
-      />
-    );
   }
 
   return <div className={styles["container"]}>{content}</div>;

@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useAppSelector, useAppDispatch } from "../../../services/hooks";
-import { LoadingScreen } from "../../../components/loading-screen/loading-screen";
-import { logoutUserProfile } from "../../../services/auth/auth";
-import { getCookie } from "../../../utils/utils";
+import { useAppSelector, useAppDispatch } from "../../services/hooks";
+import { LoadingScreen } from "../../components/loading-screen/loading-screen";
+import { logoutUserProfile } from "../../services/auth/auth";
+import { getCookie } from "../../utils/utils";
 
 import styles from "./auth-pages.module.css";
 

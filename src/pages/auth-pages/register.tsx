@@ -1,64 +1,76 @@
 import React, { useState } from "react";
 import { Link, useLocation, Navigate } from "react-router-dom";
 
-import { useAppSelector, useAppDispatch } from "../../../services/hooks";
+import { useAppSelector, useAppDispatch } from "../../services/hooks";
+import { createUserProfile } from "../../services/auth/auth";
 import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { LocationProps } from "../../../utils/api";
-import { userAuthorized, validatePassword } from "../../../utils/utils";
-import { resetPasswordUser } from "../../../services/auth/auth";
+import {
+  userAuthorized,
+  validateEmail,
+  validatePassword,
+  validateName,
+} from "../../utils/utils";
+import { LocationProps } from "../../utils/api";
 
 import styles from "./auth-pages.module.css";
 
-export function ResetPassword() {
+export function Register({ from }: { from?: string }) {
   let content;
   const location = useLocation() as LocationProps;
   const dispatch = useAppDispatch();
 
   const { user, status, error } = useAppSelector((state) => state.authUser);
 
+  const [nameInputError, setNameInputError] = useState("");
+  const [nameInput, setNameInput] = useState("");
+  const [emailInputError, setEmailInputError] = useState("");
+  const [emailInput, setEmailInput] = useState("");
   const [passwordInputError, setPasswordInputError] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [revealPassword, setRevealPassword] = useState(false);
-  const [confirmationCodeInputError, setConfirmationCodeInputError] =
-    useState("");
-  const [confirmationCodeInput, setConfirmationCodeInput] = useState("");
 
   function validateFields() {
+    const nameValidation = validateName(nameInput);
+    const emailValidation = validateEmail(emailInput);
     const passwordValidation = validatePassword(passwordInput);
+    if (!nameValidation.isValid) {
+      setNameInputError(nameValidation.error);
+    }
+    if (!emailValidation.isValid) {
+      setEmailInputError(emailValidation.error);
+    }
     if (!passwordValidation.isValid) {
       setPasswordInputError(passwordValidation.error);
     }
-    if (confirmationCodeInput === "") {
-      setConfirmationCodeInputError("Поле не может быть пустым");
-    }
 
-    if (passwordValidation.isValid && confirmationCodeInput !== "") {
-      return true;
-    } else {
-      return false;
-    }
+    return nameValidation.isValid &&
+      emailValidation.isValid &&
+      passwordValidation.isValid
+      ? true
+      : false;
   }
 
-  const changePassword = async () => {
+  const createUser = () => {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        email: emailInput,
         password: passwordInput,
-        token: confirmationCodeInput,
+        name: nameInput,
       }),
     };
 
-    await dispatch(resetPasswordUser(requestOptions));
+    dispatch(createUserProfile(requestOptions));
   };
 
   const submitForm = (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (validateFields()) {
-      changePassword();
+      createUser();
     }
   };
 
@@ -66,14 +78,39 @@ export function ResetPassword() {
     return (
       <>
         <form className={styles["inner-container"]} onSubmit={submitForm}>
-          <p className="text text_type_main-medium mb-6">
-            Восстановление пароля
-          </p>
+          <div className="mb-6">
+            <Input
+              type={"text"}
+              placeholder={"Имя"}
+              value={nameInput}
+              disabled={loading ? true : false}
+              error={nameInputError ? true : false}
+              errorText={nameInputError}
+              onChange={(e) => {
+                setNameInputError("");
+                setNameInput(e.target.value);
+              }}
+            />
+          </div>
+          <div className="mb-6">
+            <Input
+              type={"email"}
+              placeholder={"Email"}
+              value={emailInput}
+              disabled={loading ? true : false}
+              error={emailInputError ? true : false}
+              errorText={emailInputError}
+              onChange={(e) => {
+                setEmailInputError("");
+                setEmailInput(e.target.value);
+              }}
+            />
+          </div>
           <div className="mb-6">
             <Input
               icon={revealPassword ? "HideIcon" : "ShowIcon"}
               type={revealPassword ? "text" : "password"}
-              placeholder={"Введите новый пароль"}
+              placeholder={"Пароль"}
               value={passwordInput}
               disabled={loading ? true : false}
               error={passwordInputError ? true : false}
@@ -85,28 +122,14 @@ export function ResetPassword() {
               onIconClick={() => setRevealPassword(!revealPassword)}
             />
           </div>
-          <div className="mb-6">
-            <Input
-              placeholder={"Введите код из письма"}
-              value={confirmationCodeInput}
-              disabled={loading ? true : false}
-              error={confirmationCodeInputError ? true : false}
-              errorText={confirmationCodeInputError}
-              onChange={(e) => {
-                setConfirmationCodeInputError("");
-                setConfirmationCodeInput(e.target.value);
-              }}
-            />
-          </div>
-
           <div className={error ? "mb-5" : "mb-20"}>
             <Button
               disabled={loading ? true : false}
               type="primary"
-              size="medium"
               htmlType="submit"
+              size="medium"
             >
-              Сохранить
+              {loading ? <>Идет регистрация</> : <>Зарегестрироваться</>}
             </Button>
           </div>
 
@@ -118,10 +141,11 @@ export function ResetPassword() {
             </p>
           ) : null}
         </form>
+
         {!loading ? (
           <div className={`${styles["text"]} mb-4`}>
             <p className="text text_type_main-default text_color_inactive">
-              Вспомнили пароль?&nbsp;
+              Уже зарегестрированы?&nbsp;
             </p>
             <Link to={"/login"}>
               <p
@@ -136,23 +160,26 @@ export function ResetPassword() {
     );
   };
 
-  if (status === "resetPassword/loading") {
+  if (status === "registerUser/loading") {
     content = input(true);
-  } else if (status === "resetPassword/failed") {
+  } else if (
+    status === "getUserData/loading" ||
+    status === "getToken/loading"
+  ) {
+    content = <></>;
+  } else if (status === "registerUser/failed") {
     content = input(false, error);
   } else {
     content = input(false);
   }
 
-  if (!userAuthorized(user)) {
-    if (location.state?.from === undefined) {
-      return <Navigate to="/forgot-password" replace={true} />;
-    }
-    if (status === "resetPassword/success") {
-      return <Navigate to="/login" replace={true} />;
-    }
-  } else {
-    return <Navigate to="/profile" replace={true} />;
+  if (userAuthorized(user)) {
+    return (
+      <Navigate
+        to={location.state ? location.state.from : "/"}
+        replace={true}
+      />
+    );
   }
 
   return <div className={styles["container"]}>{content}</div>;

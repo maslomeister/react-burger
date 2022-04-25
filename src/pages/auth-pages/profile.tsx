@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
-import { useAppSelector, useAppDispatch } from "../../../services/hooks";
-import { resetState } from "../../../services/auth/auth";
+import { useAppSelector, useAppDispatch } from "../../services/hooks";
+import { resetState } from "../../services/auth/auth";
 import {
   Input,
   Button,
@@ -10,8 +10,8 @@ import {
 import {
   getOrUpdateUserData,
   getNewAccessToken,
-} from "../../../services/auth/auth";
-import { getCookie, validateName, validateEmail } from "../../../utils/utils";
+} from "../../services/auth/auth";
+import { getCookie, validateName, validateEmail } from "../../utils/utils";
 
 import styles from "./auth-pages.module.css";
 

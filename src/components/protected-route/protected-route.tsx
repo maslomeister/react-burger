@@ -8,8 +8,6 @@ export function ProtectedRoute({ children }: { children: JSX.Element }) {
   let location = useLocation();
 
   if (!userAuthorized(user)) {
-    if (location.pathname === "/logout")
-      return <Navigate to="/login" replace />;
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 

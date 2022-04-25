@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate, Navigate } from "react-router-dom";
 
-import { useAppSelector, useAppDispatch } from "../../../services/hooks";
+import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { userAuthorized, validateEmail } from "../../../utils/utils";
-import { forgotUserPassword } from "../../../services/auth/auth";
+import { userAuthorized, validateEmail } from "../../utils/utils";
+import { forgotUserPassword } from "../../services/auth/auth";
 
 import styles from "./auth-pages.module.css";
 

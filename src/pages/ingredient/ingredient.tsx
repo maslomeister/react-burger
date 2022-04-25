@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { useAppSelector, useAppDispatch } from "../../../services/hooks";
-import { IngredientDetails } from "../../../components/ingredient-details/ingredient-details";
-import { addDataToPage } from "../../../services/ingredient-details";
+import { useAppSelector, useAppDispatch } from "../../services/hooks";
+import { IngredientDetails } from "../../components/ingredient-details/ingredient-details";
+import { addDataToPage } from "../../services/ingredient-details";
 
 import styles from "./ingredient.module.css";
 
