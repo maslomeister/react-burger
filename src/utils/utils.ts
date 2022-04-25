@@ -30,3 +30,50 @@ export function setCookie(name: string, value: string, props?: any) {
   }
   document.cookie = updatedCookie;
 }
+
+export function userAuthorized(user: { name: string; email: string }) {
+  if (user.email === "" && user.name === "") {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+export function checkAccessToken() {
+  return getCookie("refreshToken");
+}
+
+export function validateName(input: string) {
+  const regex = new RegExp("^[-a-zA-Zа-яА-Я0-9]+$");
+  if (input.length === 0) {
+    return { isValid: false, error: "Имя не может быть пустым" };
+  }
+  if (input.length <= 4) {
+    return { isValid: false, error: "Минимальная длина имени - 4 символа" };
+  }
+  if (!regex.exec(input)) {
+    return {
+      isValid: false,
+      error: "Имя не может содержать символы или пробелы",
+    };
+  }
+
+  return { isValid: true, error: "" };
+}
+
+export function validateEmail(input: string) {
+  if (input.length === 0) {
+    return { isValid: false, error: "Email не может быть пустым" };
+  }
+  return { isValid: true, error: "" };
+}
+
+export function validatePassword(input: string) {
+  if (input.length === 0) {
+    return { isValid: false, error: "Пароль не может быть пустым" };
+  }
+  if (input.length <= 8) {
+    return { isValid: false, error: "Минимальная длина пароля - 8 символов" };
+  }
+  return { isValid: true, error: "" };
+}
