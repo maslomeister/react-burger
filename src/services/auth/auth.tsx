@@ -4,29 +4,32 @@ import {
   RequestOptions,
   createUser,
   loginUser,
-  getUser,
+  logoutUser,
+  getOrUpdateUser,
   getNewToken,
+  forgotPassword,
+  resetPassword,
 } from "../../utils/api";
-import { getCookie, setCookie } from "../../utils/utils";
+import { setCookie } from "../../utils/utils";
 
-const tokenLifeTime = 50;
+//TODO изменить на 1100
+const tokenLifeTime = 10;
 
-interface SliceState {
+type User = {
   name: string;
   email: string;
+};
+
+interface SliceState {
+  user: User;
   status: string;
   error: string;
-  accessToken: string;
-  refreshToken: string;
 }
 
 const initialState: SliceState = {
-  name: "",
-  email: "",
+  user: { name: "", email: "" },
   status: "idle",
   error: "",
-  accessToken: "",
-  refreshToken: "",
 };
 
 export const createUserProfile = createAsyncThunk(
@@ -45,10 +48,18 @@ export const loginUserProfile = createAsyncThunk(
   }
 );
 
-export const getUserProfile = createAsyncThunk(
+export const logoutUserProfile = createAsyncThunk(
+  "auth/logoutUser",
+  async (requestOptions: RequestOptions) => {
+    const response = await logoutUser(requestOptions);
+    return response;
+  }
+);
+
+export const getOrUpdateUserData = createAsyncThunk(
   "auth/getUser",
   async (requestOptions: RequestOptions) => {
-    const response = await getUser(requestOptions);
+    const response = await getOrUpdateUser(requestOptions);
     return response;
   }
 );
@@ -61,84 +72,157 @@ export const getNewAccessToken = createAsyncThunk(
   }
 );
 
+export const forgotUserPassword = createAsyncThunk(
+  "auth/checkEmail",
+  async (requestOptions: RequestOptions) => {
+    const response = await forgotPassword(requestOptions);
+    return response;
+  }
+);
+
+export const resetPasswordUser = createAsyncThunk(
+  "auth/resetPassword",
+  async (requestOptions: RequestOptions) => {
+    const response = await resetPassword(requestOptions);
+    return response;
+  }
+);
+
 export const authUser = createSlice({
   name: "authUser",
   initialState,
-  reducers: {},
+  reducers: {
+    setIdle: (state: SliceState) => {
+      state.status = "idle";
+    },
+    resetState: (state: SliceState) => {
+      return (state = initialState);
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(createUserProfile.pending, (state) => {
-        state.status = "loading";
+        state.status = "registerUser/loading";
+        state.error = "";
       })
       .addCase(createUserProfile.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.status = "registerUser/success";
 
-        state.name = action.payload.user.name;
-        state.email = action.payload.user.email;
-        state.accessToken = action.payload.accessToken;
+        state.user = {
+          name: action.payload.user.name,
+          email: action.payload.user.email,
+        };
         setCookie("accessToken", action.payload.accessToken, {
           expires: tokenLifeTime,
         });
-        state.refreshToken = action.payload.refreshToken;
         setCookie("refreshToken", action.payload.refreshToken);
       })
       .addCase(createUserProfile.rejected, (state, action) => {
-        state.status = "failed";
+        state.status = "registerUser/failed";
         if (action.error.message) state.error = action.error.message;
       })
 
       .addCase(loginUserProfile.pending, (state) => {
-        state.status = "loading";
+        state.status = "loginUser/loading";
+        state.error = "";
       })
       .addCase(loginUserProfile.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.status = "loginUser/success";
 
-        state.name = action.payload.user.name;
-        state.email = action.payload.user.email;
-        state.accessToken = action.payload.accessToken;
+        state.user = {
+          name: action.payload.user.name,
+          email: action.payload.user.email,
+        };
         setCookie("accessToken", action.payload.accessToken, {
           expires: tokenLifeTime,
         });
-        state.refreshToken = action.payload.refreshToken;
         setCookie("refreshToken", action.payload.refreshToken);
       })
       .addCase(loginUserProfile.rejected, (state, action) => {
-        state.status = "failed";
+        state.status = "loginUser/failed";
         if (action.error.message) state.error = action.error.message;
       })
 
-      .addCase(getUserProfile.pending, (state) => {
-        state.status = "loading";
+      .addCase(logoutUserProfile.pending, (state) => {
+        state.status = "logout/loading";
+        state.error = "";
       })
-      .addCase(getUserProfile.fulfilled, (state, action) => {
-        state.status = "succeeded";
+      .addCase(logoutUserProfile.fulfilled, (state, action) => {
+        state.user = { name: "", email: "" };
+        state.status = "logout/success";
+        setCookie("accessToken", "", {
+          expires: 1,
+        });
+        setCookie("refreshToken", "", {
+          expires: 1,
+        });
+      })
+      .addCase(logoutUserProfile.rejected, (state, action) => {
+        state.status = "logout/failed";
+        if (action.error.message) state.error = action.error.message;
+      })
 
-        state.name = action.payload.user.name;
-        state.email = action.payload.user.email;
+      .addCase(getOrUpdateUserData.pending, (state) => {
+        state.status = "getUserData/loading";
+        state.error = "";
       })
-      .addCase(getUserProfile.rejected, (state, action) => {
-        state.status = "failed";
+      .addCase(getOrUpdateUserData.fulfilled, (state, action) => {
+        return (state = {
+          ...state,
+          status: "getUserData/success",
+          user: {
+            name: action.payload.user.name,
+            email: action.payload.user.email,
+          },
+        });
+      })
+      .addCase(getOrUpdateUserData.rejected, (state, action) => {
+        state.status = "getUserData/failed";
         if (action.error.message) state.error = action.error.message;
       })
 
       .addCase(getNewAccessToken.pending, (state) => {
-        state.status = "loading";
+        state.status = "getToken/loading";
+        state.error = "";
       })
       .addCase(getNewAccessToken.fulfilled, (state, action) => {
-        state.status = "succeeded";
-
-        state.accessToken = action.payload.accessToken;
         setCookie("accessToken", action.payload.accessToken, {
           expires: tokenLifeTime,
         });
-        state.refreshToken = action.payload.refreshToken;
         setCookie("refreshToken", action.payload.refreshToken);
+        state.status = "getToken/success";
       })
       .addCase(getNewAccessToken.rejected, (state, action) => {
-        state.status = "failed";
+        state.status = "getToken/failed";
+        if (action.error.message) state.error = action.error.message;
+      })
+
+      .addCase(forgotUserPassword.pending, (state) => {
+        state.status = "forgotPassword/loading";
+        state.error = "";
+      })
+      .addCase(forgotUserPassword.fulfilled, (state, action) => {
+        state.status = "forgotPassword/success";
+      })
+      .addCase(forgotUserPassword.rejected, (state, action) => {
+        state.status = "forgotPassword/failed";
+        if (action.error.message) state.error = action.error.message;
+      })
+
+      .addCase(resetPasswordUser.pending, (state) => {
+        state.status = "resetPassword/loading";
+        state.error = "";
+      })
+      .addCase(resetPasswordUser.fulfilled, (state, action) => {
+        state.status = "resetPassword/success";
+      })
+      .addCase(resetPasswordUser.rejected, (state, action) => {
+        state.status = "resetPassword/failed";
         if (action.error.message) state.error = action.error.message;
       });
   },
 });
+
+export const { setIdle, resetState } = authUser.actions;
 
 export default authUser.reducer;
