@@ -31,8 +31,8 @@
 .profile-buttons {
   display: flex;
   flex-flow: row;
-  align-items: end;
-  justify-content: end;
+  align-items: flex-end;
+  justify-content: flex-end;
 }
 
 .text {
