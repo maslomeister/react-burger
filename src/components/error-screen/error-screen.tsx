@@ -1,7 +1,6 @@
-import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-import styles from "./loading-screen.module.css";
+import styles from "./error-screen.module.css";
 
 export function ErrorScreen({ text }: { text: string }) {
   return (
