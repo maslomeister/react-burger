@@ -1,8 +1,5 @@
 const BURGER_API_URL = "https://norma.nomoreparties.space/api";
 
-//account name maslomeister@gmail.com
-//pass 4568jdfshkje
-
 export interface Ingredient {
   _id: string;
   name: string;
@@ -71,6 +68,10 @@ const checkResponse = (res: Response) => {
     : res.json().then((err) => {
         if (err.message === "email or password are incorrect") {
           throw new Error(`Неправильно введен логин или пароль`);
+        } else if (err.message === "User already exists") {
+          throw new Error(`Такой Email уже зарегестрирован`);
+        } else if (err.message === "Incorrect reset token") {
+          throw new Error(`Неправильный код из письма`);
         } else {
           throw new Error(
             `Произошла непредвиденная ошибка: ${JSON.stringify(err)}`
@@ -103,7 +104,13 @@ export const loginUser = async (requestOptions: RequestOptions) => {
   return checksuccess(data, data);
 };
 
-export const getUser = async (requestOptions: RequestOptions) => {
+export const logoutUser = async (requestOptions: RequestOptions) => {
+  const res = await fetch(`${BURGER_API_URL}/auth/logout`, requestOptions);
+  const data = await checkResponse(res);
+  return checksuccess(data, data);
+};
+
+export const getOrUpdateUser = async (requestOptions: RequestOptions) => {
   const res = await fetch(`${BURGER_API_URL}/auth/user`, requestOptions);
   const data = await checkResponse(res);
   return checksuccess(data, data);
@@ -111,12 +118,6 @@ export const getUser = async (requestOptions: RequestOptions) => {
 
 export const getNewToken = async (requestOptions: RequestOptions) => {
   const res = await fetch(`${BURGER_API_URL}/auth/token`, requestOptions);
-  const data = await checkResponse(res);
-  return checksuccess(data, data);
-};
-
-export const logoutUser = async (requestOptions: RequestOptions) => {
-  const res = await fetch(`${BURGER_API_URL}/logout`, requestOptions);
   const data = await checkResponse(res);
   return checksuccess(data, data);
 };
