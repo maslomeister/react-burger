@@ -12,53 +12,26 @@ import { LoadingScreen } from "../../loading-screen/loading-screen";
 import styles from "./constructor.module.css";
 
 export function Constructor() {
-  const dispatch = useAppDispatch();
-
-  const { status, error } = useAppSelector((state) => state.burgerIngredients);
-
-  useEffect(() => {
-    if (status === "idle") {
-      dispatch(fetchIngredients());
-    }
-  }, [status, dispatch]);
-
-  let content;
-
-  if (status === "loading") {
-    content = (
-      <LoadingScreen text={"Загружаются данные конструктора"} size={"medium"} />
-    );
-  } else if (status === "succeeded") {
-    content = (
-      <motion.div
-        key="burger-constructor"
-        initial={{ y: "-200%" }}
-        exit={{ x: "-200%" }}
-        animate={{ y: 0 }}
-        transition={{
-          type: "tween",
-        }}
-      >
-        <section className={styles["row"]}>
-          <DndProvider backend={HTML5Backend}>
-            <div className={`mr-10`}>
-              <BurgerIngredientsMemoized />
-            </div>
-            <div>
-              <BurgerConstructor />
-            </div>
-          </DndProvider>
-        </section>
-      </motion.div>
-    );
-  } else if (status === "failed") {
-    content = (
-      <div className={styles["loading"]}>
-        <p className="text text_type_main-large">
-          Данные не смогли загрузиться: {error}
-        </p>
-      </div>
-    );
-  }
-  return <>{content}</>;
+  return (
+    <motion.div
+      key="burger-constructor"
+      initial={{ y: "-200%" }}
+      exit={{ x: "-200%" }}
+      animate={{ y: 0 }}
+      transition={{
+        type: "tween",
+      }}
+    >
+      <section className={styles["row"]}>
+        <DndProvider backend={HTML5Backend}>
+          <div className={`mr-10`}>
+            <BurgerIngredientsMemoized />
+          </div>
+          <div>
+            <BurgerConstructor />
+          </div>
+        </DndProvider>
+      </section>
+    </motion.div>
+  );
 }
