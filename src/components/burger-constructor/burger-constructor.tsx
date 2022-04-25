@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDrop } from "react-dnd";
 
@@ -22,12 +23,15 @@ import { getOrderNumber } from "../../services/order-details";
 import styles from "./burger-constructor.module.css";
 
 function BurgerConstructor() {
+  const navigate = useNavigate();
   const dropRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [errorModal, setErrorModal] = useState("");
   const [showErrorModal, setShowErrorModal] = useState(false);
   const dispatch = useAppDispatch();
   let conditonalStyle;
+
+  const { user } = useAppSelector((state) => state.authUser);
 
   const { ingredients, bun } = useAppSelector(
     (state) => state.constructorIngredients
@@ -66,27 +70,34 @@ function BurgerConstructor() {
   );
 
   const createOrder = () => {
-    if (!bun.price) {
-      setErrorModal("Нельзя оформить бургер без булки");
-      setShowErrorModal(true);
-      return;
-    }
-    if (ingredients.length === 0) {
-      setErrorModal("Бургер не может быть пустым");
-      setShowErrorModal(true);
-      return;
-    }
-    setShowModal(true);
+    if (user) {
+      if (!bun.price) {
+        setErrorModal("Нельзя оформить бургер без булки");
+        setShowErrorModal(true);
+        return;
+      }
+      if (ingredients.length === 0) {
+        setErrorModal("Бургер не может быть пустым");
+        setShowErrorModal(true);
+        return;
+      }
+      setShowModal(true);
 
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ingredients: [...ingredients.map(({ _id }) => _id), bun._id],
-      }),
-    };
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ingredients: [...ingredients.map(({ _id }) => _id), bun._id],
+        }),
+      };
 
-    dispatch(getOrderNumber(requestOptions));
+      dispatch(getOrderNumber(requestOptions));
+    } else {
+      navigate("/login", {
+        state: { from: "/" },
+        replace: true,
+      });
+    }
   };
 
   function hideModal() {
