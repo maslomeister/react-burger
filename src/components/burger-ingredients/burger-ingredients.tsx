@@ -1,6 +1,7 @@
 import { memo, useRef, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { Modal } from "../../components/modal/modal";
 import { IngredientDetails } from "../../components/ingredient-details/ingredient-details";
 import { BurgerIngredientItemMemoized } from "./components/burger-ingredients-item/burger-ingredients-item";
 import { Tabs } from "../../utils/tabs-data";
@@ -83,10 +84,14 @@ function BurgerIngredients() {
   return (
     <AnimatePresence>
       {showModal && (
-        <IngredientDetails
-          onClose={() => removeDataFromModal()}
+        <Modal
           key="burger-details-modal"
-        />
+          onClose={() => removeDataFromModal()}
+          title="Детали ингредиента"
+          closeIconType="primary"
+        >
+          <IngredientDetails />
+        </Modal>
       )}
 
       <div>
