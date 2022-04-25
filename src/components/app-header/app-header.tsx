@@ -6,6 +6,8 @@ import {
   ListIcon,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useAppSelector } from "../../services/hooks";
+import { userAuthorized } from "../../utils/utils";
 
 import styles from "./app-header.module.css";
 
@@ -20,6 +22,8 @@ const buttonType = (link: string, active: string) => {
 
 export function AppHeader() {
   const location = useLocation();
+  const { user } = useAppSelector((state) => state.authUser);
+
   return (
     <header className={styles["header"]}>
       <nav className={styles["header-inner"]}>
@@ -46,7 +50,7 @@ export function AppHeader() {
           <li className={`${styles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
             <ProfileIcon type={buttonType("/profile", location.pathname)} />
             <NavLink className={setActive} to="/profile" end>
-              Личный кабинет
+              {userAuthorized(user) ? <>Личный кабинет</> : <>Войти</>}
             </NavLink>
           </li>
         </ul>
