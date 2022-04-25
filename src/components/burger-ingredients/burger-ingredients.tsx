@@ -1,5 +1,6 @@
-import { memo, useRef, useMemo, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { memo, useRef, useMemo, useCallback, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 
 import { Modal } from "../../components/modal/modal";
 import { IngredientDetails } from "../../components/ingredient-details/ingredient-details";
@@ -21,6 +22,9 @@ interface CounterType extends Record<string, any> {
 function BurgerIngredients() {
   const tabsRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const ingredientId = sessionStorage.getItem("ingredientId");
 
   const ingredients = useAppSelector(
     (state) => state.burgerIngredients.ingredients
@@ -49,6 +53,26 @@ function BurgerIngredients() {
     [ingredients]
   );
 
+  useEffect(() => {
+    if (ingredientId) {
+      const ingredient = ingredients.find(
+        (_ingredient) => _ingredient._id === ingredientId
+      );
+      if (ingredient) {
+        dispatch(
+          addDataToModal({
+            modalImage: ingredient.image_large,
+            modalName: ingredient.name,
+            modalCalories: ingredient.calories,
+            modalProteins: ingredient.price,
+            modalFat: ingredient.fat,
+            modalCarbohydrates: ingredient.carbohydrates,
+          })
+        );
+      }
+    }
+  }, []);
+
   const ingredientsCounter = useMemo(() => {
     const { bun, ingredients } = constructorIngredients;
     const counters: CounterType = {};
@@ -62,6 +86,8 @@ function BurgerIngredients() {
 
   const modalData = useCallback(
     (ingredient) => () => {
+      sessionStorage.setItem("ingredientId", ingredient._id);
+      navigate(`/ingredients/${ingredient._id}`, { state: { from: "/" } });
       dispatch(
         addDataToModal({
           modalImage: ingredient.image_large,
@@ -73,12 +99,14 @@ function BurgerIngredients() {
         })
       );
     },
-    [dispatch]
+    [dispatch, navigate]
   );
 
   const removeDataFromModal = useCallback(() => {
     dispatch(resetModalData());
-  }, [dispatch]);
+    sessionStorage.removeItem("ingredientId");
+    navigate("/");
+  }, [dispatch, navigate]);
 
   const ingredientsCategories = [buns, sauces, mains];
   return (

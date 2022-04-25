@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from "../../../services/hooks";
@@ -10,13 +10,14 @@ import styles from "./ingredient.module.css";
 export function Ingredient() {
   let content;
   const dispatch = useAppDispatch();
+
   const { id } = useParams();
+
   const ingredients = useAppSelector(
     (state) => state.burgerIngredients.ingredients
   );
-  const [ingredientExists, setIngredientExists] = useState(false);
 
-  console.log(id);
+  const [ingredientExists, setIngredientExists] = useState(false);
 
   useEffect(() => {
     const ingredient = ingredients.find((obj) => obj._id === id);
@@ -33,7 +34,7 @@ export function Ingredient() {
         })
       );
     }
-  }, [id]);
+  }, [dispatch, id, ingredients]);
 
   if (ingredientExists) {
     content = <IngredientDetails />;
@@ -44,6 +45,10 @@ export function Ingredient() {
       </p>
     );
   }
+
+  // if (location.state && location.state.from) {
+  //   return <Constructor />;
+  // }
 
   return <div className={styles["container"]}>{content}</div>;
 }
