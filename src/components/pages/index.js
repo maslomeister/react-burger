@@ -1,6 +1,9 @@
+export { Ingredient } from "./ingredient/ingredient";
 export { Login } from "./auth-pages/login";
 export { Register } from "./auth-pages/register";
 export { ForgotPassword } from "./auth-pages/forgot-password";
 export { ResetPassword } from "./auth-pages/reset-password";
 export { Profile } from "./auth-pages/profile";
+export { Logout } from "./auth-pages/logout";
 export { Constructor } from "./constructor/constructor";
+export { NotFound } from "./not-found/not-found";
