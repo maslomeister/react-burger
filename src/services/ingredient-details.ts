@@ -24,6 +24,25 @@ export const ingredientDetails = createSlice({
   name: "ingredientDetails",
   initialState,
   reducers: {
+    addDataToPage: (
+      state,
+      action: PayloadAction<{
+        modalImage: string;
+        modalName: string;
+        modalCalories: number;
+        modalProteins: number;
+        modalFat: number;
+        modalCarbohydrates: number;
+      }>
+    ) => {
+      state.modalImage = action.payload.modalImage;
+      state.modalName = action.payload.modalName;
+      state.modalCalories = action.payload.modalCalories;
+      state.modalProteins = action.payload.modalProteins;
+      state.modalFat = action.payload.modalFat;
+      state.modalCarbohydrates = action.payload.modalCarbohydrates;
+    },
+
     addDataToModal: (
       state,
       action: PayloadAction<{
@@ -49,6 +68,7 @@ export const ingredientDetails = createSlice({
   },
 });
 
-export const { addDataToModal, resetModalData } = ingredientDetails.actions;
+export const { addDataToModal, addDataToPage, resetModalData } =
+  ingredientDetails.actions;
 
 export default ingredientDetails.reducer;

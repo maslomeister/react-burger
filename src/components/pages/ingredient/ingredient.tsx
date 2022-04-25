@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from "../../../services/hooks";
 import { IngredientDetails } from "../../../components/ingredient-details/ingredient-details";
-import { addDataToModal } from "../../../services/ingredient-details";
+import { addDataToPage } from "../../../services/ingredient-details";
 
 import styles from "./ingredient.module.css";
 
@@ -24,7 +24,7 @@ export function Ingredient() {
     if (ingredient) {
       setIngredientExists(true);
       dispatch(
-        addDataToModal({
+        addDataToPage({
           modalImage: ingredient.image_large,
           modalName: ingredient.name,
           modalCalories: ingredient.calories,

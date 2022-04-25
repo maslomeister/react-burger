@@ -12,7 +12,7 @@ import {
 } from "../../utils/api";
 import { setCookie } from "../../utils/utils";
 
-const tokenLifeTime = 1100;
+const tokenLifeTime = 1150;
 
 type User = {
   name: string;
@@ -150,10 +150,10 @@ export const authUser = createSlice({
         state.user = { name: "", email: "" };
         state.status = "logout/success";
         setCookie("accessToken", "", {
-          expires: 1,
+          expires: 0,
         });
         setCookie("refreshToken", "", {
-          expires: 1,
+          expires: 0,
         });
       })
       .addCase(logoutUserProfile.rejected, (state, action) => {
