@@ -76,12 +76,12 @@ function App() {
     }
   }, [status, dispatch]);
 
-  if (status === "loading") {
+  if (status === "loading" || status === "idle") {
     content = <LoadingScreen text="Данные загружаются" size="medium" />;
   }
-  if (status === "loading") {
+  if (status === "failed") {
     content = <ErrorScreen text={`Произошла ошибка: ${error}`} />;
-  } else {
+  } else if (status === "succeeded") {
     content = (
       <Routes>
         <Route path="/" element={<Constructor />} key={location.pathname} />
