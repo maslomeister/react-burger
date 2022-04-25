@@ -9,21 +9,42 @@ import {
   PasswordInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+  userAuthorized,
+  validateEmail,
+  validatePassword,
+} from "../../../utils/utils";
 import { LocationProps } from "../../../utils/api";
 
 import styles from "./auth-pages.module.css";
 
 export function Login() {
+  let content;
   const location = useLocation() as LocationProps;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { name, status, error } = useAppSelector((state) => state.authUser);
+  const { user, status, error } = useAppSelector((state) => state.authUser);
   const [loginPressed, setLoginPressed] = useState(false);
+  const [emailInputError, setEmailInputError] = useState("");
   const [emailInput, setEmailInput] = useState("");
+  const [passwordInputError, setPasswordInputError] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
+  const [revealPassword, setRevealPassword] = useState(false);
+
+  function validateFields() {
+    const emailValidation = validateEmail(emailInput);
+    const passwordValidation = validatePassword(passwordInput);
+    if (!emailValidation.isValid) {
+      setEmailInputError(emailValidation.error);
+    }
+    if (!passwordValidation.isValid) {
+      setPasswordInputError(passwordValidation.error);
+    }
+
+    return emailValidation.isValid && passwordValidation.isValid ? true : false;
+  }
 
   const loginUser = async () => {
-    setLoginPressed(true);
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -38,70 +59,78 @@ export function Login() {
 
   const submitForm = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    loginUser();
+    if (validateFields()) {
+      loginUser();
+    }
   };
 
   useEffect(() => {
-    if (name !== "") {
-      navigate(location.state ? location.state.from : "/", { replace: true });
+    if (userAuthorized(user)) {
+      navigate(location.state ? location.state.from : "/profile", {
+        replace: true,
+      });
     }
-  }, [location.state, name, navigate]);
+  }, [location.state, navigate, user]);
 
-  useEffect(() => {
-    if (status === "succeeded") {
-      navigate(location.state ? location.state.from : "/", { replace: true });
-    }
-  }, [location.state, navigate, status]);
-
-  const login = (formLoading: boolean, error?: string) => {
+  const input = (loading: boolean, error?: string) => {
     return (
       <>
-        <p className="text text_type_main-medium mb-6">Вход</p>
         <form className={styles["inner-container"]} onSubmit={submitForm}>
+          <p className="text text_type_main-medium mb-6">Вход</p>
           <div className="mb-6">
             <Input
               type="email"
               placeholder={"Email"}
-              disabled={formLoading ? true : false}
+              disabled={loading ? true : false}
+              error={emailInputError ? true : false}
+              errorText={emailInputError}
               value={emailInput}
-              onChange={(e) => setEmailInput(e.target.value)}
+              onChange={(e) => {
+                setEmailInputError("");
+                setEmailInput(e.target.value);
+              }}
             />
           </div>
 
           <div className="mb-6">
             <Input
-              icon={"EditIcon"}
-              type="password"
+              icon={revealPassword ? "HideIcon" : "ShowIcon"}
+              type={revealPassword ? "text" : "password"}
               placeholder={"Пароль"}
-              disabled={formLoading ? true : false}
               value={passwordInput}
-              onChange={(e) => setPasswordInput(e.target.value)}
+              disabled={loading ? true : false}
+              error={passwordInputError ? true : false}
+              errorText={passwordInputError}
+              onChange={(e) => {
+                setPasswordInputError("");
+                setPasswordInput(e.target.value);
+              }}
+              onIconClick={() => setRevealPassword(!revealPassword)}
             />
           </div>
 
-          {error ? (
-            <div
-              className={`${styles["text-error"]} text text_type_main-default mb-6`}
-            >
-              {error}
-            </div>
-          ) : null}
-
-          <div className="mb-20">
+          <div className={error ? "mb-5" : "mb-20"}>
             <Button
-              disabled={formLoading ? true : false}
+              disabled={loading ? true : false}
               type="primary"
               htmlType="submit"
               size="medium"
             >
-              {formLoading ? <>Выполняется вход</> : <>Войти</>}
+              Войти
             </Button>
           </div>
+
+          {error ? (
+            <p
+              className={`${styles["text-error"]} text text_type_main-default mb-20`}
+            >
+              {error}
+            </p>
+          ) : null}
         </form>
 
-        {!formLoading ? (
+        {!loading ? (
           <>
-            <p className="text text_type_main-medium mb-6">Вход</p>
             <div className={`${styles["text"]} mb-4`}>
               <p className="text text_type_main-default text_color_inactive">
                 Вы новый пользователь?&nbsp;
@@ -135,23 +164,17 @@ export function Login() {
     );
   };
 
-  let content;
-
-  if (status === "idle") {
-    content = login(false);
-  } else if (status === "loading") {
-    if (loginPressed) {
-      content = login(true);
-    } else {
-      content = (
-        <LoadingScreen
-          text={"Загружаются данные о пользователе"}
-          size={"medium"}
-        />
-      );
-    }
-  } else if (status === "failed") {
-    content = login(false, error);
+  if (status === "loginUser/loading") {
+    content = input(true);
+  } else if (
+    status === "getUserData/loading" ||
+    status === "getToken/loading"
+  ) {
+    content = <></>;
+  } else if (status === "loginUser/failed") {
+    content = input(false, error);
+  } else {
+    content = input(false);
   }
 
   return <div className={styles["container"]}>{content}</div>;

@@ -8,18 +8,50 @@ import {
   PasswordInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+  userAuthorized,
+  validateEmail,
+  validatePassword,
+  validateName,
+} from "../../../utils/utils";
 import { LocationProps } from "../../../utils/api";
 
 import styles from "./auth-pages.module.css";
 
-export function Register() {
+export function Register({ from }: { from?: string }) {
+  let content;
   const location = useLocation() as LocationProps;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { name } = useAppSelector((state) => state.authUser);
+  const { user, status, error } = useAppSelector((state) => state.authUser);
+  const [nameInputError, setNameInputError] = useState("");
   const [nameInput, setNameInput] = useState("");
+  const [emailInputError, setEmailInputError] = useState("");
   const [emailInput, setEmailInput] = useState("");
+  const [passwordInputError, setPasswordInputError] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
+  const [revealPassword, setRevealPassword] = useState(false);
+
+  function validateFields() {
+    const nameValidation = validateName(nameInput);
+    const emailValidation = validateEmail(emailInput);
+    const passwordValidation = validatePassword(passwordInput);
+    if (!nameValidation.isValid) {
+      setNameInputError(nameValidation.error);
+    }
+    if (!emailValidation.isValid) {
+      setEmailInputError(emailValidation.error);
+    }
+    if (!passwordValidation.isValid) {
+      setPasswordInputError(passwordValidation.error);
+    }
+
+    return nameValidation.isValid &&
+      emailValidation.isValid &&
+      passwordValidation.isValid
+      ? true
+      : false;
+  }
 
   const createUser = () => {
     const requestOptions = {
@@ -37,63 +69,110 @@ export function Register() {
 
   const submitForm = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    createUser();
+    if (validateFields()) {
+      createUser();
+    }
   };
 
   useEffect(() => {
-    if (name !== "") {
+    if (userAuthorized(user)) {
       navigate(location.state ? location.state.from : "/", { replace: true });
     }
-  }, [location.state, name, navigate]);
+  }, [from, location.state, navigate, user]);
 
-  const content = (
-    <>
-      <form className={styles["inner-container"]} onSubmit={submitForm}>
-        <div className="mb-6">
-          <Input
-            placeholder={"Имя"}
-            value={nameInput}
-            onChange={(e) => setNameInput(e.target.value)}
-          />
-        </div>
-        <div className="mb-6">
-          <Input
-            placeholder={"Email"}
-            value={emailInput}
-            onChange={(e) => setEmailInput(e.target.value)}
-          />
-        </div>
-        <div className="mb-6">
-          <PasswordInput
-            name={"Пароль"}
-            size={"default"}
-            value={passwordInput}
-            onChange={(e) => setPasswordInput(e.target.value)}
-          />
-        </div>
-        <div className="mb-20">
-          <Button type="primary" htmlType="submit" size="medium">
-            Зарегестрироваться
-          </Button>
-        </div>
-      </form>
-      <div className={`${styles["text"]} mb-4`}>
-        <p className="text text_type_main-default text_color_inactive">
-          Уже зарегестрированы?&nbsp;
-        </p>
-        <Link to={"/login"}>
-          <p className={`${styles["text-link"]} text text_type_main-default`}>
-            Войти
-          </p>
-        </Link>
-      </div>
-    </>
-  );
+  const input = (loading: boolean, error?: string) => {
+    return (
+      <>
+        <form className={styles["inner-container"]} onSubmit={submitForm}>
+          <div className="mb-6">
+            <Input
+              type={"text"}
+              placeholder={"Имя"}
+              value={nameInput}
+              disabled={loading ? true : false}
+              error={nameInputError ? true : false}
+              errorText={nameInputError}
+              onChange={(e) => {
+                setNameInputError("");
+                setNameInput(e.target.value);
+              }}
+            />
+          </div>
+          <div className="mb-6">
+            <Input
+              type={"email"}
+              placeholder={"Email"}
+              value={emailInput}
+              disabled={loading ? true : false}
+              error={emailInputError ? true : false}
+              errorText={emailInputError}
+              onChange={(e) => {
+                setEmailInputError("");
+                setEmailInput(e.target.value);
+              }}
+            />
+          </div>
+          <div className="mb-6">
+            <Input
+              icon={revealPassword ? "HideIcon" : "ShowIcon"}
+              type={revealPassword ? "text" : "password"}
+              placeholder={"Пароль"}
+              value={passwordInput}
+              disabled={loading ? true : false}
+              error={passwordInputError ? true : false}
+              errorText={passwordInputError}
+              onChange={(e) => {
+                setPasswordInputError("");
+                setPasswordInput(e.target.value);
+              }}
+              onIconClick={() => setRevealPassword(!revealPassword)}
+            />
+          </div>
+          <div className={error ? "mb-5" : "mb-20"}>
+            <Button
+              disabled={loading ? true : false}
+              type="primary"
+              htmlType="submit"
+              size="medium"
+            >
+              {loading ? <>Идет регистрация</> : <>Зарегестрироваться</>}
+            </Button>
+          </div>
 
-  return (
-    <div className={styles["container"]}>
-      <p className="text text_type_main-medium mb-6">Регистрация</p>
-      {content}
-    </div>
-  );
+          {error ? (
+            <p
+              className={`${styles["text-error"]} text text_type_main-default mb-20`}
+            >
+              {error}
+            </p>
+          ) : null}
+        </form>
+
+        {!loading ? (
+          <div className={`${styles["text"]} mb-4`}>
+            <p className="text text_type_main-default text_color_inactive">
+              Уже зарегестрированы?&nbsp;
+            </p>
+            <Link to={"/login"}>
+              <p
+                className={`${styles["text-link"]} text text_type_main-default`}
+              >
+                Войти
+              </p>
+            </Link>
+          </div>
+        ) : null}
+      </>
+    );
+  };
+
+  if (status === "registerUser/loading") {
+    content = input(true);
+  } else if (status === "registerUser/failed") {
+    content = input(false, error);
+  } else {
+    content = input(false);
+  }
+
+  return <div className={styles["container"]}>{content}</div>;
 }
