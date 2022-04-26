@@ -12,9 +12,6 @@ import {
   forgotPassword,
   resetPassword,
 } from "../../utils/api";
-import { setCookie } from "../../utils/utils";
-
-const tokenLifeTime = 1150;
 
 type User = {
   name: string;
@@ -206,10 +203,6 @@ export const authUser = createSlice({
           name: action.payload.user.name,
           email: action.payload.user.email,
         };
-        setCookie("accessToken", action.payload.accessToken, {
-          expires: tokenLifeTime,
-        });
-        setCookie("refreshToken", action.payload.refreshToken);
       })
       .addCase(createUserProfile.rejected, (state, action) => {
         state.status = "registerUser/failed";
@@ -227,10 +220,10 @@ export const authUser = createSlice({
           name: action.payload.user.name,
           email: action.payload.user.email,
         };
-        setCookie("accessToken", action.payload.accessToken, {
-          expires: tokenLifeTime,
-        });
-        setCookie("refreshToken", action.payload.refreshToken);
+        // setCookie("accessToken", action.payload.accessToken, {
+        //   expires: tokenLifeTime,
+        // });
+        // setCookie("refreshToken", action.payload.refreshToken);
       })
       .addCase(loginUserProfile.rejected, (state, action) => {
         state.status = "loginUser/failed";
@@ -244,12 +237,6 @@ export const authUser = createSlice({
       .addCase(logoutUserProfile.fulfilled, (state, action) => {
         state.user = { name: "", email: "" };
         state.status = "logout/success";
-        setCookie("accessToken", "", {
-          expires: 0,
-        });
-        setCookie("refreshToken", "", {
-          expires: 0,
-        });
       })
       .addCase(logoutUserProfile.rejected, (state, action) => {
         state.status = "logout/failed";
@@ -280,10 +267,6 @@ export const authUser = createSlice({
         state.error = "";
       })
       .addCase(getNewAccessToken.fulfilled, (state, action) => {
-        setCookie("accessToken", action.payload.accessToken, {
-          expires: tokenLifeTime,
-        });
-        setCookie("refreshToken", action.payload.refreshToken);
         state.status = "getToken/success";
       })
       .addCase(getNewAccessToken.rejected, (state, action) => {

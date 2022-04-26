@@ -1,3 +1,5 @@
+import { setCookie } from "../utils/utils";
+
 const BURGER_API_URL = "https://norma.nomoreparties.space/api";
 
 export interface Ingredient {
@@ -55,7 +57,9 @@ export type LocationProps = {
   };
 };
 
-const checksuccess = (
+const tokenLifeTime = 1150;
+
+const checkSuccess = (
   data: { success: string; data: any },
   returnData: any
 ) => {
@@ -91,49 +95,72 @@ const checkResponse = (res: Response) => {
 export const getIngredients = async () => {
   const res = await fetch(`${BURGER_API_URL}/ingredients`);
   const data = await checkResponse(res);
-  return checksuccess(data, data.data);
+  return checkSuccess(data, data.data);
 };
 
 export const createOrder = async (requestOptions: RequestOptions) => {
   const res = await fetch(`${BURGER_API_URL}/orders`, requestOptions);
   const data = await checkResponse(res);
-  return checksuccess(data, data.order.number);
+  return checkSuccess(data, data.order.number);
 };
 
 export const createUser = async (requestOptions: RequestOptions) => {
   const res = await fetch(`${BURGER_API_URL}/auth/register`, requestOptions);
   const data = await checkResponse(res);
-  return checksuccess(data, data);
+  return checkSuccess(data, data);
 };
 
 export const loginUser = async (requestOptions: RequestOptions) => {
   const res = await fetch(`${BURGER_API_URL}/auth/login`, requestOptions);
   const data = await checkResponse(res);
-  return checksuccess(data, data);
+  const success = checkSuccess(data, data);
+  if (success) {
+    setCookie("accessToken", success.accessToken, {
+      expires: tokenLifeTime,
+    });
+    setCookie("refreshToken", success.refreshToken);
+  }
+  return success;
 };
 
 export const logoutUser = async (requestOptions: RequestOptions) => {
   const res = await fetch(`${BURGER_API_URL}/auth/logout`, requestOptions);
   const data = await checkResponse(res);
-  return checksuccess(data, data);
+  const success = checkSuccess(data, data);
+  if (success) {
+    setCookie("accessToken", "", {
+      expires: 0,
+    });
+    setCookie("refreshToken", "", {
+      expires: 0,
+    });
+  }
+  return success;
 };
 
 export const getOrUpdateUser = async (requestOptions: RequestOptions) => {
   const res = await fetch(`${BURGER_API_URL}/auth/user`, requestOptions);
   const data = await checkResponse(res);
-  return checksuccess(data, data);
+  return checkSuccess(data, data);
 };
 
 export const getNewToken = async (requestOptions: RequestOptions) => {
   const res = await fetch(`${BURGER_API_URL}/auth/token`, requestOptions);
   const data = await checkResponse(res);
-  return checksuccess(data, data);
+  const success = checkSuccess(data, data);
+  if (success) {
+    setCookie("accessToken", success.accessToken, {
+      expires: tokenLifeTime,
+    });
+    setCookie("refreshToken", success.refreshToken);
+  }
+  return success;
 };
 
 export const forgotPassword = async (requestOptions: RequestOptions) => {
   const res = await fetch(`${BURGER_API_URL}/password-reset`, requestOptions);
   const data = await checkResponse(res);
-  return checksuccess(data, data);
+  return checkSuccess(data, data);
 };
 
 export const resetPassword = async (requestOptions: RequestOptions) => {
@@ -142,5 +169,5 @@ export const resetPassword = async (requestOptions: RequestOptions) => {
     requestOptions
   );
   const data = await checkResponse(res);
-  return checksuccess(data, data);
+  return checkSuccess(data, data);
 };
