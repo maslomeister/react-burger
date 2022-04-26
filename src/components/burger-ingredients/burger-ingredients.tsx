@@ -1,17 +1,13 @@
 import { memo, useRef, useMemo, useCallback, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
-import { Modal } from "../../components/modal/modal";
-import { IngredientDetails } from "../../components/ingredient-details/ingredient-details";
 import { BurgerIngredientItemMemoized } from "./components/burger-ingredients-item/burger-ingredients-item";
 import { Tabs } from "../../utils/tabs-data";
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { BurgerIngredientsTabsMemoized } from "./components/burger-ingredients-tabs/burger-ingredients-tabs";
-import {
-  addDataToModal,
-  resetModalData,
-} from "../../services/ingredient-details";
+import { addDataToModal } from "../../services/ingredient-details";
+import { LocationProps } from "../../utils/api";
 
 import styles from "./burger-ingredients.module.css";
 
@@ -23,8 +19,7 @@ function BurgerIngredients() {
   const tabsRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  const ingredientId = sessionStorage.getItem("ingredientId");
+  const location = useLocation() as LocationProps;
 
   const ingredients = useAppSelector(
     (state) => state.burgerIngredients.ingredients
@@ -32,10 +27,6 @@ function BurgerIngredients() {
 
   const constructorIngredients = useAppSelector(
     (state) => state.constructorIngredients
-  );
-
-  const showModal = useAppSelector(
-    (state) => state.ingredientDetails.showModal
   );
 
   const buns = useMemo(
@@ -54,9 +45,9 @@ function BurgerIngredients() {
   );
 
   useEffect(() => {
-    if (ingredientId) {
+    if (location.state && location.state.id) {
       const ingredient = ingredients.find(
-        (_ingredient) => _ingredient._id === ingredientId
+        (_ingredient) => _ingredient._id === location.state.id
       );
       if (ingredient) {
         dispatch(
@@ -71,7 +62,7 @@ function BurgerIngredients() {
         );
       }
     }
-  }, []);
+  }, [dispatch, ingredients, location.state]);
 
   const ingredientsCounter = useMemo(() => {
     const { bun, ingredients } = constructorIngredients;
@@ -86,8 +77,9 @@ function BurgerIngredients() {
 
   const modalData = useCallback(
     (ingredient) => () => {
-      sessionStorage.setItem("ingredientId", ingredient._id);
-      navigate(`/ingredients/${ingredient._id}`, { state: { from: "/" } });
+      navigate(`/ingredients/${ingredient._id}`, {
+        state: { background: location, id: ingredient._id },
+      });
       dispatch(
         addDataToModal({
           modalImage: ingredient.image_large,
@@ -99,29 +91,12 @@ function BurgerIngredients() {
         })
       );
     },
-    [dispatch, navigate]
+    [dispatch, location, navigate]
   );
-
-  const removeDataFromModal = useCallback(() => {
-    dispatch(resetModalData());
-    sessionStorage.removeItem("ingredientId");
-    navigate("/");
-  }, [dispatch, navigate]);
 
   const ingredientsCategories = [buns, sauces, mains];
   return (
     <AnimatePresence>
-      {showModal && (
-        <Modal
-          key="burger-details-modal"
-          onClose={() => removeDataFromModal()}
-          title="Детали ингредиента"
-          closeIconType="primary"
-        >
-          <IngredientDetails />
-        </Modal>
-      )}
-
       <div>
         <p className="text text_type_main-large mb-5 mt-10">Соберите бургер</p>
         <BurgerIngredientsTabsMemoized tabsRef={tabsRef} />

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
 import { AppHeader } from "../../components/app-header/app-header";
@@ -12,14 +12,17 @@ import {
   Logout,
   Constructor,
   NotFound,
-  Ingredient,
 } from "../../pages";
+import { Modal } from "../modal/modal";
+import { IngredientDetails } from "../ingredient-details/ingredient-details";
 import { ProtectedRoute } from "../protected-route/protected-route";
+import { Ingredient } from "../../pages/ingredient/ingredient";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { fetchIngredients } from "../../services/burger-ingredients";
 import { LoadingScreen } from "../loading-screen/loading-screen";
 import { ErrorScreen } from "../error-screen/error-screen";
 import { getCookie } from "../../utils/utils";
+import { LocationProps } from "../../utils/api";
 import {
   getNewAccessToken,
   getOrUpdateUserData,
@@ -27,54 +30,34 @@ import {
 
 function App() {
   let content;
-  const location = useLocation();
   const dispatch = useAppDispatch();
-
-  const ingredientId = sessionStorage.getItem("ingredientId");
+  const location = useLocation() as LocationProps;
+  const background = location.state && location.state.background;
+  const navigate = useNavigate();
 
   const { status, error } = useAppSelector((state) => state.burgerIngredients);
   const refreshToken = getCookie("refreshToken");
-
-  const getNewToken = async () => {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token: refreshToken }),
-    };
-
-    await dispatch(getNewAccessToken(requestOptions));
-    getUserData();
-  };
-
-  const getUserData = () => {
-    const accessToken = getCookie("accessToken");
-    const requestOptions = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: accessToken,
-      },
-    };
-
-    dispatch(getOrUpdateUserData(requestOptions));
-  };
 
   useEffect(() => {
     if (refreshToken) {
       const accessToken = getCookie("accessToken");
       if (accessToken === undefined) {
-        getNewToken();
+        dispatch(getNewAccessToken());
       } else {
-        getUserData();
+        dispatch(getOrUpdateUserData({}));
       }
     }
-  }, []);
+  }, [dispatch, refreshToken]);
 
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchIngredients());
     }
   }, [status, dispatch]);
+
+  function onDismiss() {
+    navigate(-1);
+  }
 
   if (status === "loading" || status === "idle") {
     content = <LoadingScreen text="Данные загружаются" size="medium" />;
@@ -83,57 +66,75 @@ function App() {
     content = <ErrorScreen text={`Произошла ошибка: ${error}`} />;
   } else if (status === "succeeded") {
     content = (
-      <Routes>
-        <Route path="/" element={<Constructor />} key={location.pathname} />
-        <Route path="login" element={<Login />} key={location.pathname} />
-        <Route path="register" element={<Register />} key={location.pathname} />
-        <Route
-          path="forgot-password"
-          element={<ForgotPassword key={location.pathname} />}
-        />
-        <Route
-          path="reset-password"
-          element={<ResetPassword key={location.pathname} />}
-        />
-        <Route
-          path="ingredients/:id"
-          element={
-            ingredientId ? (
-              <Constructor />
-            ) : (
-              <Ingredient key={location.pathname} />
-            )
-          }
-        />
-        <Route
-          path="profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-          key={location.pathname}
-        />
-        <Route
-          path="profile/orders"
-          element={
-            <ProtectedRoute>
-              <></>
-            </ProtectedRoute>
-          }
-          key={location.pathname}
-        />
-        <Route
-          path="logout"
-          element={
-            <ProtectedRoute>
-              <Logout />
-            </ProtectedRoute>
-          }
-          key={location.pathname}
-        />
-        <Route path="*" element={<NotFound />} key={location.pathname} />
-      </Routes>
+      <>
+        <Routes location={background || location}>
+          <Route path="/" element={<Constructor />} key={location.pathname} />
+          <Route path="login" element={<Login />} key={location.pathname} />
+          <Route
+            path="register"
+            element={<Register />}
+            key={location.pathname}
+          />
+          <Route
+            path="forgot-password"
+            element={<ForgotPassword />}
+            key={location.pathname}
+          />
+          <Route
+            path="reset-password"
+            element={<ResetPassword />}
+            key={location.pathname}
+          />
+          <Route path="ingredients/:id" element={<Ingredient />} />
+          <Route
+            path="profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+            key={location.pathname}
+          />
+          <Route
+            path="profile/orders"
+            element={
+              <ProtectedRoute>
+                <></>
+              </ProtectedRoute>
+            }
+            key={location.pathname}
+          />
+          <Route
+            path="logout"
+            element={
+              <ProtectedRoute>
+                <Logout />
+              </ProtectedRoute>
+            }
+            key={location.pathname}
+          />
+          <Route path="*" element={<NotFound />} key={location.pathname} />
+        </Routes>
+        {background && (
+          <Routes>
+            <Route
+              path="ingredients/:id"
+              element={
+                <>
+                  <Modal
+                    key="burger-details-modal"
+                    title="Детали ингредиента"
+                    onClose={onDismiss}
+                    closeIconType="primary"
+                  >
+                    <IngredientDetails />
+                  </Modal>
+                </>
+              }
+            />
+          </Routes>
+        )}
+      </>
     );
   }
 

@@ -11,7 +11,7 @@ export function Ingredient() {
   let content;
   const dispatch = useAppDispatch();
 
-  const { id } = useParams();
+  const params = useParams();
 
   const ingredients = useAppSelector(
     (state) => state.burgerIngredients.ingredients
@@ -20,7 +20,7 @@ export function Ingredient() {
   const [ingredientExists, setIngredientExists] = useState(false);
 
   useEffect(() => {
-    const ingredient = ingredients.find((obj) => obj._id === id);
+    const ingredient = ingredients.find((obj) => obj._id === params.id);
     if (ingredient) {
       setIngredientExists(true);
       dispatch(
@@ -34,7 +34,7 @@ export function Ingredient() {
         })
       );
     }
-  }, [dispatch, id, ingredients]);
+  }, [dispatch, params.id, ingredients, params]);
 
   if (ingredientExists) {
     content = <IngredientDetails />;
