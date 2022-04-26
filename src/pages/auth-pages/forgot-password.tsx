@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useNavigate, Navigate } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
@@ -6,7 +6,8 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { userAuthorized, validateEmail } from "../../utils/utils";
+import { userAuthorized } from "../../utils/utils";
+import { useFormAndValidation } from "../../hooks/useFromAndValidate";
 import { forgotUserPassword } from "../../services/auth/auth";
 
 import styles from "./auth-pages.module.css";
@@ -17,28 +18,17 @@ export function ForgotPassword() {
 
   const { user, status, error } = useAppSelector((state) => state.authUser);
 
-  const [emailInputError, setEmailInputError] = useState("");
-  const [emailInput, setEmailInput] = useState("");
-
-  function validateFields() {
-    const emailValidation = validateEmail(emailInput);
-    if (!emailValidation.isValid) {
-      setEmailInputError(emailValidation.error);
-    }
-
-    return emailValidation.isValid ? true : false;
-  }
+  const {
+    values,
+    handleChange,
+    handleFocus,
+    errors,
+    showErrors,
+    isValidCheck,
+  } = useFormAndValidation();
 
   const checkEmail = async () => {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: emailInput,
-      }),
-    };
-
-    await dispatch(forgotUserPassword(requestOptions));
+    await dispatch(forgotUserPassword(values.email!));
 
     navigate("/reset-password", {
       state: { from: "forgot-password" },
@@ -48,32 +38,27 @@ export function ForgotPassword() {
 
   const submitForm = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    if (validateFields()) {
-      checkEmail();
-    } else {
-      setEmailInputError("Поле не может быть пустым");
-    }
+    if (isValidCheck()) checkEmail();
   };
 
   const input = (loading: boolean, error?: string) => {
     return (
       <>
-        <form className={styles["inner-container"]} onSubmit={submitForm}>
+        <form className={styles["form-container"]} onSubmit={submitForm}>
           <p className="text text_type_main-medium mb-6">
             Восстановление пароля
           </p>
           <div className={`${styles["input-item"]} mb-6`}>
             <Input
+              name="email"
               type="email"
-              placeholder="Email"
+              placeholder={"E-mail"}
               disabled={loading ? true : false}
-              value={emailInput}
-              error={emailInputError ? true : false}
-              errorText={emailInputError}
-              onChange={(e) => {
-                setEmailInputError("");
-                setEmailInput(e.target.value);
-              }}
+              error={showErrors.email}
+              errorText={errors.email}
+              value={values.email ? values.email : ""}
+              onChange={handleChange}
+              onFocus={handleFocus}
             />
           </div>
 

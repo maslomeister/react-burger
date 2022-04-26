@@ -7,12 +7,8 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import {
-  userAuthorized,
-  validateEmail,
-  validatePassword,
-  validateName,
-} from "../../utils/utils";
+import { userAuthorized } from "../../utils/utils";
+import { useFormAndValidation } from "../../hooks/useFromAndValidate";
 import { LocationProps } from "../../utils/api";
 
 import styles from "./auth-pages.module.css";
@@ -24,54 +20,27 @@ export function Register({ from }: { from?: string }) {
 
   const { user, status, error } = useAppSelector((state) => state.authUser);
 
-  const [nameInputError, setNameInputError] = useState("");
-  const [nameInput, setNameInput] = useState("");
-  const [emailInputError, setEmailInputError] = useState("");
-  const [emailInput, setEmailInput] = useState("");
-  const [passwordInputError, setPasswordInputError] = useState("");
-  const [passwordInput, setPasswordInput] = useState("");
   const [revealPassword, setRevealPassword] = useState(false);
 
-  function validateFields() {
-    const nameValidation = validateName(nameInput);
-    const emailValidation = validateEmail(emailInput);
-    const passwordValidation = validatePassword(passwordInput);
-    if (!nameValidation.isValid) {
-      setNameInputError(nameValidation.error);
-    }
-    if (!emailValidation.isValid) {
-      setEmailInputError(emailValidation.error);
-    }
-    if (!passwordValidation.isValid) {
-      setPasswordInputError(passwordValidation.error);
-    }
-
-    return nameValidation.isValid &&
-      emailValidation.isValid &&
-      passwordValidation.isValid
-      ? true
-      : false;
-  }
-
-  const createUser = () => {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: emailInput,
-        password: passwordInput,
-        name: nameInput,
-      }),
-    };
-
-    dispatch(createUserProfile(requestOptions));
-  };
+  const {
+    values,
+    handleChange,
+    handleFocus,
+    errors,
+    showErrors,
+    isValidCheck,
+  } = useFormAndValidation();
 
   const submitForm = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    if (validateFields()) {
-      createUser();
-    }
+    if (isValidCheck())
+      dispatch(
+        createUserProfile({
+          email: values.email!,
+          password: values.password!,
+          name: values.name!,
+        })
+      );
   };
 
   const input = (loading: boolean, error?: string) => {
@@ -80,45 +49,42 @@ export function Register({ from }: { from?: string }) {
         <form className={styles["inner-container"]} onSubmit={submitForm}>
           <div className="mb-6">
             <Input
-              type={"text"}
+              name="name"
+              type="text"
               placeholder={"Имя"}
-              value={nameInput}
               disabled={loading ? true : false}
-              error={nameInputError ? true : false}
-              errorText={nameInputError}
-              onChange={(e) => {
-                setNameInputError("");
-                setNameInput(e.target.value);
-              }}
+              error={showErrors.name}
+              errorText={errors.name}
+              value={values.name ? values.name : ""}
+              onChange={handleChange}
+              onFocus={handleFocus}
             />
           </div>
           <div className="mb-6">
             <Input
-              type={"email"}
-              placeholder={"Email"}
-              value={emailInput}
+              name="email"
+              type="email"
+              placeholder={"E-mail"}
               disabled={loading ? true : false}
-              error={emailInputError ? true : false}
-              errorText={emailInputError}
-              onChange={(e) => {
-                setEmailInputError("");
-                setEmailInput(e.target.value);
-              }}
+              error={showErrors.email}
+              errorText={errors.email}
+              value={values.email ? values.email : ""}
+              onChange={handleChange}
+              onFocus={handleFocus}
             />
           </div>
           <div className="mb-6">
             <Input
+              name="Password"
               icon={revealPassword ? "HideIcon" : "ShowIcon"}
               type={revealPassword ? "text" : "password"}
               placeholder={"Пароль"}
-              value={passwordInput}
               disabled={loading ? true : false}
-              error={passwordInputError ? true : false}
-              errorText={passwordInputError}
-              onChange={(e) => {
-                setPasswordInputError("");
-                setPasswordInput(e.target.value);
-              }}
+              error={showErrors.password}
+              errorText={errors.password}
+              value={values.password ? values.password : ""}
+              onChange={handleChange}
+              onFocus={handleFocus}
               onIconClick={() => setRevealPassword(!revealPassword)}
             />
           </div>

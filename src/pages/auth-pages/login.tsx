@@ -7,12 +7,9 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import {
-  userAuthorized,
-  validateEmail,
-  validatePassword,
-} from "../../utils/utils";
+import { userAuthorized } from "../../utils/utils";
 import { LocationProps } from "../../utils/api";
+import { useFormAndValidation } from "../../hooks/useFromAndValidate";
 
 import styles from "./auth-pages.module.css";
 
@@ -24,43 +21,23 @@ export function Login() {
 
   const { user, status, error } = useAppSelector((state) => state.authUser);
 
-  const [emailInputError, setEmailInputError] = useState("");
-  const [emailInput, setEmailInput] = useState("");
-  const [passwordInputError, setPasswordInputError] = useState("");
-  const [passwordInput, setPasswordInput] = useState("");
   const [revealPassword, setRevealPassword] = useState(false);
 
-  function validateFields() {
-    const emailValidation = validateEmail(emailInput);
-    const passwordValidation = validatePassword(passwordInput);
-    if (!emailValidation.isValid) {
-      setEmailInputError(emailValidation.error);
-    }
-    if (!passwordValidation.isValid) {
-      setPasswordInputError(passwordValidation.error);
-    }
-
-    return emailValidation.isValid && passwordValidation.isValid ? true : false;
-  }
-
-  const loginUser = async () => {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: emailInput,
-        password: passwordInput,
-      }),
-    };
-
-    dispatch(loginUserProfile(requestOptions));
-  };
+  const {
+    values,
+    handleChange,
+    handleFocus,
+    errors,
+    showErrors,
+    isValidCheck,
+  } = useFormAndValidation();
 
   const submitForm = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    if (validateFields()) {
-      loginUser();
-    }
+    if (isValidCheck())
+      dispatch(
+        loginUserProfile({ email: values.email!, password: values.password! })
+      );
   };
 
   useEffect(() => {
@@ -69,41 +46,48 @@ export function Login() {
         replace: true,
       });
     }
+    if (
+      location.state &&
+      location.state.from &&
+      location.state.from.pathname === "/logout"
+    ) {
+      navigate("/profile", {
+        replace: true,
+      });
+    }
   }, [location.state, navigate, user]);
 
   const input = (loading: boolean, error?: string) => {
     return (
       <>
-        <form className={styles["inner-container"]} onSubmit={submitForm}>
+        <form className={styles["form-container"]} onSubmit={submitForm}>
           <p className="text text_type_main-medium mb-6">Вход</p>
           <div className="mb-6">
             <Input
+              name="email"
               type="email"
-              placeholder={"Email"}
+              placeholder={"E-mail"}
               disabled={loading ? true : false}
-              error={emailInputError ? true : false}
-              errorText={emailInputError}
-              value={emailInput}
-              onChange={(e) => {
-                setEmailInputError("");
-                setEmailInput(e.target.value);
-              }}
+              error={showErrors.email}
+              errorText={errors.email}
+              value={values.email ? values.email : ""}
+              onChange={handleChange}
+              onFocus={handleFocus}
             />
           </div>
 
           <div className="mb-6">
             <Input
+              name="password"
               icon={revealPassword ? "HideIcon" : "ShowIcon"}
               type={revealPassword ? "text" : "password"}
               placeholder={"Пароль"}
-              value={passwordInput}
               disabled={loading ? true : false}
-              error={passwordInputError ? true : false}
-              errorText={passwordInputError}
-              onChange={(e) => {
-                setPasswordInputError("");
-                setPasswordInput(e.target.value);
-              }}
+              error={showErrors.password}
+              errorText={errors.password}
+              value={values.password ? values.password : ""}
+              onChange={handleChange}
+              onFocus={handleFocus}
               onIconClick={() => setRevealPassword(!revealPassword)}
             />
           </div>

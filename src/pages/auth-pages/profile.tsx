@@ -11,7 +11,8 @@ import {
   getOrUpdateUserData,
   getNewAccessToken,
 } from "../../services/auth/auth";
-import { getCookie, validateName, validateEmail } from "../../utils/utils";
+import { useFormAndValidation } from "../../hooks/useFromAndValidate";
+import { getCookie } from "../../utils/utils";
 
 import styles from "./auth-pages.module.css";
 
@@ -32,65 +33,41 @@ export function Profile() {
 
   const [nameInputDisabled, setNameInputDisabled] = useState(true);
   const [emailInputDisabled, setEmailInputDisabled] = useState(true);
-  const [nameInputError, setNameInputError] = useState("");
-  const [nameInput, setNameInput] = useState("");
-  const [emailInputError, setEmailInputError] = useState("");
-  const [emailInput, setEmailInput] = useState(user.email);
   const [inputFieldsChanged, setInputFieldsChanged] = useState(false);
-
-  function validateFields() {
-    const nameValidation = validateName(nameInput);
-    const emailValidation = validateEmail(emailInput);
-    if (!nameValidation.isValid) {
-      setNameInputError(nameValidation.error);
-    }
-    if (!emailValidation.isValid) {
-      setEmailInputError(emailValidation.error);
-    }
-
-    return nameValidation.isValid && emailValidation.isValid ? true : false;
-  }
-
-  function changeInput(input: string, inputFiledName: "name" | "email") {
-    setInputFieldsChanged(true);
-    switch (inputFiledName) {
-      case "name":
-        setNameInputError("");
-        setNameInput(input);
-        break;
-      case "email":
-        setEmailInputError("");
-        setEmailInput(input);
-        break;
-    }
-  }
+  const {
+    values,
+    handleChange,
+    handleFocus,
+    errors,
+    showErrors,
+    resetForm,
+    resetValue,
+    isValidCheck,
+  } = useFormAndValidation();
 
   useEffect(() => {
-    setNameInput(user.name);
-    setEmailInput(user.email);
-  }, [user, user.name, user.email]);
+    resetForm({ name: user.name, email: user.email });
+  }, [resetForm, user]);
 
   function resetFields() {
-    setNameInput(user.name);
-    setEmailInput(user.email);
-    setNameInputError("");
-    setEmailInputError("");
+    resetForm({ name: user.name, email: user.email });
 
     setNameInputDisabled(true);
     setEmailInputDisabled(true);
     setInputFieldsChanged(false);
   }
 
+  useEffect(() => {
+    if (
+      (!nameInputDisabled || !emailInputDisabled) &&
+      (values.name !== user.name || values.email !== user.email)
+    ) {
+      setInputFieldsChanged(true);
+    }
+  }, [emailInputDisabled, nameInputDisabled, user.email, user.name, values]);
+
   const getNewToken = async () => {
-    const refreshToken = getCookie("refreshToken");
-
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token: refreshToken }),
-    };
-
-    await dispatch(getNewAccessToken(requestOptions));
+    await dispatch(getNewAccessToken());
   };
 
   const changeUserData = async () => {
@@ -108,8 +85,8 @@ export function Profile() {
         authorization: accessToken,
       },
       body: JSON.stringify({
-        name: nameInput,
-        email: emailInput,
+        name: values.name,
+        email: values.email,
       }),
     };
     await dispatch(getOrUpdateUserData(requestOptions));
@@ -123,8 +100,8 @@ export function Profile() {
       dispatch(resetState());
       navigate("/login", { replace: true });
     } else {
-      if (nameInput !== user.name || emailInput !== user.email) {
-        if (validateFields()) changeUserData();
+      if (inputFieldsChanged) {
+        if (isValidCheck()) changeUserData();
       } else {
         resetFields();
       }
@@ -143,26 +120,35 @@ export function Profile() {
         <div className="mb-6">
           <Input
             icon={"EditIcon"}
-            disabled={loading ? false : nameInputDisabled}
+            name="name"
+            type="text"
             placeholder={"Имя"}
-            value={nameInput}
-            error={nameInputError ? true : false}
-            errorText={nameInputError}
-            onChange={(e) => changeInput(e.target.value, "name")}
-            onIconClick={() => setNameInputDisabled(!nameInputDisabled)}
+            disabled={loading ? true : nameInputDisabled}
+            error={showErrors.name}
+            errorText={errors.name}
+            value={values.name ? values.name : ""}
+            onChange={handleChange}
+            onFocus={handleFocus}
+            onIconClick={() => {
+              resetValue("name");
+              setNameInputDisabled(!nameInputDisabled);
+            }}
           />
         </div>
         <div className="mb-6">
           <Input
             icon={"EditIcon"}
-            disabled={loading ? false : emailInputDisabled}
-            placeholder={"Email"}
-            value={emailInput}
-            error={emailInputError ? true : false}
-            errorText={emailInputError}
-            onChange={(e) => changeInput(e.target.value, "email")}
+            name="email"
+            type="email"
+            placeholder={"E-mail"}
+            disabled={loading ? true : emailInputDisabled}
+            error={showErrors.email}
+            errorText={errors.email}
+            value={values.email ? values.email : ""}
+            onChange={handleChange}
+            onFocus={handleFocus}
             onIconClick={() => {
-              setNameInputError("");
+              resetValue("email");
               setEmailInputDisabled(!emailInputDisabled);
             }}
           />

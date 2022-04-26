@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { LoadingScreen } from "../../components/loading-screen/loading-screen";
 import { logoutUserProfile } from "../../services/auth/auth";
-import { getCookie } from "../../utils/utils";
 
 import styles from "./auth-pages.module.css";
 
@@ -14,23 +13,9 @@ export function Logout() {
   const dispatch = useAppDispatch();
   const { status, error } = useAppSelector((state) => state.authUser);
 
-  const logoutUser = async () => {
-    const refreshToken = getCookie("refreshToken");
-
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        token: refreshToken,
-      }),
-    };
-
-    await await dispatch(logoutUserProfile(requestOptions));
-  };
-
   useEffect(() => {
-    logoutUser();
-  }, []);
+    dispatch(logoutUserProfile());
+  }, [dispatch]);
 
   useEffect(() => {
     if (status === "logout/success") {

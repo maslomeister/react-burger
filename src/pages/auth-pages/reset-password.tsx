@@ -7,7 +7,8 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { LocationProps } from "../../utils/api";
-import { userAuthorized, validatePassword } from "../../utils/utils";
+import { userAuthorized } from "../../utils/utils";
+import { useFormAndValidation } from "../../hooks/useFromAndValidate";
 import { resetPasswordUser } from "../../services/auth/auth";
 
 import styles from "./auth-pages.module.css";
@@ -19,47 +20,26 @@ export function ResetPassword() {
 
   const { user, status, error } = useAppSelector((state) => state.authUser);
 
-  const [passwordInputError, setPasswordInputError] = useState("");
-  const [passwordInput, setPasswordInput] = useState("");
   const [revealPassword, setRevealPassword] = useState(false);
-  const [confirmationCodeInputError, setConfirmationCodeInputError] =
-    useState("");
-  const [confirmationCodeInput, setConfirmationCodeInput] = useState("");
 
-  function validateFields() {
-    const passwordValidation = validatePassword(passwordInput);
-    if (!passwordValidation.isValid) {
-      setPasswordInputError(passwordValidation.error);
-    }
-    if (confirmationCodeInput === "") {
-      setConfirmationCodeInputError("Поле не может быть пустым");
-    }
-
-    if (passwordValidation.isValid && confirmationCodeInput !== "") {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  const changePassword = async () => {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        password: passwordInput,
-        token: confirmationCodeInput,
-      }),
-    };
-
-    await dispatch(resetPasswordUser(requestOptions));
-  };
+  const {
+    values,
+    handleChange,
+    handleFocus,
+    errors,
+    showErrors,
+    isValidCheck,
+  } = useFormAndValidation();
 
   const submitForm = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    if (validateFields()) {
-      changePassword();
-    }
+    if (isValidCheck())
+      dispatch(
+        resetPasswordUser({
+          password: values.password!,
+          confirmationCode: values.confirmationCode!,
+        })
+      );
   };
 
   const input = (loading: boolean, error?: string) => {
@@ -71,31 +51,29 @@ export function ResetPassword() {
           </p>
           <div className="mb-6">
             <Input
+              name="password"
               icon={revealPassword ? "HideIcon" : "ShowIcon"}
               type={revealPassword ? "text" : "password"}
-              placeholder={"Введите новый пароль"}
-              value={passwordInput}
+              placeholder={"Пароль"}
               disabled={loading ? true : false}
-              error={passwordInputError ? true : false}
-              errorText={passwordInputError}
-              onChange={(e) => {
-                setPasswordInputError("");
-                setPasswordInput(e.target.value);
-              }}
+              error={showErrors.password}
+              errorText={errors.password}
+              value={values.password ? values.password : ""}
+              onChange={handleChange}
+              onFocus={handleFocus}
               onIconClick={() => setRevealPassword(!revealPassword)}
             />
           </div>
           <div className="mb-6">
             <Input
+              name="confirmationCode"
               placeholder={"Введите код из письма"}
-              value={confirmationCodeInput}
               disabled={loading ? true : false}
-              error={confirmationCodeInputError ? true : false}
-              errorText={confirmationCodeInputError}
-              onChange={(e) => {
-                setConfirmationCodeInputError("");
-                setConfirmationCodeInput(e.target.value);
-              }}
+              error={showErrors.confirmationCode}
+              errorText={errors.confirmationCode}
+              value={values.confirmationCode ? values.confirmationCode : ""}
+              onChange={handleChange}
+              onFocus={handleFocus}
             />
           </div>
 
