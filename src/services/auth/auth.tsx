@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+import { getCookie } from "../../utils/utils";
+
 import {
   RequestOptions,
   createUser,
@@ -22,18 +24,37 @@ type User = {
 interface SliceState {
   user: User;
   status: string;
+  success: string;
   error: string;
 }
 
 const initialState: SliceState = {
   user: { name: "", email: "" },
   status: "idle",
+  success: "",
   error: "",
 };
 
 export const createUserProfile = createAsyncThunk(
   "auth/createUser",
-  async (requestOptions: RequestOptions) => {
+  async ({
+    email,
+    password,
+    name,
+  }: {
+    email: string;
+    password: string;
+    name: string;
+  }) => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        name: name,
+      }),
+    };
     const response = await createUser(requestOptions);
     return response;
   }
@@ -41,7 +62,16 @@ export const createUserProfile = createAsyncThunk(
 
 export const loginUserProfile = createAsyncThunk(
   "auth/loginUser",
-  async (requestOptions: RequestOptions) => {
+  async ({ email, password }: { email: string; password: string }) => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    };
+
     const response = await loginUser(requestOptions);
     return response;
   }
@@ -49,7 +79,15 @@ export const loginUserProfile = createAsyncThunk(
 
 export const logoutUserProfile = createAsyncThunk(
   "auth/logoutUser",
-  async (requestOptions: RequestOptions) => {
+  async () => {
+    const refreshToken = getCookie("refreshToken");
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        token: refreshToken,
+      }),
+    };
     const response = await logoutUser(requestOptions);
     return response;
   }
@@ -57,23 +95,66 @@ export const logoutUserProfile = createAsyncThunk(
 
 export const getOrUpdateUserData = createAsyncThunk(
   "auth/getUser",
-  async (requestOptions: RequestOptions) => {
+  async ({
+    method = "get",
+    name,
+    email,
+  }: {
+    method?: string;
+    name?: string;
+    email?: string;
+  }) => {
+    const accessToken = getCookie("accessToken");
+    let requestOptions: RequestOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: accessToken,
+      },
+    };
+
+    if (method === "update") {
+      requestOptions = {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: accessToken,
+        },
+        body: JSON.stringify({
+          name: name!,
+          email: email!,
+        }),
+      };
+    }
+
     const response = await getOrUpdateUser(requestOptions);
     return response;
   }
 );
 
-export const getNewAccessToken = createAsyncThunk(
-  "auth/getToken",
-  async (requestOptions: RequestOptions) => {
-    const response = await getNewToken(requestOptions);
-    return response;
-  }
-);
+export const getNewAccessToken = createAsyncThunk("auth/getToken", async () => {
+  const refreshToken = getCookie("refreshToken");
+
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token: refreshToken }),
+  };
+  const response = await getNewToken(requestOptions);
+  return response;
+});
 
 export const forgotUserPassword = createAsyncThunk(
   "auth/forgotPassword",
-  async (requestOptions: RequestOptions) => {
+  async (email: string) => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: email,
+      }),
+    };
+
     const response = await forgotPassword(requestOptions);
     return response;
   }
@@ -81,7 +162,21 @@ export const forgotUserPassword = createAsyncThunk(
 
 export const resetPasswordUser = createAsyncThunk(
   "auth/resetPassword",
-  async (requestOptions: RequestOptions) => {
+  async ({
+    password,
+    confirmationCode,
+  }: {
+    password: string;
+    confirmationCode: string;
+  }) => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        password: password,
+        token: confirmationCode,
+      }),
+    };
     const response = await resetPassword(requestOptions);
     return response;
   }
