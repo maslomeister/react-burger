@@ -52,7 +52,11 @@
 }
 
 .text-error {
-  color: red;
+  color: #f20d33;
+}
+
+.text-success {
+  color: #00cccc;
 }
 
 .text-link:hover {
