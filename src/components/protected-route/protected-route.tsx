@@ -5,7 +5,7 @@ import { userAuthorized } from "../../utils/utils";
 
 export function ProtectedRoute({ children }: { children: JSX.Element }) {
   const { user } = useAppSelector((state) => state.authUser);
-  let location = useLocation();
+  const location = useLocation();
 
   if (!userAuthorized(user)) {
     return <Navigate to="/login" state={{ from: location }} replace />;
