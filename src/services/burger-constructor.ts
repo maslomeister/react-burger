@@ -48,12 +48,23 @@ export const constructorIngredients = createSlice({
   initialState,
   reducers: {
     addIngredient: {
-      reducer: (state, action: PayloadAction<NewIngredient>) => {
+      reducer: (state: SliceState, action: PayloadAction<NewIngredient>) => {
         state.ingredients.push(action.payload);
       },
       prepare: (value) => {
         return {
           payload: { ...value, _uniqueId: uuidv4() },
+        };
+      },
+    },
+    loadIngredients: {
+      reducer: (state: SliceState, action: PayloadAction<SliceState>) => {
+        return (state = action.payload);
+      },
+      prepare: (value) => {
+        const payload = JSON.parse(value);
+        return {
+          payload,
         };
       },
     },
@@ -89,6 +100,7 @@ export const constructorIngredients = createSlice({
 
 export const {
   addIngredient,
+  loadIngredients,
   removeIngredient,
   moveIngredient,
   addOrReplaceBun,
