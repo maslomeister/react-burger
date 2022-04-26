@@ -36,6 +36,7 @@ export function useFormAndValidation() {
   };
 
   const isValidCheck = () => {
+    if (Object.keys(values).length === 0) return false;
     let checks: Boolean[] = [];
     for (const key in values) {
       const { isValid, error } = validateInputField(values[key]!, key);
@@ -57,8 +58,8 @@ export function useFormAndValidation() {
   );
 
   const resetValue = useCallback(
-    (name) => {
-      setValues((prevInput) => ({ ...prevInput, [name]: "" }));
+    (name: string, value: string) => {
+      setValues((prevInput) => ({ ...prevInput, [name]: value }));
       setErrors((prevInput) => ({ ...prevInput, [name]: "" }));
       setShowErrors((prevInput) => ({ ...prevInput, [name]: false }));
     },
