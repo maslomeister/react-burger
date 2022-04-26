@@ -58,6 +58,12 @@ export function Profile() {
   }
 
   useEffect(() => {
+    if (values.name === user.name && values.email === user.email) {
+      setInputFieldsChanged(false);
+    }
+  }, [values, values.name, values.email, user.name, user.email]);
+
+  useEffect(() => {
     if (
       (!nameInputDisabled || !emailInputDisabled) &&
       (values.name !== user.name || values.email !== user.email)
@@ -76,20 +82,13 @@ export function Profile() {
     if (accessToken === undefined) {
       await getNewToken();
     }
-
-    accessToken = getCookie("accessToken");
-    const requestOptions = {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: accessToken,
-      },
-      body: JSON.stringify({
+    await dispatch(
+      getOrUpdateUserData({
+        method: "update",
         name: values.name,
         email: values.email,
-      }),
-    };
-    await dispatch(getOrUpdateUserData(requestOptions));
+      })
+    );
     resetFields();
   };
 
@@ -130,7 +129,7 @@ export function Profile() {
             onChange={handleChange}
             onFocus={handleFocus}
             onIconClick={() => {
-              resetValue("name");
+              if (inputFieldsChanged) resetValue("name", user.name);
               setNameInputDisabled(!nameInputDisabled);
             }}
           />
@@ -148,7 +147,7 @@ export function Profile() {
             onChange={handleChange}
             onFocus={handleFocus}
             onIconClick={() => {
-              resetValue("email");
+              if (inputFieldsChanged) resetValue("email", user.email);
               setEmailInputDisabled(!emailInputDisabled);
             }}
           />
