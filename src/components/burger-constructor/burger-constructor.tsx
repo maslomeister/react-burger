@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useMemo } from "react";
+import { useState, useCallback, useRef, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDrop } from "react-dnd";
@@ -13,6 +13,7 @@ import { Ingredient, NewIngredient } from "../../utils/api";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import {
   addIngredient,
+  loadIngredients,
   removeIngredient,
   moveIngredient,
   addOrReplaceBun,
@@ -24,19 +25,37 @@ import { userAuthorized } from "../../utils/utils";
 import styles from "./burger-constructor.module.css";
 
 function BurgerConstructor() {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
   const dropRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [errorModal, setErrorModal] = useState("");
   const [showErrorModal, setShowErrorModal] = useState(false);
-  const dispatch = useAppDispatch();
+
   let conditonalStyle;
+
+  window.onbeforeunload = () => {
+    if (ingredients || bun) {
+      localStorage.setItem(
+        "constructorIngredients",
+        JSON.stringify({ ingredients, bun })
+      );
+    }
+  };
 
   const { user } = useAppSelector((state) => state.authUser);
 
   const { ingredients, bun } = useAppSelector(
     (state) => state.constructorIngredients
   );
+
+  useEffect(() => {
+    const constructorItems = localStorage.getItem("constructorIngredients");
+    if (constructorItems) {
+      dispatch(loadIngredients(constructorItems));
+    }
+  }, [dispatch]);
 
   const totalPrice = useMemo(() => {
     return (
@@ -84,15 +103,8 @@ function BurgerConstructor() {
       }
       setShowModal(true);
 
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ingredients: [...ingredients.map(({ _id }) => _id), bun._id],
-        }),
-      };
-
-      dispatch(getOrderNumber(requestOptions));
+      dispatch(getOrderNumber({ ingredients, bun }));
+      localStorage.removeItem("constructorIngredients");
     } else {
       navigate("/login", {
         state: { from: "/" },
@@ -191,6 +203,13 @@ function BurgerConstructor() {
               <TotalPriceMemoized price={totalPrice} />
               <Button type="primary" size="large" onClick={createOrder}>
                 Оформить заказ
+              </Button>
+              <Button
+                type="secondary"
+                size="medium"
+                onClick={() => dispatch(resetState())}
+              >
+                Отменить
               </Button>
             </div>
           </>
