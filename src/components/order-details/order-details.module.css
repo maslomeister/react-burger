@@ -33,6 +33,17 @@
   cursor: pointer;
 }
 
+.loading-icon_absolute {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .check-mark-icon_size > svg {
   width: 48px;
   height: 48px;

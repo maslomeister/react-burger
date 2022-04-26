@@ -4,7 +4,7 @@ interface Tab {
   value: string;
   type: string;
 }
-const Tabs: Array<Tab> = [
+export const Tabs: Array<Tab> = [
   {
     _id: 0,
     name: "Булки",
@@ -24,5 +24,3 @@ const Tabs: Array<Tab> = [
     type: "main",
   },
 ];
-
-export default Tabs;

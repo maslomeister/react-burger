@@ -1,12 +1,12 @@
 import { memo } from "react";
 
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
-import { NewIngredient } from "../../../../utils/burger-api";
+import { Ingredient } from "../../../../utils/api";
 
-import bunItemStyles from "../burger-item.module.css";
+import styles from "../burger-item.module.css";
 
 interface BurgerConstructorItemTypes {
-  ingredient: NewIngredient;
+  ingredient: Ingredient;
   top?: string;
   bottomPadding?: boolean;
   topPadding?: boolean;
@@ -25,8 +25,8 @@ function BurgerBunItem({
         topPadding ? "mt-4" : ""
       }`}
     >
-      <div className={bunItemStyles["ingredient"]}>
-        <div className={bunItemStyles["constructor-element-wrapper"]}>
+      <div className={styles["ingredient"]}>
+        <div className={styles["constructor-element-wrapper"]}>
           <ConstructorElement
             type={
               top === "top" ? "top" : top === "bottom" ? "bottom" : undefined
@@ -44,4 +44,4 @@ function BurgerBunItem({
   );
 }
 
-export default memo(BurgerBunItem);
+export const BurgerBunItemMemoized = memo(BurgerBunItem);

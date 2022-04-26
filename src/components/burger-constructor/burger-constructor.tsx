@@ -1,38 +1,68 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useMemo, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDrop } from "react-dnd";
-import { v4 as uuidv4 } from "uuid";
 
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import BurgerBunItem from "./components/burger-bun-item/burger-bun-item";
-import BurgerInnerItem from "./components/burger-inner-item/burger-inner-item";
-import OrderDetails from "../../components/order-details/order-details";
-import ErrorModal from "../../components/error-modal/error-modal";
-import TotalPrice from "./components/total-price/total-price";
-import { Ingredient, NewIngredient } from "../../utils/burger-api";
+import { BurgerBunItemMemoized } from "./components/burger-bun-item/burger-bun-item";
+import { BurgerInnerItemMemoized } from "./components/burger-inner-item/burger-inner-item";
+import { OrderDetails } from "../../components/order-details/order-details";
+import { ErrorModal } from "../../components/error-modal/error-modal";
+import { TotalPriceMemoized } from "./components/total-price/total-price";
+import { Ingredient, NewIngredient } from "../../utils/api";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import {
   addIngredient,
+  loadIngredients,
   removeIngredient,
   moveIngredient,
   addOrReplaceBun,
   resetState,
-} from "../../services/reducers/burger-constructor";
-import { getOrderNumber } from "../../services/reducers/order-details";
+} from "../../services/burger-constructor";
+import { getOrderNumber } from "../../services/order-details";
+import { userAuthorized } from "../../utils/utils";
 
-import constructorStyles from "./burger-constructor.module.css";
+import styles from "./burger-constructor.module.css";
 
 function BurgerConstructor() {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const dropRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [errorModal, setErrorModal] = useState("");
   const [showErrorModal, setShowErrorModal] = useState(false);
-  const dispatch = useAppDispatch();
+
   let conditonalStyle;
 
-  const { ingredients, bun, totalPrice } = useAppSelector(
+  window.onbeforeunload = () => {
+    if (ingredients || bun) {
+      localStorage.setItem(
+        "constructorIngredients",
+        JSON.stringify({ ingredients, bun })
+      );
+    }
+  };
+
+  const { user } = useAppSelector((state) => state.authUser);
+
+  const { ingredients, bun } = useAppSelector(
     (state) => state.constructorIngredients
   );
+
+  useEffect(() => {
+    const constructorItems = localStorage.getItem("constructorIngredients");
+    if (constructorItems) {
+      dispatch(loadIngredients(constructorItems));
+    }
+  }, [dispatch]);
+
+  const totalPrice = useMemo(() => {
+    return (
+      (bun.price ? bun.price * 2 : 0) +
+      ingredients.reduce((s, v) => s + v.price, 0)
+    );
+  }, [bun.price, ingredients]);
 
   const { orderNumber, status, error } = useAppSelector(
     (state) => state.orderDetails
@@ -41,15 +71,9 @@ function BurgerConstructor() {
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
     drop(ingredient: Ingredient) {
-      const newIngredient: NewIngredient = {
-        ...ingredient,
-        _uniqueId: uuidv4(),
-      };
-      if (ingredient.type === "bun") {
-        dispatch(addOrReplaceBun(newIngredient));
-      } else {
-        dispatch(addIngredient(newIngredient));
-      }
+      ingredient.type === "bun"
+        ? dispatch(addOrReplaceBun(ingredient))
+        : dispatch(addIngredient(ingredient));
     },
     collect: (monitor) => ({
       isHover: monitor.isOver(),
@@ -66,27 +90,27 @@ function BurgerConstructor() {
   );
 
   const createOrder = () => {
-    if (!bun.price) {
-      setErrorModal("Нельзя оформить бургер без булки");
-      setShowErrorModal(true);
-      return;
-    }
-    if (ingredients.length === 0) {
-      setErrorModal("Бургер не может быть пустым");
-      setShowErrorModal(true);
-      return;
-    }
-    setShowModal(true);
+    if (userAuthorized(user)) {
+      if (!bun.price) {
+        setErrorModal("Нельзя оформить бургер без булки");
+        setShowErrorModal(true);
+        return;
+      }
+      if (ingredients.length === 0) {
+        setErrorModal("Бургер не может быть пустым");
+        setShowErrorModal(true);
+        return;
+      }
+      setShowModal(true);
 
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ingredients: [...ingredients.map(({ _id }) => _id), bun._id],
-      }),
-    };
-
-    dispatch(getOrderNumber(requestOptions));
+      dispatch(getOrderNumber({ ingredients, bun }));
+      localStorage.removeItem("constructorIngredients");
+    } else {
+      navigate("/login", {
+        state: { from: "/" },
+        replace: true,
+      });
+    }
   };
 
   function hideModal() {
@@ -104,7 +128,7 @@ function BurgerConstructor() {
   if (ingredients.length > 5) {
     conditonalStyle = "";
   } else {
-    conditonalStyle = constructorStyles["conditional"];
+    conditonalStyle = styles["conditional"];
   }
 
   return (
@@ -127,19 +151,13 @@ function BurgerConstructor() {
         key="burger-constructor"
         ref={dropTarget}
         style={{ border: `2px dashed ${borderColor}`, borderRadius: 30 }}
-        className={`${constructorStyles["burger-constructor"]} mb-14 mt-25`}
-        initial={{ x: "+200%" }}
-        exit={{ x: 0 }}
-        animate={{ x: 0 }}
-        transition={{
-          type: "tween",
-        }}
+        className={`${styles["burger-constructor"]} mb-14 mt-25`}
       >
         {ingredients.length !== 0 || bun.price !== 0 ? (
           <>
             <div className="burgerComponents">
-              <div className={constructorStyles["outer_style"]}>
-                <BurgerBunItem
+              <div className={styles["outer_style"]}>
+                <BurgerBunItemMemoized
                   bottomPadding={true}
                   top={"top"}
                   ingredient={bun}
@@ -147,7 +165,7 @@ function BurgerConstructor() {
               </div>
 
               <ul
-                className={constructorStyles["inner_style"] + conditonalStyle}
+                className={styles["inner_style"] + conditonalStyle}
                 ref={dropRef}
               >
                 {ingredients.map((ingredient, index) => {
@@ -158,7 +176,7 @@ function BurgerConstructor() {
                   const lastIndex = index === ingredients!.length - 1;
                   return (
                     <li key={newItem._uniqueId}>
-                      <BurgerInnerItem
+                      <BurgerInnerItemMemoized
                         bottomPadding={!lastIndex}
                         key={newItem._id}
                         index={index}
@@ -172,8 +190,8 @@ function BurgerConstructor() {
                 })}
               </ul>
 
-              <div className={constructorStyles["outer_style"]}>
-                <BurgerBunItem
+              <div className={styles["outer_style"]}>
+                <BurgerBunItemMemoized
                   topPadding={true}
                   top={"bottom"}
                   ingredient={bun}
@@ -181,17 +199,24 @@ function BurgerConstructor() {
               </div>
             </div>
 
-            <div className={`${constructorStyles["cart"]} mb-10 mt-10`}>
-              <TotalPrice price={totalPrice} />
+            <div className={`${styles["cart"]} mb-10 mt-10`}>
+              <TotalPriceMemoized price={totalPrice} />
               <Button type="primary" size="large" onClick={createOrder}>
                 Оформить заказ
+              </Button>
+              <Button
+                type="secondary"
+                size="medium"
+                onClick={() => dispatch(resetState())}
+              >
+                Отменить
               </Button>
             </div>
           </>
         ) : (
-          <div className={constructorStyles["helper"]}>
+          <div className={styles["helper"]}>
             <div
-              className={`${constructorStyles["helper_shadow"]} text text_type_main-large mb-30 mt-30`}
+              className={`${styles["helper_shadow"]} text text_type_main-large mb-30 mt-30`}
             >
               Для создания бургера перетащите на этот текст ингредиент слева
             </div>

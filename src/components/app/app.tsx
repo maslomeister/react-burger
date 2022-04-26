@@ -1,22 +1,53 @@
 import { useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
+import { AppHeader } from "../../components/app-header/app-header";
+import {
+  Login,
+  Register,
+  ForgotPassword,
+  ResetPassword,
+  Profile,
+  Logout,
+  Constructor,
+  NotFound,
+} from "../../pages";
+import { Modal } from "../modal/modal";
+import { IngredientDetails } from "../ingredient-details/ingredient-details";
+import { ProtectedRoute } from "../protected-route/protected-route";
+import { Ingredient } from "../../pages/ingredient/ingredient";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
-import AppHeader from "../../components/app-header/app-header";
-import BurgerConstructor from "../../components/burger-constructor/burger-constructor";
-import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients";
-import { fetchIngredients } from "../../services/reducers/burger-ingredients";
-import AnimatedLoading from "../animated-loading/animated-loading";
-
-import appStyles from "./app.module.css";
+import { fetchIngredients } from "../../services/burger-ingredients";
+import { LoadingScreen } from "../loading-screen/loading-screen";
+import { ErrorScreen } from "../error-screen/error-screen";
+import { getCookie } from "../../utils/utils";
+import { LocationProps } from "../../utils/api";
+import {
+  getNewAccessToken,
+  getOrUpdateUserData,
+} from "../../services/auth/auth";
 
 function App() {
+  let content;
   const dispatch = useAppDispatch();
+  const location = useLocation() as LocationProps;
+  const background = location.state && location.state.background;
+  const navigate = useNavigate();
 
   const { status, error } = useAppSelector((state) => state.burgerIngredients);
+  const refreshToken = getCookie("refreshToken");
+
+  useEffect(() => {
+    if (refreshToken) {
+      const accessToken = getCookie("accessToken");
+      if (accessToken === undefined) {
+        dispatch(getNewAccessToken());
+      } else {
+        dispatch(getOrUpdateUserData({}));
+      }
+    }
+  }, [dispatch, refreshToken]);
 
   useEffect(() => {
     if (status === "idle") {
@@ -24,48 +55,96 @@ function App() {
     }
   }, [status, dispatch]);
 
-  let content;
-  if (status === "loading") {
-    content = (
-      <div className={appStyles["loading"]}>
-        <p className="text text_type_main-large">Данные загружаются</p>
-        <AnimatePresence>
-          <AnimatedLoading />
-        </AnimatePresence>
-      </div>
-    );
+  function onDismiss() {
+    navigate(-1);
+  }
+
+  if (status === "loading" || status === "idle") {
+    content = <LoadingScreen text="Данные загружаются" size="medium" />;
+  }
+  if (status === "failed") {
+    content = <ErrorScreen text={`Произошла ошибка: ${error}`} />;
   } else if (status === "succeeded") {
     content = (
-      <section className={appStyles["row"]}>
-        <DndProvider backend={HTML5Backend}>
-          <div className={`mr-10`}>
-            <BurgerIngredients />
-          </div>
-          <div>
-            <BurgerConstructor />
-          </div>
-        </DndProvider>
-      </section>
-    );
-  } else if (status === "failed") {
-    content = (
-      <div className={appStyles["loading"]}>
-        <p className="text text_type_main-large">
-          Данные не смогли загрузиться: {error}
-        </p>
-      </div>
+      <>
+        <Routes location={background || location}>
+          <Route path="/" element={<Constructor />} key={location.pathname} />
+          <Route path="login" element={<Login />} key={location.pathname} />
+          <Route
+            path="register"
+            element={<Register />}
+            key={location.pathname}
+          />
+          <Route
+            path="forgot-password"
+            element={<ForgotPassword />}
+            key={location.pathname}
+          />
+          <Route
+            path="reset-password"
+            element={<ResetPassword />}
+            key={location.pathname}
+          />
+          <Route path="ingredients/:id" element={<Ingredient />} />
+          <Route
+            path="profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+            key={location.pathname}
+          />
+          <Route
+            path="profile/orders"
+            element={
+              <ProtectedRoute>
+                <></>
+              </ProtectedRoute>
+            }
+            key={location.pathname}
+          />
+          <Route
+            path="logout"
+            element={
+              <ProtectedRoute>
+                <Logout />
+              </ProtectedRoute>
+            }
+            key={location.pathname}
+          />
+          <Route path="*" element={<NotFound />} key={location.pathname} />
+        </Routes>
+        {background && (
+          <Routes>
+            <Route
+              path="ingredients/:id"
+              element={
+                <>
+                  <Modal
+                    key="burger-details-modal"
+                    title="Детали ингредиента"
+                    onClose={onDismiss}
+                    closeIconType="primary"
+                  >
+                    <IngredientDetails />
+                  </Modal>
+                </>
+              }
+            />
+          </Routes>
+        )}
+      </>
     );
   }
 
   return (
-    <div className="App">
-      <AppHeader />
-      <Routes>
-        <Route path="/" element={<>{content}</>} />
-        <Route path="/orders" element={<></>} />
-        <Route path="/account" element={<></>} />
-      </Routes>
-    </div>
+    <AnimatePresence>
+      <div className="App">
+        <AppHeader />
+        {content}
+      </div>
+    </AnimatePresence>
   );
 }
 

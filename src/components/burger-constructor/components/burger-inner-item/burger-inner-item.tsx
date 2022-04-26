@@ -6,9 +6,9 @@ import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { NewIngredient } from "../../../../utils/burger-api";
+import { NewIngredient } from "../../../../utils/api";
 
-import innerItemStyles from "../burger-item.module.css";
+import styles from "../burger-item.module.css";
 
 interface BurgerConstructorItemTypes {
   ingredient: NewIngredient;
@@ -103,18 +103,18 @@ function BurgerInnerItem({
       className={`ml-4 mr-4 ${bottomPadding ? "mb-4" : ""}`}
       style={{ opacity }}
     >
-      <div className={innerItemStyles["ingredient"]} ref={_dropRef}>
+      <div className={styles["ingredient"]} ref={_dropRef}>
         {draggable && (
           <div
             ref={ref}
             data-handler-id={handlerId}
-            className={innerItemStyles["_draggable"]}
+            className={styles["_draggable"]}
           >
             <DragIcon type="primary" />
           </div>
         )}
 
-        <div className={innerItemStyles["constructor-element-wrapper"]}>
+        <div className={styles["constructor-element-wrapper"]}>
           <ConstructorElement
             text={ingredient.name}
             price={ingredient.price}
@@ -127,4 +127,4 @@ function BurgerInnerItem({
   );
 }
 
-export default memo(BurgerInnerItem);
+export const BurgerInnerItemMemoized = memo(BurgerInnerItem);

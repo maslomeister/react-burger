@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-import modalOverlayStyles from "./modal-overlay.module.css";
+import styles from "./modal-overlay.module.css";
 
 interface ModalOverlayProps {
   children: JSX.Element;
@@ -8,11 +8,11 @@ interface ModalOverlayProps {
   title: string;
 }
 
-function ModalOverlay({ onClose, children }: ModalOverlayProps) {
+export function ModalOverlay({ onClose, children }: ModalOverlayProps) {
   return (
     <motion.div
       key="modal-overlay"
-      className={modalOverlayStyles["modal-overlay"]}
+      className={styles["modal-overlay"]}
       onClick={onClose}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -25,5 +25,3 @@ function ModalOverlay({ onClose, children }: ModalOverlayProps) {
     </motion.div>
   );
 }
-
-export default ModalOverlay;

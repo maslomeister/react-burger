@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { RequestOptions, createOrder } from "../../utils/burger-api";
+
+import { NewIngredient, Ingredient, createOrder } from "../utils/api";
 
 interface SliceState {
   orderNumber: number;
@@ -15,7 +16,21 @@ const initialState: SliceState = {
 
 export const getOrderNumber = createAsyncThunk(
   "ingredients/getOrderNumber",
-  async (requestOptions: RequestOptions) => {
+  async ({
+    ingredients,
+    bun,
+  }: {
+    ingredients: NewIngredient[];
+    bun: Ingredient;
+  }) => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ingredients: [...ingredients.map(({ _id }) => _id), bun._id],
+      }),
+    };
+
     const response = await createOrder(requestOptions);
     return response;
   }

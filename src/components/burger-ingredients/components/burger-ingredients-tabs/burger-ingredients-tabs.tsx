@@ -1,10 +1,10 @@
 import React, { memo, useEffect, useRef, useState, useCallback } from "react";
 import scrollIntoView from "smooth-scroll-into-view-if-needed";
-import Tabs from "../../../../utils/tabs-data";
 
+import { Tabs } from "../../../../utils/tabs-data";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import ingredientsTabsStyles from "./burger-ingredients-tabs.module.css";
+import styles from "./burger-ingredients-tabs.module.css";
 
 interface TabsTypes {
   tabsRef: React.RefObject<HTMLDivElement>;
@@ -15,7 +15,6 @@ function BurgerIngredientsTabs({ tabsRef }: TabsTypes) {
 
   const [state, setState] = useState({
     currentTab: "one",
-    scrollToTab: "one",
   });
 
   const [isScrolling, _setIsScrolling] = useState(false);
@@ -105,7 +104,7 @@ function BurgerIngredientsTabs({ tabsRef }: TabsTypes) {
 
   return (
     <nav>
-      <ul className={`${ingredientsTabsStyles["tabs"]} mb-10`}>
+      <ul className={`${styles["tabs"]} mb-10`}>
         {Tabs.map((tab) => (
           <Tab
             key={tab._id}
@@ -121,4 +120,4 @@ function BurgerIngredientsTabs({ tabsRef }: TabsTypes) {
   );
 }
 
-export default memo(BurgerIngredientsTabs);
+export const BurgerIngredientsTabsMemoized = memo(BurgerIngredientsTabs);
