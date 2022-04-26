@@ -46,8 +46,11 @@ export interface RequestOptions {
 }
 
 export type LocationProps = {
+  pathname?: string;
   state: {
     from: Location;
+    background?: Location;
+    id?: String;
   };
 };
 
@@ -72,7 +75,12 @@ const checkResponse = (res: Response) => {
           throw new Error(`Такой Email уже зарегестрирован`);
         } else if (err.message === "Incorrect reset token") {
           throw new Error(`Неправильный код из письма`);
+        } else if (err.message === "Invalid credentials provided") {
+          throw new Error(`Поле пароля не может быть пустым`);
+        } else if (err.message === "Failed to fetch") {
+          throw new Error(`Данные не смогли загрузиться, обновите страницу`);
         } else {
+          console.log(err);
           throw new Error(
             `Произошла непредвиденная ошибка: ${JSON.stringify(err)}`
           );
