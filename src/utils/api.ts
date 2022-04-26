@@ -80,7 +80,6 @@ const checkResponse = (res: Response) => {
         } else if (err.message === "Failed to fetch") {
           throw new Error(`Данные не смогли загрузиться, обновите страницу`);
         } else {
-          console.log(err);
           throw new Error(
             `Произошла непредвиденная ошибка: ${JSON.stringify(err)}`
           );
