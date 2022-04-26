@@ -28,6 +28,14 @@
   justify-content: center;
 }
 
+.form-container {
+  display: flex;
+  width: 480px;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .profile-buttons {
   display: flex;
   flex-flow: row;
