@@ -50,7 +50,8 @@ export type LocationProps = {
   state: {
     from: Location;
     background?: Location;
-    id?: String;
+    id?: string;
+    finishOrder?: boolean;
   };
 };
 

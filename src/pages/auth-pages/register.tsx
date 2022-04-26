@@ -75,7 +75,7 @@ export function Register({ from }: { from?: string }) {
           </div>
           <div className="mb-6">
             <Input
-              name="Password"
+              name="password"
               icon={revealPassword ? "HideIcon" : "ShowIcon"}
               type={revealPassword ? "text" : "password"}
               placeholder={"Пароль"}
