@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
@@ -57,7 +57,7 @@ export function Login() {
     }
   }, [location.state, navigate, user]);
 
-  const input = (loading: boolean, error?: string) => {
+  const input = (loading: boolean, error?: string, success?: string) => {
     return (
       <>
         <form className={styles["form-container"]} onSubmit={submitForm}>
@@ -110,6 +110,13 @@ export function Login() {
               {error}
             </p>
           ) : null}
+          {success ? (
+            <p
+              className={`${styles["text-success"]} text text_type_main-default mb-20`}
+            >
+              {success}
+            </p>
+          ) : null}
         </form>
 
         {!loading ? (
@@ -156,6 +163,8 @@ export function Login() {
     content = <></>;
   } else if (status === "loginUser/failed") {
     content = input(false, error);
+  } else if (status === "resetPassword/success") {
+    content = input(false, error, "Пароль успешно восстановлен");
   } else {
     content = input(false);
   }
