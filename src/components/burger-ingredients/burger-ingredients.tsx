@@ -1,6 +1,5 @@
 import { memo, useRef, useMemo, useCallback, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
 
 import { BurgerIngredientItemMemoized } from "./components/burger-ingredients-item/burger-ingredients-item";
 import { Tabs } from "../../utils/tabs-data";
@@ -96,30 +95,28 @@ function BurgerIngredients() {
 
   const ingredientsCategories = [buns, sauces, mains];
   return (
-    <AnimatePresence>
-      <div>
-        <p className="text text_type_main-large mb-5 mt-10">Соберите бургер</p>
-        <BurgerIngredientsTabsMemoized tabsRef={tabsRef} />
+    <div>
+      <p className="text text_type_main-large mb-5 mt-10">Соберите бургер</p>
+      <BurgerIngredientsTabsMemoized tabsRef={tabsRef} />
 
-        <div className={styles["components"]} ref={tabsRef}>
-          {Tabs.map((tab, index) => (
-            <section key={tab._id} className={`${tab._id}`}>
-              <p className="text text_type_main-medium">{tab.name}</p>
-              <div className={`${styles["item-container"]} ml-4`}>
-                {ingredientsCategories[index].map((ingredient) => (
-                  <BurgerIngredientItemMemoized
-                    key={ingredient._id}
-                    ingredient={ingredient}
-                    onClick={modalData(ingredient)}
-                    counter={ingredientsCounter[ingredient._id]}
-                  />
-                ))}
-              </div>
-            </section>
-          ))}
-        </div>
+      <div className={styles["components"]} ref={tabsRef}>
+        {Tabs.map((tab, index) => (
+          <section key={tab._id} className={`${tab._id}`}>
+            <p className="text text_type_main-medium">{tab.name}</p>
+            <div className={`${styles["item-container"]} ml-4`}>
+              {ingredientsCategories[index].map((ingredient) => (
+                <BurgerIngredientItemMemoized
+                  key={ingredient._id}
+                  ingredient={ingredient}
+                  onClick={modalData(ingredient)}
+                  counter={ingredientsCounter[ingredient._id]}
+                />
+              ))}
+            </div>
+          </section>
+        ))}
       </div>
-    </AnimatePresence>
+    </div>
   );
 }
 

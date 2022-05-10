@@ -1,5 +1,3 @@
-import React from "react";
-
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from "./not-found.module.css";

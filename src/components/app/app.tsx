@@ -115,21 +115,20 @@ function App() {
           />
           <Route path="*" element={<NotFound />} key={location.pathname} />
         </Routes>
+        {/* Из-за того что два роутера используются, не знаю как починить exit framet motion-а
+         для модалки ингредиентов */}
         {background && (
           <Routes>
             <Route
               path="ingredients/:id"
               element={
-                <>
-                  <Modal
-                    key="burger-details-modal"
-                    title="Детали ингредиента"
-                    onClose={onDismiss}
-                    closeIconType="primary"
-                  >
-                    <IngredientDetails />
-                  </Modal>
-                </>
+                <Modal
+                  title="Детали ингредиента"
+                  onClose={onDismiss}
+                  closeIconType="primary"
+                >
+                  <IngredientDetails />
+                </Modal>
               }
             />
           </Routes>
@@ -139,12 +138,10 @@ function App() {
   }
 
   return (
-    <AnimatePresence>
-      <div className="App">
-        <AppHeader />
-        {content}
-      </div>
-    </AnimatePresence>
+    <div className="App">
+      <AppHeader />
+      {content}
+    </div>
   );
 }
 

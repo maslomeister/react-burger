@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 
 import { OuterIcon } from "../../assets/images/order-details/outer-icon";
