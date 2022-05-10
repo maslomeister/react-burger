@@ -47,7 +47,7 @@ export function Modal({ onClose, children, title, closeIconType }: ModalProps) {
         onClick={(e) => e.stopPropagation()}
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0, opacity: 0 }}
+        exit={{ scale: 0, opacity: 0, transition: { duration: 0.2 } }}
         transition={{
           type: "spring",
           stiffness: 260,

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { resetState } from "../../services/auth/auth";
@@ -186,7 +187,16 @@ export function Profile() {
   }
 
   return (
-    <div className="mt-30">
+    <motion.div
+      className="mt-30"
+      key="constructor-page-cf"
+      initial={{ x: "+200%" }}
+      animate={{ x: "0" }}
+      exit={{ x: "+200%" }}
+      transition={{
+        type: "ease",
+      }}
+    >
       <div className={styles["profile-container"]}>
         <div className={`${styles["profile-items-container"]} mr-15`}>
           <NavLink
@@ -214,6 +224,6 @@ export function Profile() {
         </div>
         {content}
       </div>
-    </div>
+    </motion.div>
   );
 }
