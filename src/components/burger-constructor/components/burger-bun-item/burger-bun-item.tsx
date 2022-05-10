@@ -1,12 +1,12 @@
 import { memo } from "react";
 
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Ingredient } from "../../../../utils/api";
+import { IIngredient } from "../../../../utils/api";
 
 import styles from "../burger-item.module.css";
 
 interface BurgerConstructorItemTypes {
-  ingredient: Ingredient;
+  ingredient: IIngredient;
   top?: string;
   bottomPadding?: boolean;
   topPadding?: boolean;

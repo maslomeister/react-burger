@@ -6,7 +6,7 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { LocationProps } from "../../utils/api";
+import { TLocationProps } from "../../utils/api";
 import { userAuthorized } from "../../utils/utils";
 import { useFormAndValidation } from "../../hooks/useFromAndValidate";
 import { resetPasswordUser } from "../../services/auth/auth";
@@ -15,7 +15,7 @@ import styles from "./auth-pages.module.css";
 
 export function ResetPassword() {
   let content;
-  const location = useLocation() as LocationProps;
+  const location = useLocation() as TLocationProps;
   const dispatch = useAppDispatch();
 
   const { user, status, error } = useAppSelector((state) => state.authUser);

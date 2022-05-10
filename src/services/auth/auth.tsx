@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getCookie } from "../../utils/utils";
 
 import {
-  RequestOptions,
+  IRequestOptions,
   createUser,
   loginUser,
   logoutUser,
@@ -102,7 +102,7 @@ export const getOrUpdateUserData = createAsyncThunk(
     email?: string;
   }) => {
     const accessToken = getCookie("accessToken");
-    let requestOptions: RequestOptions = {
+    let requestOptions: IRequestOptions = {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

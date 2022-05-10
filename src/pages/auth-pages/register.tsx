@@ -9,13 +9,13 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { userAuthorized } from "../../utils/utils";
 import { useFormAndValidation } from "../../hooks/useFromAndValidate";
-import { LocationProps } from "../../utils/api";
+import { TLocationProps } from "../../utils/api";
 
 import styles from "./auth-pages.module.css";
 
 export function Register({ from }: { from?: string }) {
   let content;
-  const location = useLocation() as LocationProps;
+  const location = useLocation() as TLocationProps;
   const dispatch = useAppDispatch();
 
   const { user, status, error } = useAppSelector((state) => state.authUser);

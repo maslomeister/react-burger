@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
 
 import { AppHeader } from "../../components/app-header/app-header";
 import {
@@ -22,7 +21,7 @@ import { fetchIngredients } from "../../services/burger-ingredients";
 import { LoadingScreen } from "../loading-screen/loading-screen";
 import { ErrorScreen } from "../error-screen/error-screen";
 import { getCookie } from "../../utils/utils";
-import { LocationProps } from "../../utils/api";
+import { TLocationProps } from "../../utils/api";
 import {
   getNewAccessToken,
   getOrUpdateUserData,
@@ -31,11 +30,12 @@ import {
 function App() {
   let content;
   const dispatch = useAppDispatch();
-  const location = useLocation() as LocationProps;
+  const location = useLocation() as TLocationProps;
   const background = location.state && location.state.background;
   const navigate = useNavigate();
 
   const { status, error } = useAppSelector((state) => state.burgerIngredients);
+  const tokenLoad = useAppSelector((state) => state.authUser).status;
   const refreshToken = getCookie("refreshToken");
 
   useEffect(() => {
@@ -49,11 +49,19 @@ function App() {
     }
   }, [dispatch, refreshToken]);
 
+  useEffect(() => {});
+
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchIngredients());
     }
   }, [status, dispatch]);
+
+  useEffect(() => {
+    if (tokenLoad === "getToken/success") {
+      dispatch(getOrUpdateUserData({}));
+    }
+  }, [tokenLoad, dispatch]);
 
   function onDismiss() {
     navigate(-1);

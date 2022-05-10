@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 
-import { NewIngredient, Ingredient } from "../utils/api";
+import { INewIngredient, IIngredient } from "../utils/api";
 
 import missingIcon from "../assets/images/missing-icon.svg";
 
 interface SliceState {
-  ingredients: NewIngredient[];
-  bun: Ingredient;
+  ingredients: INewIngredient[];
+  bun: IIngredient;
 }
 
 interface MoveIngredients {
@@ -34,7 +34,7 @@ const initialState: SliceState = {
 };
 
 function arraymove(
-  ingredients: NewIngredient[],
+  ingredients: INewIngredient[],
   fromIndex: number,
   toIndex: number
 ) {
@@ -48,7 +48,7 @@ export const constructorIngredients = createSlice({
   initialState,
   reducers: {
     addIngredient: {
-      reducer: (state: SliceState, action: PayloadAction<NewIngredient>) => {
+      reducer: (state: SliceState, action: PayloadAction<INewIngredient>) => {
         state.ingredients.push(action.payload);
       },
       prepare: (value) => {
@@ -70,7 +70,7 @@ export const constructorIngredients = createSlice({
     },
     removeIngredient: (
       state: SliceState,
-      action: PayloadAction<NewIngredient>
+      action: PayloadAction<INewIngredient>
     ) => {
       const filteredIngredients = state.ingredients.filter(
         (item) => item._uniqueId !== action.payload._uniqueId
@@ -89,7 +89,7 @@ export const constructorIngredients = createSlice({
       );
       state.ingredients = newIngredients;
     },
-    addOrReplaceBun: (state, action: PayloadAction<Ingredient>) => {
+    addOrReplaceBun: (state, action: PayloadAction<IIngredient>) => {
       state.bun = action.payload;
     },
     resetState: () => {

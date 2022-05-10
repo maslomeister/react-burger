@@ -9,7 +9,7 @@ import { BurgerInnerItemMemoized } from "./components/burger-inner-item/burger-i
 import { OrderDetails } from "../../components/order-details/order-details";
 import { ErrorModal } from "../../components/error-modal/error-modal";
 import { TotalPriceMemoized } from "./components/total-price/total-price";
-import { Ingredient, NewIngredient } from "../../utils/api";
+import { IIngredient, INewIngredient } from "../../utils/api";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import {
   addIngredient,
@@ -70,7 +70,7 @@ function BurgerConstructor() {
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
-    drop(ingredient: Ingredient) {
+    drop(ingredient: IIngredient) {
       ingredient.type === "bun"
         ? dispatch(addOrReplaceBun(ingredient))
         : dispatch(addIngredient(ingredient));
@@ -83,7 +83,7 @@ function BurgerConstructor() {
   const borderColor = isHover ? "#8585AD" : "transparent";
 
   const _removeIngredient = useCallback(
-    (ingredient: NewIngredient) => () => {
+    (ingredient: INewIngredient) => () => {
       dispatch(removeIngredient(ingredient));
     },
     [dispatch]

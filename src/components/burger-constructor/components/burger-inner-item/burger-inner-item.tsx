@@ -6,12 +6,12 @@ import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { NewIngredient } from "../../../../utils/api";
+import { INewIngredient } from "../../../../utils/api";
 
 import styles from "../burger-item.module.css";
 
 interface BurgerConstructorItemTypes {
-  ingredient: NewIngredient;
+  ingredient: INewIngredient;
   draggable: boolean;
   index: number;
   bottomPadding: boolean;
@@ -38,7 +38,7 @@ function BurgerInnerItem({
   });
 
   const [{ handlerId }, drop] = useDrop<
-    NewIngredient,
+    INewIngredient,
     void,
     { handlerId: Identifier | null }
   >({
@@ -46,7 +46,7 @@ function BurgerInnerItem({
     collect: (monitor) => ({
       handlerId: monitor.getHandlerId(),
     }),
-    hover(item: NewIngredient, monitor) {
+    hover(item: INewIngredient, monitor) {
       if (_dropRef === undefined) {
         return;
       }
