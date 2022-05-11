@@ -28,22 +28,7 @@ export interface ILoginUser extends ITokenData {
 }
 export interface IIngredient {
   _id: string;
-  name: string;
-  type: string;
-  proteins: number;
-  fat: number;
-  carbohydrates: number;
-  calories: number;
-  price: number;
-  image: string;
-  image_mobile: string;
-  image_large: string;
-  __v: number;
-}
-
-export interface INewIngredient {
-  _id: string;
-  _uniqueId: string;
+  _uniqueId?: string;
   index?: number;
   name: string;
   type: string;
@@ -57,7 +42,6 @@ export interface INewIngredient {
   image_large: string;
   __v: number;
 }
-
 export interface Items {
   item: IIngredient[];
 }

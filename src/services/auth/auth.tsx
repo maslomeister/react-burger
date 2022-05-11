@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getCookie } from "../../utils/utils";
 
 import {
+  IUser,
   IRequestOptions,
   createUser,
   loginUser,
@@ -13,13 +14,8 @@ import {
   resetPassword,
 } from "../../utils/api";
 
-type User = {
-  name: string;
-  email: string;
-};
-
 interface SliceState {
-  user: User;
+  user: IUser;
   status: string;
   success: string;
   error: string;

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { INewIngredient, IIngredient, createOrder } from "../utils/api";
+import { IIngredient, createOrder } from "../utils/api";
 
 interface SliceState {
   orderNumber: number;
@@ -20,7 +20,7 @@ export const getOrderNumber = createAsyncThunk(
     ingredients,
     bun,
   }: {
-    ingredients: INewIngredient[];
+    ingredients: IIngredient[];
     bun: IIngredient;
   }) => {
     const requestOptions = {
