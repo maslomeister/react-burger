@@ -94,6 +94,7 @@ function App() {
             key={location.pathname}
           />
           <Route path="ingredients/:id" element={<Ingredient />} />
+
           <Route
             path="profile"
             element={
@@ -103,6 +104,7 @@ function App() {
             }
             key={location.pathname}
           />
+
           <Route
             path="profile/orders"
             element={
