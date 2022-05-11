@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 
 import { AppHeader } from "../../components/app-header/app-header";
 import {
@@ -125,24 +126,37 @@ function App() {
           />
           <Route path="*" element={<NotFound />} key={location.pathname} />
         </Routes>
-        {/* Из-за того что два роутера используются, не знаю как починить exit framet motion-а
-         для модалки ингредиентов */}
-        {background && (
-          <Routes>
-            <Route
-              path="ingredients/:id"
-              element={
-                <Modal
-                  title="Детали ингредиента"
-                  onClose={onDismiss}
-                  closeIconType="primary"
-                >
-                  <IngredientDetails />
-                </Modal>
-              }
-            />
-          </Routes>
-        )}
+        <AnimatePresence>
+          {background && (
+            <Routes>
+              {/* This route fixes end animation of modal window */}
+              <Route
+                path="/"
+                element={
+                  <Modal
+                    title="Детали ингредиента"
+                    onClose={onDismiss}
+                    closeIconType="primary"
+                  >
+                    <IngredientDetails />
+                  </Modal>
+                }
+              />
+              <Route
+                path="ingredients/:id"
+                element={
+                  <Modal
+                    title="Детали ингредиента"
+                    onClose={onDismiss}
+                    closeIconType="primary"
+                  >
+                    <IngredientDetails />
+                  </Modal>
+                }
+              />
+            </Routes>
+          )}
+        </AnimatePresence>
       </>
     );
   }
