@@ -8,14 +8,14 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { userAuthorized } from "../../utils/utils";
-import { LocationProps } from "../../utils/api";
+import { TLocationProps } from "../../utils/api";
 import { useFormAndValidation } from "../../hooks/useFromAndValidate";
 
 import styles from "./auth-pages.module.css";
 
 export function Login() {
   let content;
-  const location = useLocation() as LocationProps;
+  const location = useLocation() as TLocationProps;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 

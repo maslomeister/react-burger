@@ -6,7 +6,7 @@ import { Tabs } from "../../utils/tabs-data";
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { BurgerIngredientsTabsMemoized } from "./components/burger-ingredients-tabs/burger-ingredients-tabs";
 import { addDataToModal } from "../../services/ingredient-details";
-import { LocationProps } from "../../utils/api";
+import { TLocationProps } from "../../utils/api";
 
 import styles from "./burger-ingredients.module.css";
 
@@ -18,7 +18,7 @@ function BurgerIngredients() {
   const tabsRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const location = useLocation() as LocationProps;
+  const location = useLocation() as TLocationProps;
 
   const ingredients = useAppSelector(
     (state) => state.burgerIngredients.ingredients

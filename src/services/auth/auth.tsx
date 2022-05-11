@@ -3,7 +3,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getCookie } from "../../utils/utils";
 
 import {
-  RequestOptions,
+  IUser,
+  IRequestOptions,
   createUser,
   loginUser,
   logoutUser,
@@ -13,13 +14,8 @@ import {
   resetPassword,
 } from "../../utils/api";
 
-type User = {
-  name: string;
-  email: string;
-};
-
 interface SliceState {
-  user: User;
+  user: IUser;
   status: string;
   success: string;
   error: string;
@@ -102,7 +98,7 @@ export const getOrUpdateUserData = createAsyncThunk(
     email?: string;
   }) => {
     const accessToken = getCookie("accessToken");
-    let requestOptions: RequestOptions = {
+    let requestOptions: IRequestOptions = {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

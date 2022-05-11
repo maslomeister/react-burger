@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { getIngredients, Ingredient } from "../utils/api";
+import { getIngredients, IIngredient } from "../utils/api";
 
 interface SliceState {
-  ingredients: Ingredient[];
+  ingredients: IIngredient[];
   status: string;
   error: string;
 }

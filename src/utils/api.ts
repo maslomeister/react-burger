@@ -2,24 +2,33 @@ import { setCookie } from "../utils/utils";
 
 const BURGER_API_URL = "https://norma.nomoreparties.space/api";
 
-export interface Ingredient {
-  _id: string;
+export interface IUser {
+  email: string;
   name: string;
-  type: string;
-  proteins: number;
-  fat: number;
-  carbohydrates: number;
-  calories: number;
-  price: number;
-  image: string;
-  image_mobile: string;
-  image_large: string;
-  __v: number;
 }
 
-export interface NewIngredient {
+export interface ITokenData {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface IUserData {
+  user: IUser;
+}
+
+export interface IMessageData {
+  message: string;
+}
+
+export interface ICreateUser {
+  user: IUser;
+}
+export interface ILoginUser extends ITokenData {
+  user: IUser;
+}
+export interface IIngredient {
   _id: string;
-  _uniqueId: string;
+  _uniqueId?: string;
   index?: number;
   name: string;
   type: string;
@@ -33,12 +42,11 @@ export interface NewIngredient {
   image_large: string;
   __v: number;
 }
-
 export interface Items {
-  item: Ingredient[];
+  item: IIngredient[];
 }
 
-export interface RequestOptions {
+export interface IRequestOptions {
   method: string;
   headers: {
     "Content-Type": string;
@@ -47,7 +55,7 @@ export interface RequestOptions {
   body?: string;
 }
 
-export type LocationProps = {
+export type TLocationProps = {
   pathname?: string;
   state: {
     from: Location;
@@ -62,6 +70,7 @@ const tokenLifeTime = 1150;
 const checkSuccess = (
   data: { success: string; data: any },
   returnData: any
+  // returnData: Promise<CustomResponse<TResponseBody<>>
 ) => {
   return data.success
     ? returnData
@@ -77,7 +86,7 @@ const checkResponse = (res: Response) => {
         if (err.message === "email or password are incorrect") {
           throw new Error(`Неправильно введен логин или пароль`);
         } else if (err.message === "User already exists") {
-          throw new Error(`Такой Email уже зарегестрирован`);
+          throw new Error(`Такой Email уже зарегистрирован`);
         } else if (err.message === "Incorrect reset token") {
           throw new Error(`Неправильный код из письма`);
         } else if (err.message === "Invalid credentials provided") {
@@ -92,28 +101,32 @@ const checkResponse = (res: Response) => {
       });
 };
 
-export const getIngredients = async () => {
+export const getIngredients = async (): Promise<IIngredient[]> => {
   const res = await fetch(`${BURGER_API_URL}/ingredients`);
   const data = await checkResponse(res);
   return checkSuccess(data, data.data);
 };
 
-export const createOrder = async (requestOptions: RequestOptions) => {
+export const createOrder = async (
+  requestOptions: IRequestOptions
+): Promise<number> => {
   const res = await fetch(`${BURGER_API_URL}/orders`, requestOptions);
   const data = await checkResponse(res);
   return checkSuccess(data, data.order.number);
 };
 
-export const createUser = async (requestOptions: RequestOptions) => {
+export const createUser = async (
+  requestOptions: IRequestOptions
+): Promise<ICreateUser> => {
   const res = await fetch(`${BURGER_API_URL}/auth/register`, requestOptions);
   const data = await checkResponse(res);
   return checkSuccess(data, data);
 };
 
-export const loginUser = async (requestOptions: RequestOptions) => {
+export const loginUser = async (requestOptions: IRequestOptions) => {
   const res = await fetch(`${BURGER_API_URL}/auth/login`, requestOptions);
   const data = await checkResponse(res);
-  const success = checkSuccess(data, data);
+  const success: ILoginUser = checkSuccess(data, data);
   if (success) {
     setCookie("accessToken", success.accessToken, {
       expires: tokenLifeTime,
@@ -123,10 +136,10 @@ export const loginUser = async (requestOptions: RequestOptions) => {
   return success;
 };
 
-export const logoutUser = async (requestOptions: RequestOptions) => {
+export const logoutUser = async (requestOptions: IRequestOptions) => {
   const res = await fetch(`${BURGER_API_URL}/auth/logout`, requestOptions);
   const data = await checkResponse(res);
-  const success = checkSuccess(data, data);
+  const success: IMessageData = checkSuccess(data, data);
   if (success) {
     setCookie("accessToken", "", {
       expires: 0,
@@ -138,13 +151,17 @@ export const logoutUser = async (requestOptions: RequestOptions) => {
   return success;
 };
 
-export const getOrUpdateUser = async (requestOptions: RequestOptions) => {
+export const getOrUpdateUser = async (
+  requestOptions: IRequestOptions
+): Promise<IUserData> => {
   const res = await fetch(`${BURGER_API_URL}/auth/user`, requestOptions);
   const data = await checkResponse(res);
   return checkSuccess(data, data);
 };
 
-export const getNewToken = async (requestOptions: RequestOptions) => {
+export const getNewToken = async (
+  requestOptions: IRequestOptions
+): Promise<ITokenData> => {
   const res = await fetch(`${BURGER_API_URL}/auth/token`, requestOptions);
   const data = await checkResponse(res);
   const success = checkSuccess(data, data);
@@ -157,17 +174,22 @@ export const getNewToken = async (requestOptions: RequestOptions) => {
   return success;
 };
 
-export const forgotPassword = async (requestOptions: RequestOptions) => {
+export const forgotPassword = async (
+  requestOptions: IRequestOptions
+): Promise<IMessageData> => {
   const res = await fetch(`${BURGER_API_URL}/password-reset`, requestOptions);
   const data = await checkResponse(res);
   return checkSuccess(data, data);
 };
 
-export const resetPassword = async (requestOptions: RequestOptions) => {
+export const resetPassword = async (
+  requestOptions: IRequestOptions
+): Promise<IMessageData> => {
   const res = await fetch(
     `${BURGER_API_URL}/password-reset/reset`,
     requestOptions
   );
   const data = await checkResponse(res);
+  console.log(data);
   return checkSuccess(data, data);
 };
