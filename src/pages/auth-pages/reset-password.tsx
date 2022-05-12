@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation, Navigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import {
@@ -133,5 +134,16 @@ export function ResetPassword() {
     return <Navigate to="/profile" replace={true} />;
   }
 
-  return <div className={styles["container"]}>{content}</div>;
+  return (
+    <motion.div
+      initial={{ x: "+200%" }}
+      animate={{ x: "0" }}
+      transition={{
+        type: "ease",
+      }}
+      className={styles["container"]}
+    >
+      {content}
+    </motion.div>
+  );
 }
