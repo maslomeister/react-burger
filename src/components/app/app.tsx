@@ -76,6 +76,7 @@ function App() {
   } else if (status === "succeeded") {
     content = (
       <>
+        <AppHeader />
         <Routes location={background || location}>
           <Route path="/" element={<Constructor />} key={location.pathname} />
           <Route path="login" element={<Login />} key={location.pathname} />
@@ -161,12 +162,7 @@ function App() {
     );
   }
 
-  return (
-    <div className="App">
-      <AppHeader />
-      {content}
-    </div>
-  );
+  return <div className="App">{content}</div>;
 }
 
 export default App;

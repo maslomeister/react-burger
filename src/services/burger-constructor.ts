@@ -92,6 +92,10 @@ export const constructorIngredients = createSlice({
     addOrReplaceBun: (state, action: PayloadAction<IIngredient>) => {
       state.bun = action.payload;
     },
+    removeBun: (state) => {
+      let newState = { ...state, bun: initialState.bun };
+      return newState;
+    },
     resetState: () => {
       return initialState;
     },
@@ -104,6 +108,7 @@ export const {
   removeIngredient,
   moveIngredient,
   addOrReplaceBun,
+  removeBun,
   resetState,
 } = constructorIngredients.actions;
 

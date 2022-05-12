@@ -2,12 +2,12 @@ import { useState, useCallback, useRef, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDrop } from "react-dnd";
+import ReactTooltip from "react-tooltip";
 
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { BurgerBunItemMemoized } from "./components/burger-bun-item/burger-bun-item";
 import { BurgerInnerItemMemoized } from "./components/burger-inner-item/burger-inner-item";
 import { OrderDetails } from "../../components/order-details/order-details";
-import { ErrorModal } from "../../components/error-modal/error-modal";
 import { TotalPriceMemoized } from "./components/total-price/total-price";
 import { IIngredient } from "../../utils/api";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
@@ -17,6 +17,7 @@ import {
   removeIngredient,
   moveIngredient,
   addOrReplaceBun,
+  removeBun,
   resetState,
 } from "../../services/burger-constructor";
 import { getOrderNumber } from "../../services/order-details";
@@ -30,8 +31,7 @@ function BurgerConstructor() {
 
   const dropRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
-  const [errorModal, setErrorModal] = useState("");
-  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [canOrder, setCanOrder] = useState(false);
 
   let conditonalStyle;
 
@@ -89,18 +89,20 @@ function BurgerConstructor() {
     [dispatch]
   );
 
+  const _removeBun = useCallback(() => {
+    dispatch(removeBun());
+  }, []);
+
+  useEffect(() => {
+    if (bun.price && ingredients.length > 0) {
+      setCanOrder(true);
+    } else {
+      setCanOrder(false);
+    }
+  }, [bun.price, ingredients.length]);
+
   const createOrder = () => {
     if (userAuthorized(user)) {
-      if (!bun.price) {
-        setErrorModal("Нельзя оформить бургер без булки");
-        setShowErrorModal(true);
-        return;
-      }
-      if (ingredients.length === 0) {
-        setErrorModal("Бургер не может быть пустым");
-        setShowErrorModal(true);
-        return;
-      }
       setShowModal(true);
 
       dispatch(getOrderNumber({ ingredients, bun }));
@@ -133,12 +135,6 @@ function BurgerConstructor() {
 
   return (
     <AnimatePresence>
-      {showErrorModal && (
-        <ErrorModal
-          onClose={() => setShowErrorModal(false)}
-          error={errorModal}
-        />
-      )}
       {showModal && (
         <OrderDetails
           onClose={hideModal}
@@ -161,6 +157,7 @@ function BurgerConstructor() {
                   bottomPadding={true}
                   top={"top"}
                   ingredient={bun}
+                  handleClose={_removeBun}
                 />
               </div>
 
@@ -195,30 +192,40 @@ function BurgerConstructor() {
                   topPadding={true}
                   top={"bottom"}
                   ingredient={bun}
+                  handleClose={_removeBun}
                 />
               </div>
             </div>
 
             <div className={`${styles["cart"]} mb-10 mt-10`}>
               <TotalPriceMemoized price={totalPrice} />
-              <Button type="primary" size="large" onClick={createOrder}>
-                Оформить заказ
-              </Button>
-              <Button
-                type="secondary"
-                size="medium"
-                onClick={() => dispatch(resetState())}
+              <div
+                data-tip={
+                  bun.price === 0
+                    ? "Добавьте булку в бургер чтобы сделать заказ"
+                    : ingredients.length === 0
+                    ? "Добавьте начинку в бургер чтобы сделать заказ"
+                    : ""
+                }
               >
-                Отменить
-              </Button>
+                <Button
+                  type="primary"
+                  size="large"
+                  disabled={!canOrder}
+                  onClick={createOrder}
+                >
+                  Оформить заказ
+                </Button>
+              </div>
             </div>
+            {!canOrder && <ReactTooltip place="top" effect="solid" />}
           </>
         ) : (
           <div className={styles["helper"]}>
             <div
               className={`${styles["helper_shadow"]} text text_type_main-large mb-30 mt-30`}
             >
-              Для создания бургера перетащите на этот текст ингредиент слева
+              Для создания бургера перетащите сюда ингредиент
             </div>
           </div>
         )}

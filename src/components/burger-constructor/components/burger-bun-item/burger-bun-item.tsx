@@ -18,6 +18,7 @@ function BurgerBunItem({
   top,
   bottomPadding,
   topPadding,
+  handleClose,
 }: BurgerConstructorItemTypes) {
   return (
     <div
@@ -31,12 +32,12 @@ function BurgerBunItem({
             type={
               top === "top" ? "top" : top === "bottom" ? "bottom" : undefined
             }
-            isLocked={true}
             text={`${ingredient.name} ${
               top === "top" ? "(верх)" : top === "bottom" ? "(низ)" : ""
             }`}
             price={ingredient.price}
             thumbnail={ingredient.image}
+            handleClose={handleClose}
           />
         </div>
       </div>
