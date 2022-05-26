@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { LoadingScreen } from "../../components/loading-screen/loading-screen";
@@ -8,7 +9,7 @@ import { logoutUserProfile } from "../../services/auth/auth";
 import styles from "./auth-pages.module.css";
 
 export function Logout() {
-  let content;
+  let content = null;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { status, error } = useAppSelector((state) => state.authUser);
@@ -37,9 +38,18 @@ export function Logout() {
         </p>
       </div>
     );
-  } else {
-    content = <></>;
   }
 
-  return content;
+  return (
+    <motion.div
+      key="constructor-page-cf"
+      initial={{ x: "+200%" }}
+      animate={{ x: "0" }}
+      transition={{
+        type: "ease",
+      }}
+    >
+      {content}
+    </motion.div>
+  );
 }

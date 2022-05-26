@@ -26,7 +26,7 @@ const setActive = (
   additionalClass;
 
 export function Profile() {
-  let content;
+  let content = null;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -189,10 +189,9 @@ export function Profile() {
   return (
     <motion.div
       className="mt-30"
-      key="constructor-page-cf"
+      key="profile-page"
       initial={{ x: "+200%" }}
       animate={{ x: "0" }}
-      exit={{ x: "+200%" }}
       transition={{
         type: "ease",
       }}

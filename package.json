@@ -11,6 +11,7 @@
     "@types/node": "^16.11.26",
     "@types/react": "^17.0.40",
     "@types/react-dom": "^17.0.13",
+    "@types/uuid": "^8.3.4",
     "@ya.praktikum/react-developer-burger-ui-components": "^1.13.1",
     "framer-motion": "^6.2.8",
     "react": "^17.0.2",
@@ -28,8 +29,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "set \"GENERATE_SOURCEMAP=false\" && react-scripts --optimize_for_size --max_old_space_size=460 --gc_interval=100 start",
+    "build": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "eslint": "eslint ./src",
@@ -52,8 +53,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@types/uuid": "^8.3.4"
   }
 }

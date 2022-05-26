@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { loginUserProfile } from "../../services/auth/auth";
@@ -169,5 +170,17 @@ export function Login() {
     content = input(false);
   }
 
-  return <div className={styles["container"]}>{content}</div>;
+  return (
+    <motion.div
+      key="constructor-page-cf"
+      initial={{ x: "+200%" }}
+      animate={{ x: "0" }}
+      transition={{
+        type: "ease",
+      }}
+      className={styles["container"]}
+    >
+      {content}
+    </motion.div>
+  );
 }
