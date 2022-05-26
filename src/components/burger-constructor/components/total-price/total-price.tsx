@@ -6,12 +6,13 @@ import styles from "./total-price.module.css";
 
 interface TotalPriceType {
   price: number;
+  size: "default" | "medium" | "large";
 }
 
-function TotalPrice({ price }: TotalPriceType) {
+function TotalPrice({ price, size }: TotalPriceType) {
   return (
-    <div className={`${styles["cart__total"]} mr-10`}>
-      <p className="text text_type_digits-medium">{price}</p>
+    <div className={styles["cart__total"]}>
+      <p className={`text text_type_digits-${size}`}>{price}</p>
       <div className={`${styles["cart_price"]} ml-2`}>
         <CurrencyIcon type="primary" />
       </div>
