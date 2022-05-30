@@ -115,8 +115,39 @@ export function declOfNum(n: number, text_forms: string[]) {
   if (n1 > 1 && n1 < 5) {
     return text_forms[1];
   }
-  if (n1 == 1) {
+  if (n1 === 1) {
     return text_forms[0];
   }
   return text_forms[2];
+}
+
+export function formatDisplayDate(date: Date): string {
+  let dateSTR = "";
+  const today = new Date();
+  const daysSinceDate = Math.floor(
+    Math.abs(today.getTime() - date.getTime()) / 8.64e7
+  );
+  if (date.getDate() === today.getDate()) {
+    dateSTR += "Сегодня, ";
+  } else if (daysSinceDate === 1) {
+    dateSTR += "Вчера, ";
+  } else {
+    dateSTR += `${daysSinceDate} ${declOfNum(daysSinceDate, [
+      "день",
+      "дня",
+      "дней",
+    ])} назад, `;
+  }
+
+  dateSTR += `${
+    date.getHours() < 10 ? "0" + date.getHours() : date.getHours()
+  }:${date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()} `;
+
+  dateSTR += `i-GMT${
+    date.getTimezoneOffset() / 60 > 0
+      ? date.getTimezoneOffset() / 60
+      : "+" + (date.getTimezoneOffset() * -1) / 60
+  }`;
+
+  return dateSTR;
 }
