@@ -7,7 +7,7 @@ export function LoadingScreen({
   size,
 }: {
   text: string;
-  size?: "small" | "medium" | "large";
+  size?: "small" | "medium";
 }) {
   return (
     <div className={styles["container"]}>

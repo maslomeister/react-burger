@@ -5,8 +5,7 @@ import { BurgerIngredientItemMemoized } from "./components/burger-ingredients-it
 import { Tabs } from "../../utils/tabs-data";
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { BurgerIngredientsTabsMemoized } from "./components/burger-ingredients-tabs/burger-ingredients-tabs";
-import { addDataToModal } from "../../services/ingredient-details";
-import { TLocationProps } from "../../utils/api";
+import { addDataToModal } from "../../services/reducers/ingredient-details";
 
 import styles from "./burger-ingredients.module.css";
 

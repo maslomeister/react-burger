@@ -18,7 +18,7 @@ export function OrderDetails({
   orderId,
 }: OrderDetailsProps) {
   let content;
-  if (status === "loading") {
+  if (status === "getOrderNumber/loading") {
     content = (
       <div className={styles["order-details"]}>
         <div
@@ -29,11 +29,13 @@ export function OrderDetails({
         <div
           className={`${styles["check-mark-icon_background-size"]} mb-15 mt-15`}
         >
-          <AnimatedLoading />
+          <div className={styles["loading-icon_absolute"]}>
+            <AnimatedLoading />
+          </div>
         </div>
       </div>
     );
-  } else if (status === "succeeded") {
+  } else if (status === "getOrderNumber/succeeded") {
     content = (
       <div className={styles["order-details"]}>
         <div

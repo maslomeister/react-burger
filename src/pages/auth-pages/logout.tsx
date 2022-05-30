@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { LoadingScreen } from "../../components/loading-screen/loading-screen";
-import { logoutUserProfile } from "../../services/auth/auth";
+import { logoutUserProfile } from "../../services/reducers/auth/auth";
 
 import styles from "./auth-pages.module.css";
 

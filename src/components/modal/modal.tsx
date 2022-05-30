@@ -12,6 +12,7 @@ declare type TIconTypes = "secondary" | "primary" | "error" | "success";
 interface ModalProps {
   children: React.ReactNode;
   title: string;
+  titleIsNumber?: boolean;
   closeIconType: TIconTypes;
   onClose: () => void;
 }
@@ -22,7 +23,13 @@ const defaultProps = {
 
 Modal.defaultProps = defaultProps;
 
-export function Modal({ onClose, children, title, closeIconType }: ModalProps) {
+export function Modal({
+  onClose,
+  children,
+  title,
+  closeIconType,
+  titleIsNumber,
+}: ModalProps) {
   const modalRoot: Element = document.getElementById("modal-root") as Element;
 
   useEffect(() => {
@@ -56,7 +63,15 @@ export function Modal({ onClose, children, title, closeIconType }: ModalProps) {
       >
         {title ? (
           <div className={`${styles["modal_title"]} ml-10 mr-10 mt-10`}>
-            <p className="text text_type_main-medium">{title}</p>
+            <p
+              className={
+                titleIsNumber
+                  ? "text text_type_digits-default"
+                  : "text text_type_main-medium"
+              }
+            >
+              {title}
+            </p>
             <div className={styles["close-icon_flex"]} onClick={onClose}>
               <CloseIcon type={closeIconType} />
             </div>

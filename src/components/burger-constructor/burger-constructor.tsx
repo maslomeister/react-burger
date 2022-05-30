@@ -8,8 +8,7 @@ import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { BurgerBunItemMemoized } from "./components/burger-bun-item/burger-bun-item";
 import { BurgerInnerItemMemoized } from "./components/burger-inner-item/burger-inner-item";
 import { OrderDetails } from "../../components/order-details/order-details";
-import { TotalPriceMemoized } from "./components/total-price/total-price";
-import { IIngredient } from "../../utils/api";
+import { TotalPrice } from "../total-price/total-price";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import {
   addIngredient,
@@ -19,8 +18,8 @@ import {
   addOrReplaceBun,
   removeBun,
   resetState,
-} from "../../services/burger-constructor";
-import { getOrderNumber } from "../../services/order-details";
+} from "../../services/reducers/burger-constructor";
+import { getOrderNumber } from "../../services/reducers/order-details";
 import { userAuthorized } from "../../utils/utils";
 
 import styles from "./burger-constructor.module.css";
@@ -91,6 +90,7 @@ function BurgerConstructor() {
 
   const _removeBun = useCallback(() => {
     dispatch(removeBun());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -198,7 +198,9 @@ function BurgerConstructor() {
             </div>
 
             <div className={`${styles["cart"]} mb-10 mt-10`}>
-              <TotalPriceMemoized price={totalPrice} />
+              <div className="mr-10">
+                <TotalPrice price={totalPrice} size="medium" />
+              </div>
               <div
                 data-tip={
                   bun.price === 0

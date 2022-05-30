@@ -9,7 +9,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { userAuthorized } from "../../utils/utils";
 import { useFormAndValidation } from "../../hooks/useFromAndValidate";
-import { forgotUserPassword } from "../../services/auth/auth";
+import { forgotUserPassword } from "../../services/reducers/auth/auth";
 
 import styles from "./auth-pages.module.css";
 

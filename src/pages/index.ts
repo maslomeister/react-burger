@@ -1,4 +1,4 @@
-export { Ingredient } from "./ingredient/ingredient";
+export { IngredientInfo } from "./ingredient-info/ingredient-info";
 export { Login } from "./auth-pages/login";
 export { Register } from "./auth-pages/register";
 export { ForgotPassword } from "./auth-pages/forgot-password";
@@ -7,3 +7,6 @@ export { Profile } from "./auth-pages/profile";
 export { Logout } from "./auth-pages/logout";
 export { Constructor } from "./constructor/constructor";
 export { NotFound } from "./not-found/not-found";
+export { Orders } from "./orders/orders";
+export { OrderInfoPage } from "./order-info-page/order-info-page";
+export { ProfileOrders } from "./profile-orders/profile-orders";

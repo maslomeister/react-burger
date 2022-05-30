@@ -3,14 +3,13 @@ import { Link, useLocation, Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
-import { createUserProfile } from "../../services/auth/auth";
+import { createUserProfile } from "../../services/reducers/auth/auth";
 import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { userAuthorized } from "../../utils/utils";
 import { useFormAndValidation } from "../../hooks/useFromAndValidate";
-import { TLocationProps } from "../../utils/api";
 
 import styles from "./auth-pages.module.css";
 

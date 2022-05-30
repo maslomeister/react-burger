@@ -1,7 +1,6 @@
 import { memo } from "react";
 
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
-import { IIngredient } from "../../../../utils/api";
 
 import styles from "../burger-item.module.css";
 

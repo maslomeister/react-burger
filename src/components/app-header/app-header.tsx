@@ -35,8 +35,13 @@ export function AppHeader() {
             </NavLink>
           </li>
           <li className={`${styles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
-            <ListIcon type={buttonType("/profile/orders", location.pathname)} />
-            <NavLink className={setActive} to="/profile/orders">
+            <ListIcon type={buttonType("/feed", location.pathname)} />
+            <NavLink
+              className={setActive}
+              to="/feed"
+              state={{ from: location }}
+              end
+            >
               Лента заказов
             </NavLink>
           </li>

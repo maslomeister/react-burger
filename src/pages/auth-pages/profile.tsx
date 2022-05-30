@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
-import { resetState } from "../../services/auth/auth";
+import { resetState } from "../../services/reducers/auth/auth";
 import {
   Input,
   Button,
@@ -11,7 +11,7 @@ import {
 import {
   getOrUpdateUserData,
   getNewAccessToken,
-} from "../../services/auth/auth";
+} from "../../services/reducers/auth/auth";
 import { useFormAndValidation } from "../../hooks/useFromAndValidate";
 import { getCookie } from "../../utils/utils";
 

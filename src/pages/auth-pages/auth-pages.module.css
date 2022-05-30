@@ -10,7 +10,7 @@
   display: flex;
   flex-flow: column;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 .profile-container {
@@ -24,7 +24,7 @@
   display: flex;
   width: 320px;
   flex-flow: column;
-  align-items: start;
+  align-items: flex-start;
   justify-content: center;
 }
 
