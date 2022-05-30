@@ -7,10 +7,9 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { TLocationProps } from "../../utils/api";
 import { userAuthorized } from "../../utils/utils";
 import { useFormAndValidation } from "../../hooks/useFromAndValidate";
-import { resetPasswordUser } from "../../services/auth/auth";
+import { resetPasswordUser } from "../../services/reducers/auth/auth";
 
 import styles from "./auth-pages.module.css";
 

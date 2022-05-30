@@ -1,0 +1,27 @@
+.cart__total {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+}
+
+.cart-price {
+  white-space: nowrap;
+}
+
+.cart__price_default > svg {
+  display: flex;
+  width: 24px;
+  height: 24px;
+}
+
+.cart__price_medium > svg {
+  display: flex;
+  width: 36px;
+  height: 36px;
+}
+
+.cart__price_large > svg {
+  display: flex;
+  width: 48px;
+  height: 48px;
+}
