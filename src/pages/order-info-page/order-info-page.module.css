@@ -1,0 +1,49 @@
+.container {
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.order-number {
+  align-self: center;
+}
+
+.text_success {
+  color: #00cccc;
+}
+
+.ingredients-container {
+  max-height: 320px;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.ingredient-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 16px;
+}
+
+.ingredient-price {
+  display: flex;
+  margin-left: auto;
+}
+
+.order-date-price {
+  display: flex;
+  justify-content: space-between;
+  align-self: normal;
+}
+
+@media screen and (min-width: 1240px) {
+  .container {
+    width: 640px;
+  }
+}
