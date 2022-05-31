@@ -22,7 +22,7 @@ export function OrderDetails({
     content = (
       <div className={styles["order-details"]}>
         <div
-          className={`${styles["order-number_shadow"]} text text_type_main-large mt-30`}
+          className={`${styles["order-number_shadow"]} text text_type_main-large`}
         >
           Загрузка
         </div>

@@ -83,6 +83,7 @@ export function ProfileOrders() {
                     status={order.status}
                     updatedAt={order.updatedAt}
                     _id={order._id}
+                    key={order._id}
                   />
                 );
               })}
