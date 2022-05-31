@@ -1,8 +1,7 @@
-import React, { useMemo, useState, useCallback } from "react";
+import { useMemo, useState, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
 
-import { IngredientCircleImage } from "../ingredient-circle-image/ingredient-circle-image";
+import { IngredientsPreview } from "./components/ingredients-preview";
 import { TotalPrice } from "../total-price/total-price";
 import { formatDisplayDate } from "../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
@@ -110,18 +109,7 @@ export function Order({
           </h1>
         </div>
         <div className={styles["ingredients-container"]}>
-          <div className={styles["ingredients_parent"]}>
-            {localIngredients &&
-              localIngredients.slice(0, 6).map((ingredient, i) => {
-                return (
-                  <IngredientCircleImage
-                    image={ingredient.image}
-                    amount={i === 5 ? ingredients.length - 5 : undefined}
-                    key={ingredient._uniqueId}
-                  />
-                );
-              })}
-          </div>
+          <IngredientsPreview ingredients={localIngredients} />
           <div className={`${styles["total-price"]} pl-6`}>
             <TotalPrice price={totalPrice} />
           </div>

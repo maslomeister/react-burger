@@ -32,3 +32,38 @@
   object-fit: cover;
   border-radius: 50%;
 }
+
+.ingredients-0-elem {
+  margin-left: -0px;
+  z-index: 6;
+}
+
+.ingredients-1-elem {
+  margin-left: -20px;
+  z-index: 5;
+}
+
+.ingredients-2-elem {
+  margin-left: -20px;
+  z-index: 4;
+}
+
+.ingredients-3-elem {
+  margin-left: -20px;
+  z-index: 3;
+}
+
+.ingredients-4-elem {
+  margin-left: -20px;
+  z-index: 2;
+}
+
+.ingredients-5-elem {
+  margin-left: -20px;
+  z-index: 1;
+}
+
+.ingredients-6-elem {
+  margin-left: -20px;
+  z-index: 0;
+}

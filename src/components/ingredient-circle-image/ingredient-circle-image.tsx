@@ -1,12 +1,21 @@
 import styles from "./ingredient-circle-image.module.css";
 
 interface IIngredient {
+  position?: number;
   image: string;
   amount?: number;
 }
 
-export function IngredientCircleImage({ image, amount }: IIngredient) {
+export function IngredientCircleImage({
+  position,
+  image,
+  amount,
+}: IIngredient) {
   let overlay = null;
+
+  if (!position) {
+    position = 0;
+  }
 
   if (amount) {
     overlay = (
@@ -20,7 +29,11 @@ export function IngredientCircleImage({ image, amount }: IIngredient) {
   }
 
   return (
-    <div className={styles["image-border"]}>
+    <div
+      className={`${styles["image-border"]} ${
+        styles[`ingredients-${position}-elem`]
+      }`}
+    >
       <img className={styles["image"]} src={image} alt="ingredient" />
       {overlay}
     </div>
