@@ -25,6 +25,7 @@ function OrdersFeed({ orders }: IOrdersFeed) {
           status={order.status}
           updatedAt={order.updatedAt}
           _id={order._id}
+          key={order._id}
         />
       ))}
     </div>
