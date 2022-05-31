@@ -2,9 +2,9 @@ import { v4 as uuidv4 } from "uuid";
 
 export function generateIngredientsFromIds(
   allIngredients: Array<IIngredient>,
-  orderData: IOrder
+  receivedIngredients: Array<string>
 ): Array<IIngredient> {
-  return orderData.ingredients.map((ingredient) => {
+  return receivedIngredients.map((ingredient) => {
     const foundIngredient = allIngredients.filter(
       (item) => item._id === ingredient
     )[0];
