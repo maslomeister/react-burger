@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useMemo, useState, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
@@ -7,81 +7,55 @@ import { TotalPrice } from "../total-price/total-price";
 import { formatDisplayDate } from "../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { addDataToModal } from "../../services/reducers/order-details";
+import {
+  generateIngredientsFromIds,
+  getTotalPriceOfIngredients,
+} from "../../utils/helpers";
 
 import styles from "./order.module.css";
 
-interface IOrder {
-  number: number;
-  date: Date;
-  title: string;
-  status: "created" | "pending" | "done";
-  orderIngredients: string[];
-}
-
-interface IOrderedIngredient {
-  type: string;
-  _id: string;
-  _uniqueId: string;
-  image: string;
-  price: number;
-}
-
 export function Order({
+  createdAt,
+  ingredients,
+  name,
   number,
-  date,
-  title,
   status,
-  orderIngredients,
+  updatedAt,
+  _id,
 }: IOrder) {
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
   const location = useLocation() as TLocationProps;
 
-  const _ingredients = useAppSelector(
+  const allIngredients = useAppSelector(
     (state) => state.burgerIngredients.ingredients
   );
 
-  const [ingredients, setIngredients] = useState<IOrderedIngredient[]>();
+  const [localIngredients, setLocalIngredients] = useState<IIngredient[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
-  useEffect(() => {
-    const allIngredients = orderIngredients.map((ingredient) => {
-      const foundIngredient = _ingredients.find((item) => {
-        return item._id === ingredient;
-      });
+  useMemo(() => {
+    setLocalIngredients(
+      generateIngredientsFromIds(allIngredients, ingredients)
+    );
+  }, [allIngredients, ingredients]);
 
-      if (foundIngredient) {
-        return {
-          type: foundIngredient.type,
-          _id: ingredient,
-          image: foundIngredient.image_mobile,
-          price: foundIngredient.price,
-          _uniqueId: uuidv4(),
-        };
-      }
-      return {
-        type: "none",
-        _id: "none",
-        image: "none",
-        price: -1,
-        _uniqueId: uuidv4(),
-      };
-    });
-    setIngredients(allIngredients);
-  }, [_ingredients, orderIngredients]);
+  useMemo(() => {
+    if (!localIngredients) return;
+    setTotalPrice(getTotalPriceOfIngredients(localIngredients));
+  }, [localIngredients]);
 
-  useEffect(() => {
-    if (ingredients === undefined) return;
-
-    const total = ingredients.reduce((acc, obj) => {
-      if (obj.type === "bun") {
-        return acc + obj.price * 2;
-      } else return acc + obj.price;
-    }, 0);
-
-    setTotalPrice(total);
-  }, [ingredients]);
+  const ruStatus = () => {
+    switch (status) {
+      case "done":
+        return "Выполнен";
+      case "pending":
+        return "Готовится";
+      case "created":
+        return "Создан";
+    }
+  };
 
   const modalData = useCallback(() => {
     navigate(`${number}`, {
@@ -89,17 +63,27 @@ export function Order({
     });
     dispatch(
       addDataToModal({
-        createdAt: date.toString(),
-        ingredients: orderIngredients,
-        name: title,
+        createdAt: createdAt,
+        ingredients: ingredients,
+        name: name,
         number: number,
         status: status,
-        updatedAt: date.toString(),
-        _id: "id",
+        updatedAt: updatedAt,
+        _id: _id,
       })
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, location, navigate]);
+  }, [
+    _id,
+    createdAt,
+    dispatch,
+    ingredients,
+    location,
+    name,
+    navigate,
+    number,
+    status,
+    updatedAt,
+  ]);
 
   return (
     <div
@@ -110,11 +94,11 @@ export function Order({
         <div className={`${styles["order-number-date"]} mb-6`}>
           <p className="text text_type_digits-default">#{number}</p>
           <p className="text text_type_main-default text_color_inactive">
-            {formatDisplayDate(date)}
+            {formatDisplayDate(new Date(createdAt))}
           </p>
         </div>
         <div className="mb-2">
-          <h1 className="text text_type_main-medium">{title}</h1>
+          <h1 className="text text_type_main-medium">{name}</h1>
         </div>
         <div className="mb-6">
           <h1
@@ -122,17 +106,13 @@ export function Order({
               status === "done" ? styles["success"] : null
             } text text_type_main-default`}
           >
-            {status === "done"
-              ? "Выполнен"
-              : status === "pending"
-              ? "Готовится"
-              : "Создан"}
+            {ruStatus()}
           </h1>
         </div>
         <div className={styles["ingredients-container"]}>
           <div className={styles["ingredients_parent"]}>
-            {ingredients &&
-              ingredients.slice(0, 6).map((ingredient, i) => {
+            {localIngredients &&
+              localIngredients.slice(0, 6).map((ingredient, i) => {
                 return (
                   <IngredientCircleImage
                     image={ingredient.image}
