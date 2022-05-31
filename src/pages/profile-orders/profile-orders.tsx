@@ -76,12 +76,13 @@ export function ProfileOrders() {
               .map((order) => {
                 return (
                   <Order
+                    createdAt={order.createdAt}
+                    ingredients={order.ingredients}
+                    name={order.name}
                     number={order.number}
-                    date={new Date(order.createdAt)}
-                    title={order.name}
                     status={order.status}
-                    orderIngredients={order.ingredients}
-                    key={order._id}
+                    updatedAt={order.updatedAt}
+                    _id={order._id}
                   />
                 );
               })}
