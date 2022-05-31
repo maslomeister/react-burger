@@ -7,7 +7,6 @@ const tokenLifeTime = 1150;
 const checkSuccess = (
   data: { success: string; data: any },
   returnData: any
-  // returnData: Promise<CustomResponse<TResponseBody<>>
 ) => {
   return data.success
     ? returnData
