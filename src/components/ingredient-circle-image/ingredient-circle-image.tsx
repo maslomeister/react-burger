@@ -1,5 +1,3 @@
-import React from "react";
-
 import styles from "./ingredient-circle-image.module.css";
 
 interface IIngredient {
@@ -8,21 +6,23 @@ interface IIngredient {
 }
 
 export function IngredientCircleImage({ image, amount }: IIngredient) {
+  let overlay = null;
+
+  if (amount) {
+    overlay = (
+      <>
+        <div className={styles["image-overlay"]} />
+        <p className={`${styles["amount"]} text text_type_digits-small`}>
+          +{amount}
+        </p>
+      </>
+    );
+  }
+
   return (
-    <>
-      {amount ? (
-        <div className={styles["image-border"]}>
-          <img className={styles["image"]} src={image} alt="ingredient" />
-          <div className={styles["image-overlay"]} />
-          <p className={`${styles["amount"]} text text_type_digits-small`}>
-            +{amount}
-          </p>
-        </div>
-      ) : (
-        <div className={styles["image-border"]}>
-          <img className={styles["image"]} src={image} alt="ingredient" />
-        </div>
-      )}
-    </>
+    <div className={styles["image-border"]}>
+      <img className={styles["image"]} src={image} alt="ingredient" />
+      {overlay}
+    </div>
   );
 }
