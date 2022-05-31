@@ -19,6 +19,9 @@ export function OrderInfoModal() {
 
   const params = useParams();
 
+  const allIngredients = useAppSelector(
+    (state) => state.burgerIngredients.ingredients
+  );
   const { orderData } = useAppSelector((state) => state.orderDetails);
 
   const [ingredients, setIngredients] = useState<IIngredient[]>([]);
@@ -30,13 +33,11 @@ export function OrderInfoModal() {
     }
   }, [dispatch, orderData, params]);
 
-  const allIngredients = useAppSelector(
-    (state) => state.burgerIngredients.ingredients
-  );
-
   useMemo(() => {
     if (!orderData) return;
-    setIngredients(generateIngredientsFromIds(allIngredients, orderData));
+    setIngredients(
+      generateIngredientsFromIds(allIngredients, orderData.ingredients)
+    );
   }, [allIngredients, orderData]);
 
   useMemo(() => {

@@ -36,7 +36,9 @@ export function OrderInfoPage() {
 
   useMemo(() => {
     if (!orderData) return;
-    setIngredients(generateIngredientsFromIds(allIngredients, orderData));
+    setIngredients(
+      generateIngredientsFromIds(allIngredients, orderData.ingredients)
+    );
   }, [allIngredients, orderData]);
 
   useMemo(() => {
