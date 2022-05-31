@@ -7,11 +7,6 @@
   width: 536px;
 }
 
-._draggable {
-  cursor: move; /* fallback if grab cursor is unsupported */
-  cursor: grab;
-}
-
 li {
   list-style-type: none;
 }
