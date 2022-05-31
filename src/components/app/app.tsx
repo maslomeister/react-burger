@@ -20,7 +20,8 @@ import {
 import { Modal } from "../modal/modal";
 import { IngredientDetails } from "../ingredient-details/ingredient-details";
 import { OrderInfoModal } from "../../components/order-info-modal/order-info-modal";
-import { ProtectedRoute } from "../protected-route/protected-route";
+import { ProtectedRouteGuest } from "../protected-routes/protected-route-guest";
+import { ProtectedRouteUser } from "../protected-routes/protected-routes-user";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { fetchIngredients } from "../../services/reducers/burger-ingredients";
 import { LoadingScreen } from "../loading-screen/loading-screen";
@@ -82,15 +83,31 @@ function App() {
         <AppHeader />
         <Routes location={background || location}>
           <Route path="/" element={<Constructor />} key={location.pathname} />
-          <Route path="login" element={<Login />} key={location.pathname} />
+          <Route
+            path="login"
+            element={
+              <ProtectedRouteUser>
+                <Login />
+              </ProtectedRouteUser>
+            }
+            key={location.pathname}
+          />
           <Route
             path="register"
-            element={<Register />}
+            element={
+              <ProtectedRouteUser>
+                <Register />
+              </ProtectedRouteUser>
+            }
             key={location.pathname}
           />
           <Route
             path="forgot-password"
-            element={<ForgotPassword />}
+            element={
+              <ProtectedRouteUser>
+                <ForgotPassword />
+              </ProtectedRouteUser>
+            }
             key={location.pathname}
           />
           <Route
@@ -106,9 +123,9 @@ function App() {
           <Route
             path="profile"
             element={
-              <ProtectedRoute>
+              <ProtectedRouteGuest>
                 <Profile />
-              </ProtectedRoute>
+              </ProtectedRouteGuest>
             }
             key={location.pathname}
           />
@@ -116,26 +133,26 @@ function App() {
           <Route
             path="profile/orders"
             element={
-              <ProtectedRoute>
+              <ProtectedRouteGuest>
                 <ProfileOrders />
-              </ProtectedRoute>
+              </ProtectedRouteGuest>
             }
             key={location.pathname}
           />
           <Route
             path="/profile/orders/:id"
             element={
-              <ProtectedRoute>
+              <ProtectedRouteGuest>
                 <OrderInfoPage />
-              </ProtectedRoute>
+              </ProtectedRouteGuest>
             }
           />
           <Route
             path="logout"
             element={
-              <ProtectedRoute>
+              <ProtectedRouteGuest>
                 <Logout />
-              </ProtectedRoute>
+              </ProtectedRouteGuest>
             }
             key={location.pathname}
           />
@@ -198,7 +215,7 @@ function App() {
               <Route
                 path="/profile/orders"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRouteGuest>
                     <Modal
                       titleIsNumber={true}
                       onClose={onDismiss}
@@ -206,13 +223,13 @@ function App() {
                     >
                       <OrderInfoModal />
                     </Modal>
-                  </ProtectedRoute>
+                  </ProtectedRouteGuest>
                 }
               />
               <Route
                 path="/profile/orders/:id"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRouteGuest>
                     <Modal
                       titleIsNumber={true}
                       onClose={onDismiss}
@@ -220,7 +237,7 @@ function App() {
                     >
                       <OrderInfoModal />
                     </Modal>
-                  </ProtectedRoute>
+                  </ProtectedRouteGuest>
                 }
               />
             </Routes>

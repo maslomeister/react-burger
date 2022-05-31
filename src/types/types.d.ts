@@ -73,8 +73,8 @@ interface IRequestOptions {
 type TLocationProps = {
   pathname?: string;
   state: {
-    from: Location;
-    background?: Location;
+    from: string;
+    background?: string;
     id?: string;
     finishOrder?: boolean;
   };

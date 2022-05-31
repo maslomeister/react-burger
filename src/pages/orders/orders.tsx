@@ -103,7 +103,7 @@ export function Orders() {
   const previousPath = location.state && location.state.from;
 
   const motionInitialX = previousPath
-    ? previousPath.pathname === "/"
+    ? previousPath === "/"
       ? "+200%"
       : "-200%"
     : 0;

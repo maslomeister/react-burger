@@ -8,7 +8,6 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { userAuthorized } from "../../utils/utils";
 import { useFormAndValidation } from "../../hooks/useFromAndValidate";
 
 import styles from "./auth-pages.module.css";
@@ -41,16 +40,7 @@ export function Login() {
   };
 
   useEffect(() => {
-    if (userAuthorized(user)) {
-      navigate(location.state ? location.state.from : "/", {
-        replace: true,
-      });
-    }
-    if (
-      location.state &&
-      location.state.from &&
-      location.state.from.pathname === "/logout"
-    ) {
+    if (location.state && location.state.from === "/logout") {
       navigate("/profile", {
         replace: true,
       });
@@ -130,7 +120,7 @@ export function Login() {
                 <p
                   className={`${styles["text-link"]} text text_type_main-default`}
                 >
-                  Зарегестрироваться
+                  Зарегистрироваться
                 </p>
               </Link>
             </div>

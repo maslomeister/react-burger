@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
@@ -7,7 +7,6 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { userAuthorized } from "../../utils/utils";
 import { useFormAndValidation } from "../../hooks/useFromAndValidate";
 import { forgotUserPassword } from "../../services/reducers/auth/auth";
 
@@ -17,7 +16,7 @@ export function ForgotPassword() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const { user, status, error } = useAppSelector((state) => state.authUser);
+  const { status, error } = useAppSelector((state) => state.authUser);
 
   const {
     values,
@@ -113,10 +112,6 @@ export function ForgotPassword() {
     content = <></>;
   } else {
     content = input(false);
-  }
-
-  if (userAuthorized(user)) {
-    return <Navigate to="/profile" replace={true} />;
   }
 
   return (

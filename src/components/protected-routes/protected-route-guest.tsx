@@ -4,7 +4,7 @@ import { useAppSelector } from "../../services/hooks";
 
 import { userAuthorized } from "../../utils/utils";
 
-export function ProtectedRoute({ children }: RouteProps) {
+export function ProtectedRouteGuest({ children }: RouteProps) {
   const { user } = useAppSelector((state) => state.authUser);
   const location = useLocation();
 
