@@ -1,10 +1,7 @@
-import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import { Order } from "../../components/order/order";
-import { useAppSelector, useAppDispatch } from "../../services/hooks";
-import { getNewAccessToken } from "../../services/reducers/auth/auth";
 import { LoadingScreen } from "../../components/loading-screen/loading-screen";
 import { ErrorScreen } from "../../components/error-screen/error-screen";
 import { getCookie } from "../../utils/utils";
