@@ -56,6 +56,7 @@ interface IOrder {
 }
 
 interface IOrdersData {
+  success: boolean;
   orders: Array<IOrder>;
   total: number;
   totalToday: number;

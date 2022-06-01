@@ -1,14 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import { Order } from "../../components/order/order";
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
-import { wsInit, wsClose } from "../../services/reducers/orders-web-socket";
 import { getNewAccessToken } from "../../services/reducers/auth/auth";
+import { LoadingScreen } from "../../components/loading-screen/loading-screen";
+import { ErrorScreen } from "../../components/error-screen/error-screen";
 import { getCookie } from "../../utils/utils";
 
 import styles from "./profile-orders.module.css";
+import { useGetOrdersQuery } from "../../services/rtk/web-socket";
 
 const setActive = (
   { isActive }: { isActive: boolean },
@@ -19,20 +21,45 @@ const setActive = (
   additionalClass;
 
 export function ProfileOrders() {
-  const ordersData = useAppSelector((state) => state.feedPage.ordersData);
-  const dispatch = useAppDispatch();
+  let content = null;
+  const accessToken = getCookie("accessToken");
 
-  useEffect(() => {
-    const accessToken = getCookie("accessToken");
-    if (accessToken === undefined) {
-      dispatch(getNewAccessToken());
-    } else {
-      dispatch(wsInit({ token: accessToken.split(" ")[1] }));
-    }
-    return () => {
-      dispatch(wsClose());
-    };
-  }, [dispatch]);
+  const { data, isLoading, isError } = useGetOrdersQuery(
+    `wss://norma.nomoreparties.space/orders?token=${accessToken?.split(" ")[1]}`
+  );
+
+  if (!data || (data && data.success === false) || isLoading) {
+    content = (
+      <LoadingScreen text="Загружается история заказов" size="medium" />
+    );
+  } else if (isError) {
+    content = (
+      <ErrorScreen text="Произошла ошибка при загрузке истории заказов" />
+    );
+  } else {
+    content = (
+      <>
+        {data &&
+          data.orders
+            .slice(0)
+            .reverse()
+            .map((order) => {
+              return (
+                <Order
+                  createdAt={order.createdAt}
+                  ingredients={order.ingredients}
+                  name={order.name}
+                  number={order.number}
+                  status={order.status}
+                  updatedAt={order.updatedAt}
+                  _id={order._id}
+                  key={order._id}
+                />
+              );
+            })}
+      </>
+    );
+  }
 
   return (
     <motion.div
@@ -68,26 +95,7 @@ export function ProfileOrders() {
             В этом разделе вы можете просмотреть свою историю заказов
           </p>
         </div>
-        <div className={`${styles["orders-container"]} mt-10`}>
-          {ordersData &&
-            ordersData.orders
-              .slice(0)
-              .reverse()
-              .map((order) => {
-                return (
-                  <Order
-                    createdAt={order.createdAt}
-                    ingredients={order.ingredients}
-                    name={order.name}
-                    number={order.number}
-                    status={order.status}
-                    updatedAt={order.updatedAt}
-                    _id={order._id}
-                    key={order._id}
-                  />
-                );
-              })}
-        </div>
+        <div className={`${styles["orders-container"]} mt-10`}>{content}</div>
       </div>
     </motion.div>
   );

@@ -3,9 +3,10 @@ import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
-import { wsInit, wsClose } from "../../services/reducers/orders-web-socket";
 import { Order } from "../../components/order/order";
 import { LoadingScreen } from "../../components/loading-screen/loading-screen";
+import { ErrorScreen } from "../../components/error-screen/error-screen";
+import { useGetOrdersQuery } from "../../services/rtk/web-socket";
 
 import styles from "./orders.module.css";
 
@@ -96,8 +97,10 @@ function Stats({ orders, ordersAll, ordersToday }: IStats) {
 }
 
 export function Orders() {
-  const ordersData = useAppSelector((state) => state.feedPage.ordersData);
-  const dispatch = useAppDispatch();
+  let content = null;
+  const { data, isLoading, isError } = useGetOrdersQuery(
+    "wss://norma.nomoreparties.space/orders/all"
+  );
   const location = useLocation() as TLocationProps;
 
   const previousPath = location.state && location.state.from;
@@ -108,12 +111,34 @@ export function Orders() {
       : "-200%"
     : 0;
 
-  useEffect(() => {
-    dispatch(wsInit({}));
-    return () => {
-      dispatch(wsClose());
-    };
-  }, [dispatch]);
+  if (!data || (data && data.success === false) || isLoading) {
+    content = (
+      <LoadingScreen text="Загружается история заказов" size="medium" />
+    );
+  } else if (isError) {
+    content = (
+      <ErrorScreen text="Произошла ошибка при загрузке истории заказов" />
+    );
+  } else {
+    content = (
+      <>
+        <div className={styles["text_row"]}>
+          <h1 className="text text_type_main-large mt-10 mb-6">
+            Лента заказов
+          </h1>
+        </div>
+
+        <div className={styles["row"]}>
+          <OrdersFeed orders={data.orders} />
+          <Stats
+            orders={data.orders}
+            ordersAll={data.total}
+            ordersToday={data.totalToday}
+          />
+        </div>
+      </>
+    );
+  }
 
   return (
     <motion.div
@@ -125,26 +150,7 @@ export function Orders() {
       }}
       className={styles["container"]}
     >
-      {ordersData ? (
-        <>
-          <div className={styles["text_row"]}>
-            <h1 className="text text_type_main-large mt-10 mb-6">
-              Лента заказов
-            </h1>
-          </div>
-
-          <div className={styles["row"]}>
-            <OrdersFeed orders={ordersData.orders} />
-            <Stats
-              orders={ordersData.orders}
-              ordersAll={ordersData.total}
-              ordersToday={ordersData.totalToday}
-            />
-          </div>
-        </>
-      ) : (
-        <LoadingScreen text="Загружается история заказов" size="medium" />
-      )}
+      {content}
     </motion.div>
   );
 }
