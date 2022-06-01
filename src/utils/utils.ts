@@ -124,14 +124,12 @@ export function declOfNum(n: number, text_forms: string[]) {
 export const formatDisplayDate = (date: string): string => {
   const orderDate = new Date(date).setHours(0, 0, 0, 0);
   const currentDate = new Date().setHours(0, 0, 0, 0);
-  console.log(currentDate);
-  console.log(orderDate);
+
   const daysSinceDate = Math.floor(
     Math.abs(currentDate - orderDate) / 86400000
   );
-  console.log(daysSinceDate);
+
   let day = new Date(orderDate).toLocaleDateString("ru-RU", {});
-  console.log(day);
   if (daysSinceDate < 1) {
     day = "Сегодня";
   } else if (daysSinceDate === 1) {
