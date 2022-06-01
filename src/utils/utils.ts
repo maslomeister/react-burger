@@ -121,33 +121,32 @@ export function declOfNum(n: number, text_forms: string[]) {
   return text_forms[2];
 }
 
-export function formatDisplayDate(date: Date): string {
-  let dateSTR = "";
-  const today = new Date();
+export const formatDisplayDate = (date: string): string => {
+  const orderDate = new Date(date).setHours(0, 0, 0, 0);
+  const currentDate = new Date().setHours(0, 0, 0, 0);
+  console.log(currentDate);
+  console.log(orderDate);
   const daysSinceDate = Math.floor(
-    Math.abs(today.getTime() - date.getTime()) / 8.64e7
+    Math.abs(currentDate - orderDate) / 86400000
   );
-  if (date.getDate() === today.getDate()) {
-    dateSTR += "Сегодня, ";
+  console.log(daysSinceDate);
+  let day = new Date(orderDate).toLocaleDateString("ru-RU", {});
+  console.log(day);
+  if (daysSinceDate < 1) {
+    day = "Сегодня";
   } else if (daysSinceDate === 1) {
-    dateSTR += "Вчера, ";
+    day = "Вчера";
   } else {
-    dateSTR += `${daysSinceDate} ${declOfNum(daysSinceDate, [
+    day = `${daysSinceDate} ${declOfNum(daysSinceDate, [
       "день",
       "дня",
       "дней",
     ])} назад, `;
   }
-
-  dateSTR += `${
-    date.getHours() < 10 ? "0" + date.getHours() : date.getHours()
-  }:${date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()} `;
-
-  dateSTR += `i-GMT${
-    date.getTimezoneOffset() / 60 > 0
-      ? date.getTimezoneOffset() / 60
-      : "+" + (date.getTimezoneOffset() * -1) / 60
-  }`;
-
-  return dateSTR;
-}
+  const time = new Date(date).toLocaleTimeString("ru-Ru", {
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZoneName: "short",
+  });
+  return `${day}, ${time}`;
+};

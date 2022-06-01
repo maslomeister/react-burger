@@ -93,7 +93,7 @@ export function Order({
         <div className={`${styles["order-number-date"]} mb-6`}>
           <p className="text text_type_digits-default">#{number}</p>
           <p className="text text_type_main-default text_color_inactive">
-            {formatDisplayDate(new Date(createdAt))}
+            {formatDisplayDate(createdAt)}
           </p>
         </div>
         <div className="mb-2">

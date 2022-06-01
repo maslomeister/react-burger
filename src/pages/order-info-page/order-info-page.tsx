@@ -103,7 +103,7 @@ export function OrderInfoPage() {
         })}
       </div>
       <div className={styles["order-date-price"]}>
-        <p>{formatDisplayDate(new Date(orderData.createdAt))}</p>
+        <p>{formatDisplayDate(orderData.createdAt)}</p>
         <TotalPrice price={totalPrice} />
       </div>
     </div>
