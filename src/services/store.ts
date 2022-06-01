@@ -1,12 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import rootReducer from "./root-reducer";
 
-import { socketMiddleware } from "./middleware/socket-middleware";
+import rootReducer from "./root-reducer";
+import { webSocketApi } from "./rtk/web-socket";
 
 const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(socketMiddleware.middleware),
+    getDefaultMiddleware().concat(webSocketApi.middleware),
   devTools: process.env.NODE_ENV !== "production",
 });
 
