@@ -19,5 +19,6 @@
   flex-flow: column;
   scroll-behavior: smooth;
   height: calc(100vh - 228px);
+  width: 760px;
   overflow-y: auto;
 }
