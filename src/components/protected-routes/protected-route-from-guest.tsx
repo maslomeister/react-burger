@@ -15,7 +15,7 @@ export function ProtectedRouteFromGuest({ children }: RouteProps) {
     dispatch(getNewAccessToken(tokens.refreshToken));
   }
 
-  if (status === "getUserData/loading") {
+  if (status === "getUserData/loading" || status === "getToken/loading") {
     return <></>;
   }
 
