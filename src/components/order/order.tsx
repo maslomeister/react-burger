@@ -13,15 +13,11 @@ import {
 
 import styles from "./order.module.css";
 
-export function Order({
-  createdAt,
-  ingredients,
-  name,
-  number,
-  status,
-  updatedAt,
-  _id,
-}: IOrder) {
+interface Props {
+  order: IOrder;
+}
+
+export function Order(props: Props) {
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
@@ -32,8 +28,8 @@ export function Order({
   );
 
   const localIngredients = useMemo(
-    () => generateIngredientsFromIds(allIngredients, ingredients),
-    [allIngredients, ingredients]
+    () => generateIngredientsFromIds(allIngredients, props.order.ingredients),
+    [allIngredients, props.order.ingredients]
   );
 
   const totalPrice = useMemo(
@@ -42,7 +38,7 @@ export function Order({
   );
 
   const ruStatus = useMemo(() => {
-    switch (status) {
+    switch (props.order.status) {
       case "done":
         return "Выполнен";
       case "pending":
@@ -50,35 +46,14 @@ export function Order({
       case "created":
         return "Создан";
     }
-  }, [status]);
+  }, [props.order.status]);
 
   const modalData = useCallback(() => {
-    navigate(`${number}`, {
-      state: { background: location, id: number },
+    navigate(`${props.order.number}`, {
+      state: { background: location, id: props.order.number },
     });
-    dispatch(
-      addDataToModal({
-        createdAt: createdAt,
-        ingredients: ingredients,
-        name: name,
-        number: number,
-        status: status,
-        updatedAt: updatedAt,
-        _id: _id,
-      })
-    );
-  }, [
-    _id,
-    createdAt,
-    dispatch,
-    ingredients,
-    location,
-    name,
-    navigate,
-    number,
-    status,
-    updatedAt,
-  ]);
+    dispatch(addDataToModal(props.order));
+  }, [dispatch, location, navigate, props.order]);
 
   return (
     <div
@@ -87,18 +62,18 @@ export function Order({
     >
       <div className={`${styles["order-container_inner"]} mt-6 mb-6 ml-6 mr-6`}>
         <div className={`${styles["order-number-date"]} mb-6`}>
-          <p className="text text_type_digits-default">#{number}</p>
+          <p className="text text_type_digits-default">#{props.order.number}</p>
           <p className="text text_type_main-default text_color_inactive">
-            {formatDisplayDate(createdAt)}
+            {formatDisplayDate(props.order.createdAt)}
           </p>
         </div>
         <div className="mb-2">
-          <h1 className="text text_type_main-medium">{name}</h1>
+          <h1 className="text text_type_main-medium">{props.order.name}</h1>
         </div>
         <div className="mb-6">
           <h1
             className={`${
-              status === "done" ? styles["success"] : null
+              props.order.status === "done" ? styles["success"] : null
             } text text_type_main-default`}
           >
             {ruStatus}
