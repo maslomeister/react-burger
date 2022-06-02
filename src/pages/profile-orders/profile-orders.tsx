@@ -28,7 +28,7 @@ export function ProfileOrders() {
     }`
   );
 
-  if (isLoading) {
+  if ((data && data.success === false) || isLoading) {
     content = (
       <LoadingScreen text="Загружается история заказов" size="medium" />
     );
@@ -42,7 +42,7 @@ export function ProfileOrders() {
     );
   }
 
-  if (data) {
+  if (data && data.orders.length > 1) {
     content = (
       <>
         {data &&
