@@ -91,7 +91,7 @@ function Stats({ orders, ordersAll, ordersToday }: IStats) {
 
 export function Orders() {
   let content = null;
-  const { data, isLoading, isError } = useGetOrdersQuery(
+  const { data, isLoading, error } = useGetOrdersQuery(
     "wss://norma.nomoreparties.space/orders/all"
   );
   const location = useLocation() as TLocationProps;
@@ -104,15 +104,19 @@ export function Orders() {
       : "-200%"
     : 0;
 
-  if (!data || (data && data.success === false) || isLoading) {
+  if ((data && data.success === false) || isLoading) {
     content = (
       <LoadingScreen text="Загружается история заказов" size="medium" />
     );
-  } else if (isError) {
+  }
+
+  if (error) {
     content = (
       <ErrorScreen text="Произошла ошибка при загрузке истории заказов" />
     );
-  } else {
+  }
+
+  if (data && data.orders.length > 1) {
     content = (
       <>
         <div className={styles["text_row"]}>
