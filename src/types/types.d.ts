@@ -1,6 +1,7 @@
-interface IUser {
-  email: string;
-  name: string;
+interface IToken {
+  exp: number;
+  iat: number;
+  id: string;
 }
 
 interface ITokenData {
@@ -9,14 +10,15 @@ interface ITokenData {
 }
 
 interface IUserData {
-  user: IUser;
+  email: string;
+  name: string;
 }
 
 interface IMessageData {
   message: string;
 }
 
-interface ICreateUser {
+interface ICreateUser extends ITokenData {
   user: IUser;
 }
 
@@ -39,6 +41,10 @@ interface IIngredient {
   image_mobile: string;
   image_large: string;
   __v: number;
+}
+
+interface IIngredientWithAmount extends IIngredient {
+  amount: number;
 }
 
 interface Items {
