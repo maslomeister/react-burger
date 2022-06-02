@@ -72,11 +72,7 @@ function App() {
     navigate(-1);
   }
 
-  if (
-    status === "loading" ||
-    status === "getUserData/loading" ||
-    status === "idle"
-  ) {
+  if (status === "loading" || status === "idle") {
     content = <LoadingScreen text="Данные загружаются" size="medium" />;
   }
   if (status === "failed") {
