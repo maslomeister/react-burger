@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
-import { OrderInfo } from "../orders-info/order-info";
+import { OrderInfo } from "../order-info/order-info";
 import { getOrderByNumber } from "../../services/reducers/order-details";
 import { LoadingScreen } from "../../components/loading-screen/loading-screen";
 

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
-import { OrderInfo } from "../../components/orders-info/order-info";
+import { OrderInfo } from "../../components/order-info/order-info";
 import { getOrderByNumber } from "../../services/reducers/order-details";
 import { LoadingScreen } from "../../components/loading-screen/loading-screen";
 
@@ -25,7 +25,7 @@ export function OrderInfoPage() {
   }, [dispatch, orderData, params]);
 
   if (orderData) {
-    content = <OrderInfo orderData={orderData} isModal />;
+    content = <OrderInfo orderData={orderData} />;
   }
 
   return <div className={`${styles["container"]} mt-30`}>{content}</div>;

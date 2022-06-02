@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 
 import { useAppSelector } from "../../services/hooks";
-import { TotalPrice } from "../../components/total-price/total-price";
+import { TotalPrice } from "../total-price/total-price";
 import { formatDisplayDate } from "../../utils/utils";
-import { IngredientCircleImage } from "../../components/ingredient-circle-image/ingredient-circle-image";
+import { IngredientCircleImage } from "../ingredient-circle-image/ingredient-circle-image";
 import {
   generateIngredientsWithAmount,
-  getTotalPriceOfIngredients,
+  getTotalPriceOfIngredientsWithAmount,
 } from "../../utils/helpers";
 
 import styles from "./order-info.module.css";
@@ -26,7 +26,7 @@ export function OrderInfo({ orderData, isModal }: Props) {
     [allIngredients, orderData.ingredients]
   );
   const totalPrice = useMemo(
-    () => getTotalPriceOfIngredients(ingredients),
+    () => getTotalPriceOfIngredientsWithAmount(ingredients),
     [ingredients]
   );
 
@@ -45,8 +45,10 @@ export function OrderInfo({ orderData, isModal }: Props) {
     <>
       <p
         className={`${
-          isModal ? styles["order-number_left"] : styles["order-number_center"]
-        } text text_type_digits-default ${isModal ? " mt-15 mb-10" : "mb-10"}`}
+          isModal
+            ? styles["order-number_left"] + " mt-15 "
+            : styles["order-number_center"]
+        } text text_type_digits-default mb-10`}
       >
         #{orderData.number}
       </p>
@@ -75,7 +77,7 @@ export function OrderInfo({ orderData, isModal }: Props) {
                 {ingredient.name}
               </p>
               <div
-                className={`${styles["ingredient-price"]} text text_type_digits-small`}
+                className={`${styles["ingredient-price"]} text text_type_digits-small mr-4`}
               >
                 <TotalPrice
                   price={ingredient.price}
