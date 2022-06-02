@@ -18,16 +18,7 @@ function OrdersFeed({ orders }: IOrdersFeed) {
   return (
     <div className={styles["orders_feed"]}>
       {orders.map((order) => (
-        <Order
-          createdAt={order.createdAt}
-          ingredients={order.ingredients}
-          name={order.name}
-          number={order.number}
-          status={order.status}
-          updatedAt={order.updatedAt}
-          _id={order._id}
-          key={order._id}
-        />
+        <Order order={order} key={order._id} />
       ))}
     </div>
   );

@@ -50,18 +50,7 @@ export function ProfileOrders() {
             .slice(0)
             .reverse()
             .map((order) => {
-              return (
-                <Order
-                  createdAt={order.createdAt}
-                  ingredients={order.ingredients}
-                  name={order.name}
-                  number={order.number}
-                  status={order.status}
-                  updatedAt={order.updatedAt}
-                  _id={order._id}
-                  key={order._id}
-                />
-              );
+              return <Order order={order} key={order._id} />;
             })}
       </>
     );
