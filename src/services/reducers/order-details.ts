@@ -33,7 +33,7 @@ export const getOrderNumber = createAsyncThunk(
         authorization: accessToken,
       },
       body: JSON.stringify({
-        ingredients: [...ingredients.map(({ _id }) => _id), bun._id],
+        ingredients: [bun._id, ...ingredients.map(({ _id }) => _id)],
       }),
     };
 

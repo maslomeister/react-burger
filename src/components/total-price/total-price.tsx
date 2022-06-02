@@ -5,10 +5,10 @@ import styles from "./total-price.module.css";
 interface TotalPriceType {
   price: number;
   size?: "default" | "medium" | "large";
-  double?: boolean;
+  multiplied?: number;
 }
 
-export function TotalPrice({ price, size, double }: TotalPriceType) {
+export function TotalPrice({ price, size, multiplied }: TotalPriceType) {
   return (
     <div className={styles["cart__total"]}>
       <p
@@ -16,7 +16,7 @@ export function TotalPrice({ price, size, double }: TotalPriceType) {
           size ? size : "default"
         }`}
       >
-        {double ? "2 x " : ""}
+        {multiplied ? `${multiplied} x ` : ""}
         {price}
       </p>
       <div
