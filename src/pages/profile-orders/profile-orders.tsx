@@ -1,10 +1,10 @@
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 
+import { useAppSelector } from "../../services/hooks";
 import { Order } from "../../components/order/order";
 import { LoadingScreen } from "../../components/loading-screen/loading-screen";
 import { ErrorScreen } from "../../components/error-screen/error-screen";
-import { getCookie } from "../../utils/utils";
 
 import styles from "./profile-orders.module.css";
 import { useGetOrdersQuery } from "../../services/rtk/web-socket";
@@ -19,21 +19,30 @@ const setActive = (
 
 export function ProfileOrders() {
   let content = null;
-  const accessToken = getCookie("accessToken");
 
-  const { data, isLoading, isError } = useGetOrdersQuery(
-    `wss://norma.nomoreparties.space/orders?token=${accessToken?.split(" ")[1]}`
+  const { tokens } = useAppSelector((state) => state.authUser);
+
+  const { data, isLoading, error } = useGetOrdersQuery(
+    `wss://norma.nomoreparties.space/orders?token=${
+      tokens.accessToken?.split(" ")[1]
+    }`
   );
 
-  if (!data || (data && data.success === false) || isLoading) {
+  if (isLoading) {
     content = (
       <LoadingScreen text="Загружается история заказов" size="medium" />
     );
-  } else if (isError) {
+  }
+
+  if (error) {
     content = (
-      <ErrorScreen text="Произошла ошибка при загрузке истории заказов" />
+      <ErrorScreen
+        text={`Произошла ошибка при загрузке истории заказов: ${error}`}
+      />
     );
-  } else {
+  }
+
+  if (data) {
     content = (
       <>
         {data &&

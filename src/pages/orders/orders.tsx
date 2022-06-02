@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -5,6 +6,7 @@ import { Order } from "../../components/order/order";
 import { LoadingScreen } from "../../components/loading-screen/loading-screen";
 import { ErrorScreen } from "../../components/error-screen/error-screen";
 import { useGetOrdersQuery } from "../../services/rtk/web-socket";
+import { returnOrdersWithStatus } from "../../utils/utils";
 
 import styles from "./orders.module.css";
 
@@ -38,43 +40,36 @@ interface IStats {
 }
 
 function Stats({ orders, ordersAll, ordersToday }: IStats) {
+  const doneOrders = useMemo(
+    () => returnOrdersWithStatus("done", orders),
+    [orders]
+  );
+  const createdOrders = useMemo(
+    () => returnOrdersWithStatus("pending", orders),
+    [orders]
+  );
+
   return (
     <div className={`${styles["stats"]} pl-15`}>
       <div className={`${styles["stats_orders_container"]} mb-15`}>
         <div className={styles["stats_orders_container_child"]}>
           <p className="text text_type_main-medium mb-6">Готовы:</p>
           <div className={`${styles["orders_ready"]} pb-2`}>
-            {orders.map((order) => {
-              if (order.status === "done") {
-                return (
-                  <p
-                    className="text text_type_digits-default"
-                    key={order.number}
-                  >
-                    {order.number}
-                  </p>
-                );
-              }
-              return null;
-            })}
+            {doneOrders.map((order) => (
+              <p className="text text_type_digits-default" key={order.number}>
+                {order.number}
+              </p>
+            ))}
           </div>
         </div>
         <div className={styles["stats_orders_container_child"]}>
           <p className="text text_type_main-medium mb-6">В работе:</p>
           <div className={`${styles["orders_in_progress"]} pb-2`}>
-            {orders.map((order) => {
-              if (order.status === "pending") {
-                return (
-                  <p
-                    className="text text_type_digits-default"
-                    key={order.number}
-                  >
-                    {order.number}
-                  </p>
-                );
-              }
-              return null;
-            })}
+            {createdOrders.map((order) => (
+              <p className="text text_type_digits-default" key={order.number}>
+                {order.number}
+              </p>
+            ))}
           </div>
         </div>
       </div>
