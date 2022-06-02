@@ -61,10 +61,6 @@ export function getTotalPriceOfIngredientsWithAmount(
   ingredients: Array<IIngredientWithAmount>
 ): number {
   return ingredients.reduce((acc, obj) => {
-    console.log(obj.amount);
-    return (
-      acc +
-      (obj.type === "bun" ? obj.price * obj.amount * 2 : obj.price * obj.amount)
-    );
+    return acc + obj.price * obj.amount;
   }, 0);
 }
