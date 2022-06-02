@@ -32,6 +32,23 @@ function BurgerConstructor() {
   const [showModal, setShowModal] = useState(false);
   const [canOrder, setCanOrder] = useState(false);
 
+  const { user, tokens } = useAppSelector((state) => state.authUser);
+
+  const { ingredients, bun } = useAppSelector(
+    (state) => state.constructorIngredients
+  );
+
+  const { orderNumber, status, error } = useAppSelector(
+    (state) => state.orderDetails
+  );
+
+  const totalPrice = useMemo(() => {
+    return (
+      (bun.price ? bun.price * 2 : 0) +
+      ingredients.reduce((s, v) => s + v.price, 0)
+    );
+  }, [bun.price, ingredients]);
+
   let conditionalStyle;
 
   window.onbeforeunload = () => {
@@ -43,29 +60,12 @@ function BurgerConstructor() {
     }
   };
 
-  const { user } = useAppSelector((state) => state.authUser);
-
-  const { ingredients, bun } = useAppSelector(
-    (state) => state.constructorIngredients
-  );
-
   useEffect(() => {
     const constructorItems = localStorage.getItem("constructorIngredients");
     if (constructorItems) {
       dispatch(loadIngredients(constructorItems));
     }
   }, [dispatch]);
-
-  const totalPrice = useMemo(() => {
-    return (
-      (bun.price ? bun.price * 2 : 0) +
-      ingredients.reduce((s, v) => s + v.price, 0)
-    );
-  }, [bun.price, ingredients]);
-
-  const { orderNumber, status, error } = useAppSelector(
-    (state) => state.orderDetails
-  );
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
@@ -104,7 +104,13 @@ function BurgerConstructor() {
     if (userAuthorized(user)) {
       setShowModal(true);
 
-      dispatch(getOrderNumber({ ingredients, bun }));
+      dispatch(
+        getOrderNumber({
+          ingredients: ingredients,
+          bun: bun,
+          accessToken: tokens.accessToken,
+        })
+      );
       localStorage.removeItem("constructorIngredients");
     } else {
       navigate("/login", {

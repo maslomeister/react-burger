@@ -21,11 +21,12 @@ export const getOrderNumber = createAsyncThunk(
   async ({
     ingredients,
     bun,
+    accessToken,
   }: {
     ingredients: IIngredient[];
     bun: IIngredient;
+    accessToken: string;
   }) => {
-    const accessToken = getCookie("accessToken");
     const requestOptions = {
       method: "POST",
       headers: {
