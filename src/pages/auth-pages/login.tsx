@@ -39,14 +39,6 @@ export function Login() {
       );
   };
 
-  useEffect(() => {
-    if (location.state && location.state.from === "/logout") {
-      navigate("/profile", {
-        replace: true,
-      });
-    }
-  }, [location.state, navigate, user]);
-
   const input = (loading: boolean, error?: string, success?: string) => {
     return (
       <>

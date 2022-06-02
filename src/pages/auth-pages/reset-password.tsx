@@ -122,15 +122,12 @@ export function ResetPassword() {
     content = input(false);
   }
 
-  if (!userAuthorized(user)) {
-    if (location.state?.from === undefined) {
-      return <Navigate to="/forgot-password" replace={true} />;
-    }
-    if (status === "resetPassword/success") {
-      return <Navigate to="/login" replace={true} />;
-    }
-  } else {
-    return <Navigate to="/profile" replace={true} />;
+  if (location.state?.from === undefined) {
+    return <Navigate to="/forgot-password" replace={true} />;
+  }
+
+  if (status === "resetPassword/success") {
+    return <Navigate to="/login" replace={true} />;
   }
 
   return (

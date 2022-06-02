@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -8,12 +8,9 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import {
-  getOrUpdateUserData,
-  getNewAccessToken,
-} from "../../services/reducers/auth/auth";
+import { updateUserData } from "../../services/reducers/auth/auth";
 import { useFormAndValidation } from "../../hooks/useFromAndValidate";
-import { getCookie } from "../../utils/utils";
+import { tokenExists } from "../../utils/utils";
 
 import styles from "./auth-pages.module.css";
 
@@ -30,7 +27,9 @@ export function Profile() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const { user, status, error } = useAppSelector((state) => state.authUser);
+  const { user, tokens, status, error } = useAppSelector(
+    (state) => state.authUser
+  );
 
   const [nameInputDisabled, setNameInputDisabled] = useState(true);
   const [emailInputDisabled, setEmailInputDisabled] = useState(true);
@@ -48,7 +47,7 @@ export function Profile() {
 
   useEffect(() => {
     resetForm({ name: user.name, email: user.email });
-  }, [resetForm, user]);
+  }, [resetForm, user.email, user.name]);
 
   function resetFields() {
     resetForm({ name: user.name, email: user.email });
@@ -62,7 +61,7 @@ export function Profile() {
     if (values.name === user.name && values.email === user.email) {
       setInputFieldsChanged(false);
     }
-  }, [values, values.name, values.email, user.name, user.email]);
+  }, [user.email, user.name, values.email, values.name]);
 
   useEffect(() => {
     if (
@@ -73,21 +72,12 @@ export function Profile() {
     }
   }, [emailInputDisabled, nameInputDisabled, user.email, user.name, values]);
 
-  const getNewToken = async () => {
-    await dispatch(getNewAccessToken());
-  };
-
   const changeUserData = async () => {
-    let accessToken = getCookie("accessToken");
-
-    if (accessToken === undefined) {
-      await getNewToken();
-    }
     await dispatch(
-      getOrUpdateUserData({
-        method: "update",
-        name: values.name,
-        email: values.email,
+      updateUserData({
+        accessToken: tokens.accessToken,
+        name: values.name!,
+        email: values.email!,
       })
     );
     resetFields();
@@ -95,8 +85,7 @@ export function Profile() {
 
   function submitForm(e: React.SyntheticEvent) {
     e.preventDefault();
-    const refreshToken = getCookie("refreshToken");
-    if (!refreshToken) {
+    if (!tokenExists(tokens.refreshToken)) {
       dispatch(resetState());
       navigate("/login", { replace: true });
     } else {
@@ -113,6 +102,24 @@ export function Profile() {
       resetFields();
     }
   };
+
+  const showErrorOrSuccess = useMemo(() => {
+    if (error) {
+      return (
+        <p className={`${styles["text-error"]} text text_type_main-default`}>
+          {error}
+        </p>
+      );
+    } else if (status === "success") {
+      return (
+        <p className={`${styles["text-error"]} text text_type_main-default`}>
+          Данные успешно изменены
+        </p>
+      );
+    } else {
+      return null;
+    }
+  }, [error, status]);
 
   const input = (loading: boolean, error?: string) => {
     return (
@@ -169,11 +176,7 @@ export function Profile() {
             </Button>
           </div>
         )}
-        {error ? (
-          <p className={`${styles["text-error"]} text text_type_main-default`}>
-            {error}
-          </p>
-        ) : null}
+        {showErrorOrSuccess}
       </form>
     );
   };

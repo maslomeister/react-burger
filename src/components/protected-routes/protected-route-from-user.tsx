@@ -4,14 +4,14 @@ import { useAppSelector } from "../../services/hooks";
 
 import { userAuthorized } from "../../utils/utils";
 
-export function ProtectedRouteUser({ children }: RouteProps) {
+export function ProtectedRouteFromUser({ children }: RouteProps) {
   const { user } = useAppSelector((state) => state.authUser);
   const location = useLocation() as TLocationProps;
 
   if (userAuthorized(user)) {
     return (
       <Navigate
-        to={location.state ? location.state.from : "/"}
+        to={location.state?.from ?? "/"}
         state={{ from: location }}
         replace
       />

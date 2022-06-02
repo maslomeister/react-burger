@@ -2,8 +2,6 @@ import { setCookie } from "../utils/utils";
 
 const BURGER_API_URL = "https://norma.nomoreparties.space/api";
 
-const tokenLifeTime = 1150;
-
 const checkSuccess = (
   data: { success: string; data: any },
   returnData: any
@@ -62,17 +60,22 @@ export const createUser = async (
 ): Promise<ICreateUser> => {
   const res = await fetch(`${BURGER_API_URL}/auth/register`, requestOptions);
   const data = await checkResponse(res);
-  return checkSuccess(data, data);
+  const success: ICreateUser = checkSuccess(data, data);
+  if (success) {
+    setCookie("accessToken", success.accessToken);
+    setCookie("refreshToken", success.refreshToken);
+  }
+  return success;
 };
 
-export const loginUser = async (requestOptions: IRequestOptions) => {
+export const loginUser = async (
+  requestOptions: IRequestOptions
+): Promise<ILoginUser> => {
   const res = await fetch(`${BURGER_API_URL}/auth/login`, requestOptions);
   const data = await checkResponse(res);
   const success: ILoginUser = checkSuccess(data, data);
   if (success) {
-    setCookie("accessToken", success.accessToken, {
-      expires: tokenLifeTime,
-    });
+    setCookie("accessToken", success.accessToken);
     setCookie("refreshToken", success.refreshToken);
   }
   return success;
@@ -93,9 +96,17 @@ export const logoutUser = async (requestOptions: IRequestOptions) => {
   return success;
 };
 
-export const getOrUpdateUser = async (
+export const getUser = async (
   requestOptions: IRequestOptions
-): Promise<IUserData> => {
+): Promise<ILoginUser> => {
+  const res = await fetch(`${BURGER_API_URL}/auth/user`, requestOptions);
+  const data = await checkResponse(res);
+  return checkSuccess(data, data);
+};
+
+export const updateUser = async (
+  requestOptions: IRequestOptions
+): Promise<ILoginUser> => {
   const res = await fetch(`${BURGER_API_URL}/auth/user`, requestOptions);
   const data = await checkResponse(res);
   return checkSuccess(data, data);
@@ -108,9 +119,7 @@ export const getNewToken = async (
   const data = await checkResponse(res);
   const success = checkSuccess(data, data);
   if (success) {
-    setCookie("accessToken", success.accessToken, {
-      expires: tokenLifeTime,
-    });
+    setCookie("accessToken", success.accessToken);
     setCookie("refreshToken", success.refreshToken);
   }
   return success;

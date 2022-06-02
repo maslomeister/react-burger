@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 
 import { getCookie } from "../../../utils/utils";
 
@@ -6,21 +6,30 @@ import {
   createUser,
   loginUser,
   logoutUser,
-  getOrUpdateUser,
+  getUser,
+  updateUser,
   getNewToken,
   forgotPassword,
   resetPassword,
 } from "../../../utils/api";
 
 interface SliceState {
-  user: IUser;
+  user: IUserData;
+  tokens: ITokenData;
   status: string;
   success: string;
   error: string;
 }
 
 const initialState: SliceState = {
-  user: { name: "", email: "" },
+  user: {
+    name: "",
+    email: "",
+  },
+  tokens: {
+    accessToken: getCookie("accessToken") ?? "",
+    refreshToken: getCookie("refreshToken") ?? "",
+  },
   status: "idle",
   success: "",
   error: "",
@@ -37,7 +46,7 @@ export const createUserProfile = createAsyncThunk(
     password: string;
     name: string;
   }) => {
-    const requestOptions = {
+    const requestOptions: IRequestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -54,7 +63,7 @@ export const createUserProfile = createAsyncThunk(
 export const loginUserProfile = createAsyncThunk(
   "auth/loginUser",
   async ({ email, password }: { email: string; password: string }) => {
-    const requestOptions = {
+    const requestOptions: IRequestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -72,7 +81,7 @@ export const logoutUserProfile = createAsyncThunk(
   "auth/logoutUser",
   async () => {
     const refreshToken = getCookie("refreshToken");
-    const requestOptions = {
+    const requestOptions: IRequestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -84,19 +93,10 @@ export const logoutUserProfile = createAsyncThunk(
   }
 );
 
-export const getOrUpdateUserData = createAsyncThunk(
+export const getUserData = createAsyncThunk(
   "auth/getUser",
-  async ({
-    method = "get",
-    name,
-    email,
-  }: {
-    method?: string;
-    name?: string;
-    email?: string;
-  }) => {
-    const accessToken = getCookie("accessToken");
-    let requestOptions: IRequestOptions = {
+  async ({ accessToken }: { accessToken: string }) => {
+    const requestOptions: IRequestOptions = {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -104,41 +104,56 @@ export const getOrUpdateUserData = createAsyncThunk(
       },
     };
 
-    if (method === "update") {
-      requestOptions = {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: accessToken,
-        },
-        body: JSON.stringify({
-          name: name!,
-          email: email!,
-        }),
-      };
-    }
-
-    const response = await getOrUpdateUser(requestOptions);
+    const response = await getUser(requestOptions);
     return response;
   }
 );
 
-export const getNewAccessToken = createAsyncThunk("auth/getToken", async () => {
-  const refreshToken = getCookie("refreshToken");
+export const updateUserData = createAsyncThunk(
+  "auth/updateUser",
+  async ({
+    accessToken,
+    name,
+    email,
+  }: {
+    accessToken: string;
+    name: string;
+    email: string;
+  }) => {
+    const requestOptions: IRequestOptions = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: accessToken,
+      },
+      body: JSON.stringify({
+        name: name!,
+        email: email!,
+      }),
+    };
 
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ token: refreshToken }),
-  };
-  const response = await getNewToken(requestOptions);
-  return response;
-});
+    const response = await updateUser(requestOptions);
+    return response;
+  }
+);
+
+export const getNewAccessToken = createAsyncThunk(
+  "auth/getToken",
+  async (refreshToken: string) => {
+    const requestOptions: IRequestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: refreshToken }),
+    };
+    const response = await getNewToken(requestOptions);
+    return response;
+  }
+);
 
 export const forgotUserPassword = createAsyncThunk(
   "auth/forgotPassword",
   async (email: string) => {
-    const requestOptions = {
+    const requestOptions: IRequestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -160,7 +175,7 @@ export const resetPasswordUser = createAsyncThunk(
     password: string;
     confirmationCode: string;
   }) => {
-    const requestOptions = {
+    const requestOptions: IRequestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -180,6 +195,12 @@ export const authUser = createSlice({
     setIdle: (state: SliceState) => {
       state.status = "idle";
     },
+    loadTokens: (state: SliceState, action: PayloadAction<ITokenData>) => {
+      state.tokens = {
+        accessToken: action.payload.accessToken,
+        refreshToken: action.payload.refreshToken,
+      };
+    },
     resetState: (state: SliceState) => {
       return (state = initialState);
     },
@@ -197,6 +218,11 @@ export const authUser = createSlice({
           name: action.payload.user.name,
           email: action.payload.user.email,
         };
+
+        state.tokens = {
+          refreshToken: action.payload.refreshToken,
+          accessToken: action.payload.accessToken,
+        };
       })
       .addCase(createUserProfile.rejected, (state, action) => {
         state.status = "registerUser/failed";
@@ -209,15 +235,14 @@ export const authUser = createSlice({
       })
       .addCase(loginUserProfile.fulfilled, (state, action) => {
         state.status = "loginUser/success";
-
         state.user = {
           name: action.payload.user.name,
           email: action.payload.user.email,
         };
-        // setCookie("accessToken", action.payload.accessToken, {
-        //   expires: tokenLifeTime,
-        // });
-        // setCookie("refreshToken", action.payload.refreshToken);
+        state.tokens = {
+          refreshToken: action.payload.refreshToken,
+          accessToken: action.payload.accessToken,
+        };
       })
       .addCase(loginUserProfile.rejected, (state, action) => {
         state.status = "loginUser/failed";
@@ -228,20 +253,27 @@ export const authUser = createSlice({
         state.status = "logout/loading";
         state.error = "";
       })
-      .addCase(logoutUserProfile.fulfilled, (state, action) => {
-        state.user = { name: "", email: "" };
+      .addCase(logoutUserProfile.fulfilled, (state) => {
         state.status = "logout/success";
+        state.user = {
+          name: "",
+          email: "",
+        };
+        state.tokens = {
+          refreshToken: "",
+          accessToken: "",
+        };
       })
       .addCase(logoutUserProfile.rejected, (state, action) => {
         state.status = "logout/failed";
         if (action.error.message) state.error = action.error.message;
       })
 
-      .addCase(getOrUpdateUserData.pending, (state) => {
+      .addCase(getUserData.pending, (state) => {
         state.status = "getUserData/loading";
         state.error = "";
       })
-      .addCase(getOrUpdateUserData.fulfilled, (state, action) => {
+      .addCase(getUserData.fulfilled, (state, action) => {
         return (state = {
           ...state,
           status: "getUserData/success",
@@ -251,7 +283,26 @@ export const authUser = createSlice({
           },
         });
       })
-      .addCase(getOrUpdateUserData.rejected, (state, action) => {
+      .addCase(updateUserData.rejected, (state, action) => {
+        state.status = "updateUserData/failed";
+        if (action.error.message) state.error = action.error.message;
+      })
+
+      .addCase(updateUserData.pending, (state) => {
+        state.status = "updateUserData/loading";
+        state.error = "";
+      })
+      .addCase(updateUserData.fulfilled, (state, action) => {
+        return (state = {
+          ...state,
+          status: "updateUserData/success",
+          user: {
+            name: action.payload.user.name,
+            email: action.payload.user.email,
+          },
+        });
+      })
+      .addCase(getUserData.rejected, (state, action) => {
         state.status = "getUserData/failed";
         if (action.error.message) state.error = action.error.message;
       })
@@ -262,6 +313,10 @@ export const authUser = createSlice({
       })
       .addCase(getNewAccessToken.fulfilled, (state, action) => {
         state.status = "getToken/success";
+        state.tokens = {
+          accessToken: action.payload.accessToken,
+          refreshToken: action.payload.refreshToken,
+        };
       })
       .addCase(getNewAccessToken.rejected, (state, action) => {
         state.status = "getToken/failed";
@@ -272,8 +327,8 @@ export const authUser = createSlice({
         state.status = "forgotPassword/loading";
         state.error = "";
       })
-      .addCase(forgotUserPassword.fulfilled, (state, action) => {
-        state.status = "v/success";
+      .addCase(forgotUserPassword.fulfilled, (state) => {
+        state.status = "forgotPassword/success";
       })
       .addCase(forgotUserPassword.rejected, (state, action) => {
         state.status = "forgotPassword/failed";
@@ -284,7 +339,7 @@ export const authUser = createSlice({
         state.status = "resetPassword/loading";
         state.error = "";
       })
-      .addCase(resetPasswordUser.fulfilled, (state, action) => {
+      .addCase(resetPasswordUser.fulfilled, (state) => {
         state.status = "resetPassword/success";
       })
       .addCase(resetPasswordUser.rejected, (state, action) => {
@@ -294,6 +349,6 @@ export const authUser = createSlice({
   },
 });
 
-export const { setIdle, resetState } = authUser.actions;
+export const { setIdle, loadTokens, resetState } = authUser.actions;
 
 export default authUser.reducer;
