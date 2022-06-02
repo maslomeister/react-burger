@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { LoadingScreen } from "../../components/loading-screen/loading-screen";
-import { logoutUserProfile } from "../../services/auth/auth";
+import { logoutUserProfile } from "../../services/reducers/auth/auth";
+import { userAuthorized } from "../../utils/utils";
 
 import styles from "./auth-pages.module.css";
 
@@ -12,11 +13,15 @@ export function Logout() {
   let content = null;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { status, error } = useAppSelector((state) => state.authUser);
+  const { user, status, error } = useAppSelector((state) => state.authUser);
 
   useEffect(() => {
-    dispatch(logoutUserProfile());
-  }, [dispatch]);
+    if (!userAuthorized(user)) {
+      navigate("/login", { replace: true });
+    } else {
+      dispatch(logoutUserProfile());
+    }
+  }, [dispatch, navigate, user]);
 
   useEffect(() => {
     if (status === "logout/success") {

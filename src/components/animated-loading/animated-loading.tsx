@@ -9,7 +9,7 @@ import styles from "./animated-loading.module.css";
 export function AnimatedLoading({
   size = "small",
 }: {
-  size?: "small" | "medium" | "large";
+  size?: "small" | "medium";
 }) {
   let mediumIconDimensions = { width: 0, height: 0 };
   let outerIconDimensions = { width: 0, height: 0 };

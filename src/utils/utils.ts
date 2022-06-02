@@ -1,3 +1,5 @@
+import jwtDecode from "jwt-decode";
+
 export function getCookie(name: string) {
   const matches = document.cookie.match(
     new RegExp(
@@ -9,15 +11,6 @@ export function getCookie(name: string) {
 
 export function setCookie(name: string, value: string, props?: any) {
   props = props || {};
-  let exp = props.expires;
-  if (typeof exp == "number" && exp) {
-    const d = new Date();
-    d.setTime(d.getTime() + exp * 1000);
-    exp = props.expires = d;
-  }
-  if (exp && exp.toUTCString) {
-    props.expires = exp.toUTCString();
-  }
   value = encodeURIComponent(value);
   let updatedCookie = name + "=" + value;
   for (const propName in props) {
@@ -27,15 +20,42 @@ export function setCookie(name: string, value: string, props?: any) {
       updatedCookie += "=" + propValue;
     }
   }
-  document.cookie = updatedCookie;
+  document.cookie = updatedCookie + ";path=/";
 }
 
-export function userAuthorized(user: { name: string; email: string }) {
+export function returnOrdersWithStatus(
+  status: string,
+  orders: IOrder[]
+): IOrder[] {
+  return orders.filter((order) => order.status === status);
+}
+
+export function userAuthorized(user: IUserData) {
   if (user.email === "" && user.name === "") {
     return false;
   } else {
     return true;
   }
+}
+
+export function isTokenExpired(token: string): boolean {
+  if (token === "") {
+    return true;
+  }
+  const now = new Date();
+  const expirationDate = jwtDecode<IToken>(token.split(" ")[1]).exp * 1000;
+  if (expirationDate - now.getTime() > 0) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+export function tokenExists(token: string): boolean {
+  if (token === "") {
+    return false;
+  }
+  return true;
 }
 
 export function checkAccessToken() {
@@ -105,3 +125,46 @@ export function validatePassword(input: string) {
   }
   return { isValid: true, error: "" };
 }
+
+export function declOfNum(n: number, text_forms: string[]) {
+  n = Math.abs(n) % 100;
+  var n1 = n % 10;
+  if (n > 10 && n < 20) {
+    return text_forms[2];
+  }
+  if (n1 > 1 && n1 < 5) {
+    return text_forms[1];
+  }
+  if (n1 === 1) {
+    return text_forms[0];
+  }
+  return text_forms[2];
+}
+
+export const formatDisplayDate = (date: string): string => {
+  const orderDate = new Date(date).setHours(0, 0, 0, 0);
+  const currentDate = new Date().setHours(0, 0, 0, 0);
+
+  const daysSinceDate = Math.floor(
+    Math.abs(currentDate - orderDate) / 86400000
+  );
+
+  let day = new Date(orderDate).toLocaleDateString("ru-RU", {});
+  if (daysSinceDate < 1) {
+    day = "Сегодня";
+  } else if (daysSinceDate === 1) {
+    day = "Вчера";
+  } else {
+    day = `${daysSinceDate} ${declOfNum(daysSinceDate, [
+      "день",
+      "дня",
+      "дней",
+    ])} назад, `;
+  }
+  const time = new Date(date).toLocaleTimeString("ru-Ru", {
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZoneName: "short",
+  });
+  return `${day}, ${time}`;
+};

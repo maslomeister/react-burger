@@ -9,24 +9,28 @@ import {
   ForgotPassword,
   ResetPassword,
   Profile,
+  ProfileOrders,
   Logout,
   Constructor,
   NotFound,
+  Orders,
+  IngredientInfo,
+  OrderInfoPage,
 } from "../../pages";
 import { Modal } from "../modal/modal";
 import { IngredientDetails } from "../ingredient-details/ingredient-details";
-import { ProtectedRoute } from "../protected-route/protected-route";
-import { Ingredient } from "../../pages/ingredient/ingredient";
+import { OrderInfoModal } from "../../components/order-info-modal/order-info-modal";
+import { ProtectedRouteFromGuest } from "../protected-routes/protected-route-from-guest";
+import { ProtectedRouteFromUser } from "../protected-routes/protected-route-from-user";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
-import { fetchIngredients } from "../../services/burger-ingredients";
+import { fetchIngredients } from "../../services/reducers/burger-ingredients";
 import { LoadingScreen } from "../loading-screen/loading-screen";
 import { ErrorScreen } from "../error-screen/error-screen";
-import { getCookie } from "../../utils/utils";
-import { TLocationProps } from "../../utils/api";
+import { tokenExists, isTokenExpired } from "../../utils/utils";
 import {
+  getUserData,
   getNewAccessToken,
-  getOrUpdateUserData,
-} from "../../services/auth/auth";
+} from "../../services/reducers/auth/auth";
 
 function App() {
   let content;
@@ -36,33 +40,33 @@ function App() {
   const navigate = useNavigate();
 
   const { status, error } = useAppSelector((state) => state.burgerIngredients);
-  const tokenLoad = useAppSelector((state) => state.authUser).status;
-  const refreshToken = getCookie("refreshToken");
+  const { tokens } = useAppSelector((state) => state.authUser);
+  const accessToken = tokens.accessToken;
+  const refreshToken = tokens.refreshToken;
 
   useEffect(() => {
-    if (refreshToken) {
-      const accessToken = getCookie("accessToken");
-      if (accessToken === undefined) {
-        dispatch(getNewAccessToken());
+    if (tokenExists(accessToken)) {
+      if (!isTokenExpired(accessToken)) {
+        dispatch(
+          getUserData({
+            accessToken: accessToken,
+          })
+        );
       } else {
-        dispatch(getOrUpdateUserData({}));
+        dispatch(getNewAccessToken(refreshToken));
+      }
+    } else {
+      if (tokenExists(refreshToken)) {
+        dispatch(getNewAccessToken(refreshToken));
       }
     }
-  }, [dispatch, refreshToken]);
-
-  useEffect(() => {});
+  }, [accessToken, dispatch, refreshToken]);
 
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchIngredients());
     }
   }, [status, dispatch]);
-
-  useEffect(() => {
-    if (tokenLoad === "getToken/success") {
-      dispatch(getOrUpdateUserData({}));
-    }
-  }, [tokenLoad, dispatch]);
 
   function onDismiss() {
     navigate(-1);
@@ -79,30 +83,53 @@ function App() {
         <AppHeader />
         <Routes location={background || location}>
           <Route path="/" element={<Constructor />} key={location.pathname} />
-          <Route path="login" element={<Login />} key={location.pathname} />
+          <Route
+            path="login"
+            element={
+              <ProtectedRouteFromUser>
+                <Login />
+              </ProtectedRouteFromUser>
+            }
+            key={location.pathname}
+          />
           <Route
             path="register"
-            element={<Register />}
+            element={
+              <ProtectedRouteFromUser>
+                <Register />
+              </ProtectedRouteFromUser>
+            }
             key={location.pathname}
           />
           <Route
             path="forgot-password"
-            element={<ForgotPassword />}
+            element={
+              <ProtectedRouteFromUser>
+                <ForgotPassword />
+              </ProtectedRouteFromUser>
+            }
             key={location.pathname}
           />
           <Route
             path="reset-password"
-            element={<ResetPassword />}
+            element={
+              <ProtectedRouteFromUser>
+                <ResetPassword />
+              </ProtectedRouteFromUser>
+            }
             key={location.pathname}
           />
-          <Route path="ingredients/:id" element={<Ingredient />} />
+          <Route path="ingredients/:id" element={<IngredientInfo />} />
+
+          <Route path="feed" element={<Orders />} key={location.pathname} />
+          <Route path="feed/:id" element={<OrderInfoPage />} />
 
           <Route
             path="profile"
             element={
-              <ProtectedRoute>
+              <ProtectedRouteFromGuest>
                 <Profile />
-              </ProtectedRoute>
+              </ProtectedRouteFromGuest>
             }
             key={location.pathname}
           />
@@ -110,21 +137,21 @@ function App() {
           <Route
             path="profile/orders"
             element={
-              <ProtectedRoute>
-                <></>
-              </ProtectedRoute>
+              <ProtectedRouteFromGuest>
+                <ProfileOrders />
+              </ProtectedRouteFromGuest>
             }
             key={location.pathname}
           />
           <Route
-            path="logout"
+            path="/profile/orders/:id"
             element={
-              <ProtectedRoute>
-                <Logout />
-              </ProtectedRoute>
+              <ProtectedRouteFromGuest>
+                <OrderInfoPage />
+              </ProtectedRouteFromGuest>
             }
-            key={location.pathname}
           />
+          <Route path="logout" element={<Logout />} key={location.pathname} />
           <Route path="*" element={<NotFound />} key={location.pathname} />
         </Routes>
         <AnimatePresence>
@@ -153,6 +180,60 @@ function App() {
                   >
                     <IngredientDetails />
                   </Modal>
+                }
+              />
+
+              <Route
+                path="feed"
+                element={
+                  <Modal
+                    titleIsNumber={true}
+                    onClose={onDismiss}
+                    closeIconType="primary"
+                  >
+                    <OrderInfoModal />
+                  </Modal>
+                }
+              />
+              <Route
+                path="feed/:id"
+                element={
+                  <Modal
+                    titleIsNumber={true}
+                    onClose={onDismiss}
+                    closeIconType="primary"
+                  >
+                    <OrderInfoModal />
+                  </Modal>
+                }
+              />
+
+              <Route
+                path="/profile/orders"
+                element={
+                  <ProtectedRouteFromGuest>
+                    <Modal
+                      titleIsNumber={true}
+                      onClose={onDismiss}
+                      closeIconType="primary"
+                    >
+                      <OrderInfoModal />
+                    </Modal>
+                  </ProtectedRouteFromGuest>
+                }
+              />
+              <Route
+                path="/profile/orders/:id"
+                element={
+                  <ProtectedRouteFromGuest>
+                    <Modal
+                      titleIsNumber={true}
+                      onClose={onDismiss}
+                      closeIconType="primary"
+                    >
+                      <OrderInfoModal />
+                    </Modal>
+                  </ProtectedRouteFromGuest>
                 }
               />
             </Routes>

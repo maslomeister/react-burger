@@ -30,26 +30,40 @@ export function AppHeader() {
         <ul className={`${styles["menu-left"]} mb-4 mt-4`}>
           <li className={`${styles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
             <BurgerIcon type={buttonType("/", location.pathname)} />
-            <NavLink className={setActive} to="/">
+            <NavLink
+              className={setActive}
+              to="/"
+              state={{ from: location.pathname }}
+            >
               Конструктор
             </NavLink>
           </li>
           <li className={`${styles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
-            <ListIcon type={buttonType("/profile/orders", location.pathname)} />
-            <NavLink className={setActive} to="/profile/orders">
+            <ListIcon type={buttonType("/feed", location.pathname)} />
+            <NavLink
+              className={setActive}
+              to="/feed"
+              state={{ from: location.pathname }}
+              end
+            >
               Лента заказов
             </NavLink>
           </li>
         </ul>
         <div className={styles["logo"]}>
-          <NavLink className={setActive} to="/">
+          <NavLink className={setActive} to="/" state={{ from: location }}>
             <Logo />
           </NavLink>
         </div>
         <ul className={`${styles["menu-right"]} mb-4 mt-4`}>
           <li className={`${styles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
             <ProfileIcon type={buttonType("/profile", location.pathname)} />
-            <NavLink className={setActive} to="/profile" end>
+            <NavLink
+              className={setActive}
+              to="/profile"
+              state={{ from: location.pathname }}
+              end
+            >
               {userAuthorized(user) ? <>Личный кабинет</> : <>Войти</>}
             </NavLink>
           </li>

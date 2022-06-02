@@ -1,0 +1,24 @@
+.profile-container {
+  width: 1240px;
+  margin: auto;
+  display: flex;
+  align-items: flex-start;
+  flex-flow: row;
+}
+
+.profile-items-container {
+  display: flex;
+  width: 320px;
+  flex-flow: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.orders-container {
+  display: flex;
+  flex-flow: column;
+  scroll-behavior: smooth;
+  height: calc(100vh - 228px);
+  width: 760px;
+  overflow-y: auto;
+}

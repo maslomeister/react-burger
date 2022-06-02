@@ -18,22 +18,24 @@ export function OrderDetails({
   orderId,
 }: OrderDetailsProps) {
   let content;
-  if (status === "loading") {
+  if (status === "getOrderNumber/loading") {
     content = (
       <div className={styles["order-details"]}>
         <div
-          className={`${styles["order-number_shadow"]} text text_type_main-large mt-30`}
+          className={`${styles["order-number_shadow"]} text text_type_main-large`}
         >
           Загрузка
         </div>
         <div
           className={`${styles["check-mark-icon_background-size"]} mb-15 mt-15`}
         >
-          <AnimatedLoading />
+          <div className={styles["loading-icon_absolute"]}>
+            <AnimatedLoading />
+          </div>
         </div>
       </div>
     );
-  } else if (status === "succeeded") {
+  } else if (status === "getOrderNumber/succeeded") {
     content = (
       <div className={styles["order-details"]}>
         <div

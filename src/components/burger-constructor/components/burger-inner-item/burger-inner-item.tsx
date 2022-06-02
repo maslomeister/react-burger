@@ -6,7 +6,6 @@ import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { IIngredient } from "../../../../utils/api";
 
 import styles from "../burger-item.module.css";
 
@@ -28,7 +27,7 @@ function BurgerInnerItem({
   handleClose,
 }: BurgerConstructorItemTypes) {
   const ref = useRef<HTMLDivElement>(null);
-  const _dropRef = useRef<HTMLDivElement>(null);
+  const dropRef = useRef<HTMLDivElement>(null);
   const [{ beingDragged }, drag, dragPreview] = useDrag({
     type: "sorting",
     item: ingredient,
@@ -47,10 +46,10 @@ function BurgerInnerItem({
       handlerId: monitor.getHandlerId(),
     }),
     hover(item: IIngredient, monitor) {
-      if (_dropRef === undefined) {
+      if (dropRef === undefined) {
         return;
       }
-      if (!_dropRef.current) {
+      if (!dropRef.current) {
         return;
       }
       const dragIndex = item.index;
@@ -68,7 +67,7 @@ function BurgerInnerItem({
         return;
       }
 
-      const hoverBoundingRect = _dropRef.current.getBoundingClientRect();
+      const hoverBoundingRect = dropRef.current.getBoundingClientRect();
 
       const hoverMiddleY =
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
@@ -93,9 +92,9 @@ function BurgerInnerItem({
     },
   });
 
-  drop(_dropRef);
+  drop(dropRef);
   drag(ref);
-  dragPreview(_dropRef);
+  dragPreview(dropRef);
 
   const opacity = beingDragged ? 0 : 1;
   return (
@@ -103,7 +102,7 @@ function BurgerInnerItem({
       className={`ml-4 mr-4 ${bottomPadding ? "mb-4" : ""}`}
       style={{ opacity }}
     >
-      <div className={styles["ingredient"]} ref={_dropRef}>
+      <div className={styles["ingredient"]} ref={dropRef}>
         {draggable && (
           <div
             ref={ref}

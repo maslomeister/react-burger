@@ -23,6 +23,7 @@
   align-items: center;
   color: #8585ad;
   list-style-type: none;
+  cursor: pointer;
 }
 
 .menu-right {

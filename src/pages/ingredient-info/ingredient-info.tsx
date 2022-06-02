@@ -3,11 +3,11 @@ import { useParams } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { IngredientDetails } from "../../components/ingredient-details/ingredient-details";
-import { addDataToPage } from "../../services/ingredient-details";
+import { addDataToPage } from "../../services/reducers/ingredient-details";
 
-import styles from "./ingredient.module.css";
+import styles from "./ingredient-info.module.css";
 
-export function Ingredient() {
+export function IngredientInfo() {
   let content;
   const dispatch = useAppDispatch();
 
@@ -46,5 +46,5 @@ export function Ingredient() {
     );
   }
 
-  return <div className={styles["container"]}>{content}</div>;
+  return <div className={`${styles["container"]} mt-30`}>{content}</div>;
 }

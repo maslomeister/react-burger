@@ -2,75 +2,9 @@ import { setCookie } from "../utils/utils";
 
 const BURGER_API_URL = "https://norma.nomoreparties.space/api";
 
-export interface IUser {
-  email: string;
-  name: string;
-}
-
-export interface ITokenData {
-  accessToken: string;
-  refreshToken: string;
-}
-
-export interface IUserData {
-  user: IUser;
-}
-
-export interface IMessageData {
-  message: string;
-}
-
-export interface ICreateUser {
-  user: IUser;
-}
-export interface ILoginUser extends ITokenData {
-  user: IUser;
-}
-export interface IIngredient {
-  _id: string;
-  _uniqueId?: string;
-  index?: number;
-  name: string;
-  type: string;
-  proteins: number;
-  fat: number;
-  carbohydrates: number;
-  calories: number;
-  price: number;
-  image: string;
-  image_mobile: string;
-  image_large: string;
-  __v: number;
-}
-export interface Items {
-  item: IIngredient[];
-}
-
-export interface IRequestOptions {
-  method: string;
-  headers: {
-    "Content-Type": string;
-    authorization?: string;
-  };
-  body?: string;
-}
-
-export type TLocationProps = {
-  pathname?: string;
-  state: {
-    from: Location;
-    background?: Location;
-    id?: string;
-    finishOrder?: boolean;
-  };
-};
-
-const tokenLifeTime = 1150;
-
 const checkSuccess = (
   data: { success: string; data: any },
   returnData: any
-  // returnData: Promise<CustomResponse<TResponseBody<>>
 ) => {
   return data.success
     ? returnData
@@ -115,22 +49,33 @@ export const createOrder = async (
   return checkSuccess(data, data.order.number);
 };
 
+export const getOrder = async (number: number): Promise<IOrder[]> => {
+  const res = await fetch(`${BURGER_API_URL}/orders/${number}`);
+  const data = await checkResponse(res);
+  return checkSuccess(data, data.orders);
+};
+
 export const createUser = async (
   requestOptions: IRequestOptions
 ): Promise<ICreateUser> => {
   const res = await fetch(`${BURGER_API_URL}/auth/register`, requestOptions);
   const data = await checkResponse(res);
-  return checkSuccess(data, data);
+  const success: ICreateUser = checkSuccess(data, data);
+  if (success) {
+    setCookie("accessToken", success.accessToken);
+    setCookie("refreshToken", success.refreshToken);
+  }
+  return success;
 };
 
-export const loginUser = async (requestOptions: IRequestOptions) => {
+export const loginUser = async (
+  requestOptions: IRequestOptions
+): Promise<ILoginUser> => {
   const res = await fetch(`${BURGER_API_URL}/auth/login`, requestOptions);
   const data = await checkResponse(res);
   const success: ILoginUser = checkSuccess(data, data);
   if (success) {
-    setCookie("accessToken", success.accessToken, {
-      expires: tokenLifeTime,
-    });
+    setCookie("accessToken", success.accessToken);
     setCookie("refreshToken", success.refreshToken);
   }
   return success;
@@ -151,9 +96,17 @@ export const logoutUser = async (requestOptions: IRequestOptions) => {
   return success;
 };
 
-export const getOrUpdateUser = async (
+export const getUser = async (
   requestOptions: IRequestOptions
-): Promise<IUserData> => {
+): Promise<ILoginUser> => {
+  const res = await fetch(`${BURGER_API_URL}/auth/user`, requestOptions);
+  const data = await checkResponse(res);
+  return checkSuccess(data, data);
+};
+
+export const updateUser = async (
+  requestOptions: IRequestOptions
+): Promise<ILoginUser> => {
   const res = await fetch(`${BURGER_API_URL}/auth/user`, requestOptions);
   const data = await checkResponse(res);
   return checkSuccess(data, data);
@@ -166,9 +119,7 @@ export const getNewToken = async (
   const data = await checkResponse(res);
   const success = checkSuccess(data, data);
   if (success) {
-    setCookie("accessToken", success.accessToken, {
-      expires: tokenLifeTime,
-    });
+    setCookie("accessToken", success.accessToken);
     setCookie("refreshToken", success.refreshToken);
   }
   return success;
@@ -190,6 +141,5 @@ export const resetPassword = async (
     requestOptions
   );
   const data = await checkResponse(res);
-  console.log(data);
   return checkSuccess(data, data);
 };

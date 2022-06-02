@@ -1,25 +1,22 @@
 import React, { useState } from "react";
-import { Link, useLocation, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
-import { createUserProfile } from "../../services/auth/auth";
+import { createUserProfile } from "../../services/reducers/auth/auth";
 import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { userAuthorized } from "../../utils/utils";
 import { useFormAndValidation } from "../../hooks/useFromAndValidate";
-import { TLocationProps } from "../../utils/api";
 
 import styles from "./auth-pages.module.css";
 
-export function Register({ from }: { from?: string }) {
+export function Register() {
   let content;
-  const location = useLocation() as TLocationProps;
   const dispatch = useAppDispatch();
 
-  const { user, status, error } = useAppSelector((state) => state.authUser);
+  const { status, error } = useAppSelector((state) => state.authUser);
 
   const [revealPassword, setRevealPassword] = useState(false);
 
@@ -96,7 +93,7 @@ export function Register({ from }: { from?: string }) {
               htmlType="submit"
               size="medium"
             >
-              {loading ? <>Идет регистрация</> : <>Зарегестрироваться</>}
+              {loading ? <>Идет регистрация</> : <>Зарегистрироваться</>}
             </Button>
           </div>
 
@@ -112,7 +109,7 @@ export function Register({ from }: { from?: string }) {
         {!loading ? (
           <div className={`${styles["text"]} mb-4`}>
             <p className="text text_type_main-default text_color_inactive">
-              Уже зарегестрированы?&nbsp;
+              Уже зарегистрированы?&nbsp;
             </p>
             <Link to={"/login"}>
               <p
@@ -138,15 +135,6 @@ export function Register({ from }: { from?: string }) {
     content = input(false, error);
   } else {
     content = input(false);
-  }
-
-  if (userAuthorized(user)) {
-    return (
-      <Navigate
-        to={location.state ? location.state.from : "/"}
-        replace={true}
-      />
-    );
   }
 
   return (

@@ -1,0 +1,32 @@
+.order-container {
+  display: block;
+  background-color: #1c1c21;
+  border-radius: 40px;
+  cursor: pointer;
+}
+
+.order-container_inner {
+  display: flex;
+  flex-flow: column;
+}
+
+.order-number-date {
+  display: flex;
+  justify-content: space-between;
+}
+
+.success {
+  color: #00cccc;
+}
+
+.ingredients-container {
+  display: flex;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.total-price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

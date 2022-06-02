@@ -7,10 +7,8 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { TLocationProps } from "../../utils/api";
-import { userAuthorized } from "../../utils/utils";
 import { useFormAndValidation } from "../../hooks/useFromAndValidate";
-import { resetPasswordUser } from "../../services/auth/auth";
+import { resetPasswordUser } from "../../services/reducers/auth/auth";
 
 import styles from "./auth-pages.module.css";
 
@@ -19,7 +17,7 @@ export function ResetPassword() {
   const location = useLocation() as TLocationProps;
   const dispatch = useAppDispatch();
 
-  const { user, status, error } = useAppSelector((state) => state.authUser);
+  const { status, error } = useAppSelector((state) => state.authUser);
 
   const [revealPassword, setRevealPassword] = useState(false);
 
@@ -123,15 +121,12 @@ export function ResetPassword() {
     content = input(false);
   }
 
-  if (!userAuthorized(user)) {
-    if (location.state?.from === undefined) {
-      return <Navigate to="/forgot-password" replace={true} />;
-    }
-    if (status === "resetPassword/success") {
-      return <Navigate to="/login" replace={true} />;
-    }
-  } else {
-    return <Navigate to="/profile" replace={true} />;
+  if (location.state?.from === undefined) {
+    return <Navigate to="/forgot-password" replace={true} />;
+  }
+
+  if (status === "resetPassword/success") {
+    return <Navigate to="/login" replace={true} />;
   }
 
   return (

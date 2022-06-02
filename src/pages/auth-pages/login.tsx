@@ -1,26 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
-import { loginUserProfile } from "../../services/auth/auth";
+import { loginUserProfile } from "../../services/reducers/auth/auth";
 import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { userAuthorized } from "../../utils/utils";
-import { TLocationProps } from "../../utils/api";
 import { useFormAndValidation } from "../../hooks/useFromAndValidate";
 
 import styles from "./auth-pages.module.css";
 
 export function Login() {
   let content;
-  const location = useLocation() as TLocationProps;
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const { user, status, error } = useAppSelector((state) => state.authUser);
+  const { status, error } = useAppSelector((state) => state.authUser);
 
   const [revealPassword, setRevealPassword] = useState(false);
 
@@ -35,28 +31,11 @@ export function Login() {
 
   const submitForm = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    if (isValidCheck())
+    if (isValidCheck() && values.email && values.password)
       dispatch(
-        loginUserProfile({ email: values.email!, password: values.password! })
+        loginUserProfile({ email: values.email, password: values.password })
       );
   };
-
-  useEffect(() => {
-    if (userAuthorized(user)) {
-      navigate(location.state ? location.state.from : "/", {
-        replace: true,
-      });
-    }
-    if (
-      location.state &&
-      location.state.from &&
-      location.state.from.pathname === "/logout"
-    ) {
-      navigate("/profile", {
-        replace: true,
-      });
-    }
-  }, [location.state, navigate, user]);
 
   const input = (loading: boolean, error?: string, success?: string) => {
     return (
@@ -131,7 +110,7 @@ export function Login() {
                 <p
                   className={`${styles["text-link"]} text text_type_main-default`}
                 >
-                  Зарегестрироваться
+                  Зарегистрироваться
                 </p>
               </Link>
             </div>

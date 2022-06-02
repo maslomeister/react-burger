@@ -8,8 +8,7 @@ import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { BurgerBunItemMemoized } from "./components/burger-bun-item/burger-bun-item";
 import { BurgerInnerItemMemoized } from "./components/burger-inner-item/burger-inner-item";
 import { OrderDetails } from "../../components/order-details/order-details";
-import { TotalPriceMemoized } from "./components/total-price/total-price";
-import { IIngredient } from "../../utils/api";
+import { TotalPrice } from "../total-price/total-price";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import {
   addIngredient,
@@ -19,8 +18,8 @@ import {
   addOrReplaceBun,
   removeBun,
   resetState,
-} from "../../services/burger-constructor";
-import { getOrderNumber } from "../../services/order-details";
+} from "../../services/reducers/burger-constructor";
+import { getOrderNumber } from "../../services/reducers/order-details";
 import { userAuthorized } from "../../utils/utils";
 
 import styles from "./burger-constructor.module.css";
@@ -33,7 +32,24 @@ function BurgerConstructor() {
   const [showModal, setShowModal] = useState(false);
   const [canOrder, setCanOrder] = useState(false);
 
-  let conditonalStyle;
+  const { user, tokens } = useAppSelector((state) => state.authUser);
+
+  const { ingredients, bun } = useAppSelector(
+    (state) => state.constructorIngredients
+  );
+
+  const { orderNumber, status, error } = useAppSelector(
+    (state) => state.orderDetails
+  );
+
+  const totalPrice = useMemo(() => {
+    return (
+      (bun.price ? bun.price * 2 : 0) +
+      ingredients.reduce((s, v) => s + v.price, 0)
+    );
+  }, [bun.price, ingredients]);
+
+  let conditionalStyle;
 
   window.onbeforeunload = () => {
     if (ingredients || bun) {
@@ -44,29 +60,12 @@ function BurgerConstructor() {
     }
   };
 
-  const { user } = useAppSelector((state) => state.authUser);
-
-  const { ingredients, bun } = useAppSelector(
-    (state) => state.constructorIngredients
-  );
-
   useEffect(() => {
     const constructorItems = localStorage.getItem("constructorIngredients");
     if (constructorItems) {
       dispatch(loadIngredients(constructorItems));
     }
   }, [dispatch]);
-
-  const totalPrice = useMemo(() => {
-    return (
-      (bun.price ? bun.price * 2 : 0) +
-      ingredients.reduce((s, v) => s + v.price, 0)
-    );
-  }, [bun.price, ingredients]);
-
-  const { orderNumber, status, error } = useAppSelector(
-    (state) => state.orderDetails
-  );
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
@@ -82,16 +81,16 @@ function BurgerConstructor() {
 
   const borderColor = isHover ? "#8585AD" : "transparent";
 
-  const _removeIngredient = useCallback(
+  const deleteIngredient = useCallback(
     (ingredient: IIngredient) => () => {
       dispatch(removeIngredient(ingredient));
     },
     [dispatch]
   );
 
-  const _removeBun = useCallback(() => {
+  const deleteBun = useCallback(() => {
     dispatch(removeBun());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (bun.price && ingredients.length > 0) {
@@ -105,7 +104,13 @@ function BurgerConstructor() {
     if (userAuthorized(user)) {
       setShowModal(true);
 
-      dispatch(getOrderNumber({ ingredients, bun }));
+      dispatch(
+        getOrderNumber({
+          ingredients: ingredients,
+          bun: bun,
+          accessToken: tokens.accessToken,
+        })
+      );
       localStorage.removeItem("constructorIngredients");
     } else {
       navigate("/login", {
@@ -128,9 +133,9 @@ function BurgerConstructor() {
   );
 
   if (ingredients.length > 5) {
-    conditonalStyle = "";
+    conditionalStyle = "";
   } else {
-    conditonalStyle = styles["conditional"];
+    conditionalStyle = styles["conditional"];
   }
 
   return (
@@ -157,12 +162,12 @@ function BurgerConstructor() {
                   bottomPadding={true}
                   top={"top"}
                   ingredient={bun}
-                  handleClose={_removeBun}
+                  handleClose={deleteBun}
                 />
               </div>
 
               <ul
-                className={styles["inner_style"] + conditonalStyle}
+                className={styles["inner_style"] + conditionalStyle}
                 ref={dropRef}
               >
                 {ingredients.map((ingredient, index) => {
@@ -180,7 +185,7 @@ function BurgerConstructor() {
                         moveCard={moveCard}
                         ingredient={newItem}
                         draggable={true}
-                        handleClose={_removeIngredient(newItem)}
+                        handleClose={deleteIngredient(newItem)}
                       />
                     </li>
                   );
@@ -192,13 +197,15 @@ function BurgerConstructor() {
                   topPadding={true}
                   top={"bottom"}
                   ingredient={bun}
-                  handleClose={_removeBun}
+                  handleClose={deleteBun}
                 />
               </div>
             </div>
 
             <div className={`${styles["cart"]} mb-10 mt-10`}>
-              <TotalPriceMemoized price={totalPrice} />
+              <div className="mr-10">
+                <TotalPrice price={totalPrice} size="medium" />
+              </div>
               <div
                 data-tip={
                   bun.price === 0
