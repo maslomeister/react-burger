@@ -11,21 +11,8 @@ export function IngredientCircleImage({
   image,
   amount,
 }: IIngredient) {
-  let overlay = null;
-
   if (!position) {
     position = 0;
-  }
-
-  if (amount) {
-    overlay = (
-      <>
-        <div className={styles["image-overlay"]} />
-        <p className={`${styles["amount"]} text text_type_digits-small`}>
-          +{amount}
-        </p>
-      </>
-    );
   }
 
   return (
@@ -35,7 +22,14 @@ export function IngredientCircleImage({
       }`}
     >
       <img className={styles["image"]} src={image} alt="ingredient" />
-      {overlay}
+      {amount && (
+        <>
+          <div className={styles["image-overlay"]} />
+          <p className={`${styles["amount"]} text text_type_digits-small`}>
+            +{amount}
+          </p>
+        </>
+      )}
     </div>
   );
 }
