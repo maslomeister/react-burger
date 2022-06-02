@@ -1,3 +1,5 @@
+import jwtDecode from "jwt-decode";
+
 export function getCookie(name: string) {
   const matches = document.cookie.match(
     new RegExp(
@@ -18,15 +20,35 @@ export function setCookie(name: string, value: string, props?: any) {
       updatedCookie += "=" + propValue;
     }
   }
-  document.cookie = updatedCookie + "path=/";
+  document.cookie = updatedCookie + ";path=/";
 }
 
-export function userAuthorized(user: { name: string; email: string }) {
+export function userAuthorized(user: IUserData) {
   if (user.email === "" && user.name === "") {
     return false;
   } else {
     return true;
   }
+}
+
+export function isTokenExpired(token: string): boolean {
+  if (token === "") {
+    return true;
+  }
+  const now = new Date();
+  const expirationDate = jwtDecode<IToken>(token.split(" ")[1]).exp * 1000;
+  if (expirationDate - now.getTime() > 0) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+export function tokenExists(token: string): boolean {
+  if (token === "") {
+    return false;
+  }
+  return true;
 }
 
 export function checkAccessToken() {
