@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 
 import { createOrder, getOrder } from "../../utils/api";
-import { getCookie } from "../../utils/utils";
 
 interface SliceState {
   orderNumber: number;

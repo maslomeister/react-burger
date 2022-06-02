@@ -141,6 +141,5 @@ export const resetPassword = async (
     requestOptions
   );
   const data = await checkResponse(res);
-  console.log(data);
   return checkSuccess(data, data);
 };

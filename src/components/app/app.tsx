@@ -159,7 +159,6 @@ function App() {
           <Route path="*" element={<NotFound />} key={location.pathname} />
         </Routes>
         <AnimatePresence>
-          {console.log(background)}
           {background && (
             <Routes>
               {/* This route fixes end animation of modal window */}

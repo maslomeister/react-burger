@@ -7,7 +7,6 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { userAuthorized } from "../../utils/utils";
 import { useFormAndValidation } from "../../hooks/useFromAndValidate";
 import { resetPasswordUser } from "../../services/reducers/auth/auth";
 
@@ -18,7 +17,7 @@ export function ResetPassword() {
   const location = useLocation() as TLocationProps;
   const dispatch = useAppDispatch();
 
-  const { user, status, error } = useAppSelector((state) => state.authUser);
+  const { status, error } = useAppSelector((state) => state.authUser);
 
   const [revealPassword, setRevealPassword] = useState(false);
 

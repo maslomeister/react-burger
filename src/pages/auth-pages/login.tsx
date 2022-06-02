@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
@@ -14,11 +14,9 @@ import styles from "./auth-pages.module.css";
 
 export function Login() {
   let content;
-  const location = useLocation() as TLocationProps;
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const { user, status, error } = useAppSelector((state) => state.authUser);
+  const { status, error } = useAppSelector((state) => state.authUser);
 
   const [revealPassword, setRevealPassword] = useState(false);
 
