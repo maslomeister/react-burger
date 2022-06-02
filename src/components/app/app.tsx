@@ -72,7 +72,11 @@ function App() {
     navigate(-1);
   }
 
-  if (status === "loading" || status === "idle") {
+  if (
+    status === "loading" ||
+    status === "getUserData/loading" ||
+    status === "idle"
+  ) {
     content = <LoadingScreen text="Данные загружаются" size="medium" />;
   }
   if (status === "failed") {
@@ -155,6 +159,7 @@ function App() {
           <Route path="*" element={<NotFound />} key={location.pathname} />
         </Routes>
         <AnimatePresence>
+          {console.log(background)}
           {background && (
             <Routes>
               {/* This route fixes end animation of modal window */}
@@ -205,21 +210,6 @@ function App() {
                   >
                     <OrderInfoModal />
                   </Modal>
-                }
-              />
-
-              <Route
-                path="login"
-                element={
-                  <ProtectedRouteFromGuest>
-                    <Modal
-                      titleIsNumber={true}
-                      onClose={onDismiss}
-                      closeIconType="primary"
-                    >
-                      <OrderInfoModal />
-                    </Modal>
-                  </ProtectedRouteFromGuest>
                 }
               />
 
