@@ -31,21 +31,17 @@ export function Order({
     (state) => state.burgerIngredients.ingredients
   );
 
-  const [localIngredients, setLocalIngredients] = useState<IIngredient[]>([]);
-  const [totalPrice, setTotalPrice] = useState(0);
+  const localIngredients = useMemo(
+    () => generateIngredientsFromIds(allIngredients, ingredients),
+    [allIngredients, ingredients]
+  );
 
-  useMemo(() => {
-    setLocalIngredients(
-      generateIngredientsFromIds(allIngredients, ingredients)
-    );
-  }, [allIngredients, ingredients]);
+  const totalPrice = useMemo(
+    () => getTotalPriceOfIngredients(localIngredients),
+    [localIngredients]
+  );
 
-  useMemo(() => {
-    if (!localIngredients) return;
-    setTotalPrice(getTotalPriceOfIngredients(localIngredients));
-  }, [localIngredients]);
-
-  const ruStatus = () => {
+  const ruStatus = useMemo(() => {
     switch (status) {
       case "done":
         return "Выполнен";
@@ -54,7 +50,7 @@ export function Order({
       case "created":
         return "Создан";
     }
-  };
+  }, [status]);
 
   const modalData = useCallback(() => {
     navigate(`${number}`, {
@@ -105,7 +101,7 @@ export function Order({
               status === "done" ? styles["success"] : null
             } text text_type_main-default`}
           >
-            {ruStatus()}
+            {ruStatus}
           </h1>
         </div>
         <div className={styles["ingredients-container"]}>
