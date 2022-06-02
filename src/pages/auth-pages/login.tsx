@@ -31,9 +31,9 @@ export function Login() {
 
   const submitForm = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    if (isValidCheck())
+    if (isValidCheck() && values.email && values.password)
       dispatch(
-        loginUserProfile({ email: values.email!, password: values.password! })
+        loginUserProfile({ email: values.email, password: values.password })
       );
   };
 

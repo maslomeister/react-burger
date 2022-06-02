@@ -73,11 +73,13 @@ export function Profile() {
   }, [emailInputDisabled, nameInputDisabled, user.email, user.name, values]);
 
   const changeUserData = async () => {
+    if (!values.name || !values.email) return;
+
     await dispatch(
       updateUserData({
         accessToken: tokens.accessToken,
-        name: values.name!,
-        email: values.email!,
+        name: values.name,
+        email: values.email,
       })
     );
     resetFields();
