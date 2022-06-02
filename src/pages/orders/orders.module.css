@@ -71,7 +71,7 @@
 
 .orders_ready {
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: repeat(10, 1fr);
   grid-auto-flow: column;
   row-gap: 8px;
   grid-auto-columns: 50%;
@@ -83,7 +83,7 @@
 
 .orders_in_progress {
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: repeat(10, 1fr);
   grid-auto-flow: column;
   row-gap: 8px;
   grid-auto-columns: 50%;
