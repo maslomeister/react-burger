@@ -23,6 +23,13 @@ export function setCookie(name: string, value: string, props?: any) {
   document.cookie = updatedCookie + ";path=/";
 }
 
+export function returnOrdersWithStatus(
+  status: string,
+  orders: IOrder[]
+): IOrder[] {
+  return orders.filter((order) => order.status === status);
+}
+
 export function userAuthorized(user: IUserData) {
   if (user.email === "" && user.name === "") {
     return false;
