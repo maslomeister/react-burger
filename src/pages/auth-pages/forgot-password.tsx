@@ -56,7 +56,7 @@ export function ForgotPassword() {
               disabled={loading ? true : false}
               error={showErrors.email}
               errorText={errors.email}
-              value={values.email ? values.email : ""}
+              value={values.email ?? ""}
               onChange={handleChange}
               onFocus={handleFocus}
             />

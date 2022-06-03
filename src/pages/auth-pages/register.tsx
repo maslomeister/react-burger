@@ -53,7 +53,7 @@ export function Register() {
               disabled={loading ? true : false}
               error={showErrors.name}
               errorText={errors.name}
-              value={values.name ? values.name : ""}
+              value={values.name ?? ""}
               onChange={handleChange}
               onFocus={handleFocus}
             />
@@ -66,7 +66,7 @@ export function Register() {
               disabled={loading ? true : false}
               error={showErrors.email}
               errorText={errors.email}
-              value={values.email ? values.email : ""}
+              value={values.email ?? ""}
               onChange={handleChange}
               onFocus={handleFocus}
             />
@@ -80,7 +80,7 @@ export function Register() {
               disabled={loading ? true : false}
               error={showErrors.password}
               errorText={errors.password}
-              value={values.password ? values.password : ""}
+              value={values.password ?? ""}
               onChange={handleChange}
               onFocus={handleFocus}
               onIconClick={() => setRevealPassword(!revealPassword)}

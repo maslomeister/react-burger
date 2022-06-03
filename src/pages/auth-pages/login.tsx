@@ -50,7 +50,7 @@ export function Login() {
               disabled={loading ? true : false}
               error={showErrors.email}
               errorText={errors.email}
-              value={values.email ? values.email : ""}
+              value={values.email ?? ""}
               onChange={handleChange}
               onFocus={handleFocus}
             />
@@ -65,7 +65,7 @@ export function Login() {
               disabled={loading ? true : false}
               error={showErrors.password}
               errorText={errors.password}
-              value={values.password ? values.password : ""}
+              value={values.password ?? ""}
               onChange={handleChange}
               onFocus={handleFocus}
               onIconClick={() => setRevealPassword(!revealPassword)}

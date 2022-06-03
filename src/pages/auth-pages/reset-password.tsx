@@ -57,7 +57,7 @@ export function ResetPassword() {
               disabled={loading ? true : false}
               error={showErrors.password}
               errorText={errors.password}
-              value={values.password ? values.password : ""}
+              value={values.password ?? ""}
               onChange={handleChange}
               onFocus={handleFocus}
               onIconClick={() => setRevealPassword(!revealPassword)}
@@ -70,7 +70,7 @@ export function ResetPassword() {
               disabled={loading ? true : false}
               error={showErrors.confirmationCode}
               errorText={errors.confirmationCode}
-              value={values.confirmationCode ? values.confirmationCode : ""}
+              value={values.confirmationCode ?? ""}
               onChange={handleChange}
               onFocus={handleFocus}
             />
