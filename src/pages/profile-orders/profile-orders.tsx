@@ -5,9 +5,10 @@ import { useAppSelector } from "../../services/hooks";
 import { Order } from "../../components/order/order";
 import { LoadingScreen } from "../../components/loading-screen/loading-screen";
 import { ErrorScreen } from "../../components/error-screen/error-screen";
+import { useGetOrdersQuery } from "../../services/rtk/web-socket";
+import { urls } from "../../utils/urls";
 
 import styles from "./profile-orders.module.css";
-import { useGetOrdersQuery } from "../../services/rtk/web-socket";
 
 const setActive = (
   { isActive }: { isActive: boolean },
@@ -68,20 +69,20 @@ export function ProfileOrders() {
       <div className={styles["profile-container"]}>
         <div className={`${styles["profile-items-container"]} mt-30 mr-15`}>
           <NavLink
-            to="/profile"
+            to={urls.profile}
             className={(isActive) => setActive(isActive, "mb-6")}
             end
           >
             Профиль
           </NavLink>
           <NavLink
-            to="/profile/orders"
+            to={urls.profileOrders}
             className={(isActive) => setActive(isActive, "mb-6")}
           >
             История заказов
           </NavLink>
           <NavLink
-            to="/logout"
+            to={urls.logout}
             className={(isActive) => setActive(isActive, "mb-20")}
           >
             Выход

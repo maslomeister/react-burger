@@ -9,6 +9,7 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useFormAndValidation } from "../../hooks/useFromAndValidate";
+import { urls } from "../../utils/urls";
 
 import styles from "./auth-pages.module.css";
 
@@ -106,7 +107,7 @@ export function Login() {
                 Вы новый пользователь?&nbsp;
               </p>
 
-              <Link to={"/register"}>
+              <Link to={urls.register}>
                 <p
                   className={`${styles["text-link"]} text text_type_main-default`}
                 >
@@ -120,7 +121,7 @@ export function Login() {
                 Забыли пароль?&nbsp;
               </p>
 
-              <Link to={"/forgot-password"}>
+              <Link to={urls.forgotPassword}>
                 <p
                   className={`${styles["text-link"]} text text_type_main-default`}
                 >

@@ -11,6 +11,7 @@ import {
 import { updateUserData } from "../../services/reducers/auth/auth";
 import { useFormAndValidation } from "../../hooks/useFromAndValidate";
 import { tokenExists } from "../../utils/utils";
+import { urls } from "../../utils/urls";
 
 import styles from "./auth-pages.module.css";
 
@@ -204,20 +205,20 @@ export function Profile() {
       <div className={styles["profile-container"]}>
         <div className={`${styles["profile-items-container"]} mr-15`}>
           <NavLink
-            to="/profile"
+            to={urls.profile}
             className={(isActive) => setActive(isActive, "mb-6")}
             end
           >
             Профиль
           </NavLink>
           <NavLink
-            to="/profile/orders"
+            to={urls.profileOrders}
             className={(isActive) => setActive(isActive, "mb-6")}
           >
             История заказов
           </NavLink>
           <NavLink
-            to="/logout"
+            to={urls.logout}
             className={(isActive) => setActive(isActive, "mb-20")}
           >
             Выход
