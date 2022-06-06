@@ -3,8 +3,12 @@ import { NavLink, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { NavLinkWithIcon } from "../nav-link-with-icon/nav-link-with-icon";
-import { ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+  ProfileIcon,
+  ArrowDownIcon,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 import { urls } from "../../../../utils/urls";
+import { DropDownIcon } from "../drop-down-icon/drop-down-icon";
 
 import styles from "./sidebar.module.css";
 
@@ -42,10 +46,10 @@ const routeMatch = (link: string, active: string) => {
 
 export function Sidebar({ showSidebar, toggleSidebar, authorized }: ISidebar) {
   const location = useLocation();
-  const [isProfileSubMenu, setProfileSubMenu] = useState(false);
+  const [showProfileSubMenu, setProfileSubMenu] = useState(false);
 
   const profileSubMenuToggle = () => {
-    setProfileSubMenu(!isProfileSubMenu);
+    setProfileSubMenu(!showProfileSubMenu);
   };
 
   useEffect(() => {
@@ -93,7 +97,7 @@ export function Sidebar({ showSidebar, toggleSidebar, authorized }: ISidebar) {
                     Личный кабинет
                   </p>
                 </div>
-                <p>open</p>
+                <DropDownIcon isOpened={showProfileSubMenu} />
               </div>
             ) : (
               <div className={styles["sidebar-item"]} onClick={toggleSidebar}>
@@ -107,7 +111,7 @@ export function Sidebar({ showSidebar, toggleSidebar, authorized }: ISidebar) {
             )}
 
             <AnimatePresence>
-              {isProfileSubMenu && (
+              {showProfileSubMenu && (
                 <>
                   <motion.div
                     key="submenu-first"
