@@ -196,7 +196,7 @@ export function Profile() {
     <motion.div
       className="mt-30"
       key="profile-page"
-      initial={{ x: "+200%" }}
+      initial={{ x: "+100%" }}
       animate={{ x: "0" }}
       transition={{
         type: "ease",

@@ -9,11 +9,11 @@ export function Constructor() {
   return (
     <motion.div
       key="constructor-page"
-      initial={{ x: "-200%" }}
+      initial={{ x: "-100%" }}
       animate={{ x: "0" }}
-      exit={{ x: "-200%" }}
+      exit={{ x: "-100%" }}
       transition={{
-        type: "ease",
+        type: "ease-in-out",
       }}
     >
       <section className={"row"}>

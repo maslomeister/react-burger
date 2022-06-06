@@ -60,7 +60,7 @@ export function ProfileOrders() {
   return (
     <motion.div
       key="profile-page"
-      initial={{ x: "+200%" }}
+      initial={{ x: "+100%" }}
       animate={{ x: "0" }}
       transition={{
         type: "ease",
