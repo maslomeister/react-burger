@@ -37,7 +37,6 @@
   align-items: flex-end;
   overflow-y: scroll;
   max-height: 465px;
-  width: 600px;
 }
 
 .ingredient {

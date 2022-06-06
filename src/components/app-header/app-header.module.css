@@ -5,16 +5,14 @@
 }
 
 .header-inner {
-  background-color: #1c1c21;
-  width: 1281px;
   margin: auto;
-  height: 100px;
+  height: 100%;
   display: flex;
 }
 
 .menu-left {
-  flex: 1;
   display: flex;
+  flex: 1;
   justify-content: flex-start;
 }
 
@@ -27,16 +25,23 @@
 }
 
 .menu-right {
-  flex: 1;
   display: flex;
+  flex: 1;
   justify-content: flex-end;
 }
 
 .logo {
-  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.hamburger {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
+  z-index: 1000;
 }
 
 .element:first-child > div {
@@ -62,4 +67,60 @@ a {
 ul {
   margin: 0;
   padding: 0;
+}
+
+@media screen and (max-width: 1023px) {
+  .menu-left {
+    display: none;
+  }
+
+  .logo {
+    justify-content: flex-start;
+  }
+
+  .menu-right {
+    display: none;
+  }
+
+  .header {
+    height: 80px;
+  }
+
+  .header-inner {
+    margin: unset;
+    margin-left: 24px;
+    margin-right: 24px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .header-inner {
+    width: 1024px;
+  }
+
+  .menu-left {
+    display: flex;
+  }
+
+  .logo {
+    justify-content: center;
+  }
+
+  .menu-right {
+    display: flex;
+  }
+
+  .header-inner {
+    margin: auto;
+  }
+
+  .hamburger {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .header-inner {
+    width: 1280px;
+  }
 }

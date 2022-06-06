@@ -5,8 +5,6 @@ import { motion } from "framer-motion";
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor";
 import { BurgerIngredientsMemoized } from "../../components/burger-ingredients/burger-ingredients";
 
-import styles from "./constructor.module.css";
-
 export function Constructor() {
   return (
     <motion.div
@@ -18,7 +16,7 @@ export function Constructor() {
         type: "ease",
       }}
     >
-      <section className={styles["row"]}>
+      <section className={"row"}>
         <DndProvider backend={HTML5Backend}>
           <div className={`mr-10`}>
             <BurgerIngredientsMemoized />
