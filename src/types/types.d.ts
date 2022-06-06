@@ -28,7 +28,7 @@ interface ILoginUser extends ITokenData {
 
 interface IIngredient {
   _id: string;
-  _uniqueId?: string;
+  uniqueId?: string;
   index?: number;
   name: string;
   type: string;

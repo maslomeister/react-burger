@@ -66,7 +66,7 @@ export function OrderInfo({ orderData, isModal }: Props) {
           return (
             <div
               className={`${styles["ingredient-container"]} mb-4`}
-              key={ingredient._uniqueId}
+              key={ingredient.uniqueId}
             >
               <div className="mr-4">
                 <IngredientCircleImage image={ingredient.image} />

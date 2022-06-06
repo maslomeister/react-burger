@@ -2,6 +2,7 @@ import { useState, useCallback, useRef, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDrop } from "react-dnd";
+import { v4 as uuidv4 } from "uuid";
 import ReactTooltip from "react-tooltip";
 
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -70,9 +71,10 @@ function BurgerConstructor() {
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
     drop(ingredient: IIngredient) {
+      const uniqueId = uuidv4();
       ingredient.type === "bun"
         ? dispatch(addOrReplaceBun(ingredient))
-        : dispatch(addIngredient(ingredient));
+        : dispatch(addIngredient({ ingredient, uniqueId }));
     },
     collect: (monitor) => ({
       isHover: monitor.isOver(),
@@ -177,7 +179,7 @@ function BurgerConstructor() {
                   };
                   const lastIndex = index === ingredients!.length - 1;
                   return (
-                    <li key={newItem._uniqueId}>
+                    <li key={newItem.uniqueId}>
                       <BurgerInnerItemMemoized
                         bottomPadding={!lastIndex}
                         key={newItem._id}

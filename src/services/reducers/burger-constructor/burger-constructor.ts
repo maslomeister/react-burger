@@ -45,15 +45,14 @@ export const constructorIngredients = createSlice({
   name: "constructorIngredients",
   initialState,
   reducers: {
-    addIngredient: {
-      reducer: (state: SliceState, action: PayloadAction<IIngredient>) => {
-        state.ingredients.push(action.payload);
-      },
-      prepare: (value: IIngredient) => {
-        return {
-          payload: { ...value, _uniqueId: uuidv4() },
-        };
-      },
+    addIngredient: (
+      state: SliceState,
+      action: PayloadAction<{ ingredient: IIngredient; uniqueId: string }>
+    ) => {
+      state.ingredients.push({
+        ...action.payload.ingredient,
+        uniqueId: action.payload.uniqueId,
+      });
     },
     loadIngredients: {
       reducer: (state: SliceState, action: PayloadAction<SliceState>) => {
@@ -71,7 +70,7 @@ export const constructorIngredients = createSlice({
       action: PayloadAction<IIngredient>
     ) => {
       const filteredIngredients = state.ingredients.filter(
-        (item) => item._uniqueId !== action.payload._uniqueId
+        (item) => item.uniqueId !== action.payload.uniqueId
       );
       state.ingredients = filteredIngredients;
     },
