@@ -18,7 +18,7 @@ import {
   addOrReplaceBun,
   removeBun,
   resetState,
-} from "../../services/reducers/burger-constructor";
+} from "../../services/reducers/burger-constructor/burger-constructor";
 import { getOrderNumber } from "../../services/reducers/order-details";
 import { userAuthorized } from "../../utils/utils";
 
