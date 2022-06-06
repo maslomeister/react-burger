@@ -167,33 +167,35 @@ export function Sidebar({ showSidebar, toggleSidebar, authorized }: ISidebar) {
                   </motion.div>
                 </>
               )}
+
+              <motion.div
+                layout="position"
+                key="Конструктор бургеров"
+                className={styles["sidebar-item"]}
+                onClick={toggleSidebar}
+              >
+                <NavLinkWithIcon
+                  url={urls.home}
+                  pathname={location.pathname}
+                  text="Конструктор бургеров"
+                  iconType="home"
+                />
+              </motion.div>
+
+              <motion.div
+                layout="position"
+                key="Лента заказов"
+                className={styles["sidebar-item"]}
+                onClick={toggleSidebar}
+              >
+                <NavLinkWithIcon
+                  url={urls.feed}
+                  pathname={location.pathname}
+                  text="Лента заказов"
+                  iconType="feed"
+                />
+              </motion.div>
             </AnimatePresence>
-
-            <motion.div
-              layout="position"
-              className={styles["sidebar-item"]}
-              onClick={toggleSidebar}
-            >
-              <NavLinkWithIcon
-                url={urls.home}
-                pathname={location.pathname}
-                text="Конструктор бургеров"
-                iconType="home"
-              />
-            </motion.div>
-
-            <motion.div
-              layout="position"
-              className={styles["sidebar-item"]}
-              onClick={toggleSidebar}
-            >
-              <NavLinkWithIcon
-                url={urls.feed}
-                pathname={location.pathname}
-                text="Лента заказов"
-                iconType="feed"
-              />
-            </motion.div>
           </div>
         </motion.div>
       ) : null}
