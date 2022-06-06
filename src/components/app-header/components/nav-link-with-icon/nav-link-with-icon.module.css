@@ -1,0 +1,14 @@
+.menu__item {
+  display: flex;
+  align-items: center;
+  color: #8585ad;
+  list-style-type: none;
+  cursor: pointer;
+}
+
+.menu__item_active {
+  display: flex;
+  align-items: center;
+  color: #f2f2f3;
+  list-style-type: none;
+}
