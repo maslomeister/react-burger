@@ -1,4 +1,4 @@
-export const baseUrl = "react-burger";
+export const baseUrl = "/react-burger";
 
 export const urls = {
   home: baseUrl,
