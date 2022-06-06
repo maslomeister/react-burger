@@ -22,11 +22,21 @@
   height: 60px;
 }
 
-.sidebar-submenu-item {
+.sidebar-submenu {
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 60px;
+  cursor: pointer;
+}
+
+.sidebar-submenu__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  cursor: pointer;
+  margin-left: 48px;
 }
 
 .menu__item {

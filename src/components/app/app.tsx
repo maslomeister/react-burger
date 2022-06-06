@@ -17,7 +17,6 @@ import {
   IngredientInfo,
   OrderInfoPage,
 } from "../../pages";
-import { Sidebar } from "../../components/sidebar/sidebar";
 import { Modal } from "../modal/modal";
 import { IngredientDetails } from "../ingredient-details/ingredient-details";
 import { OrderInfoModal } from "../../components/order-info-modal/order-info-modal";
@@ -89,7 +88,6 @@ function App() {
     content = (
       <>
         <AppHeader showSidebar={showSidebar} toggleSidebar={toggleSidebar} />
-        <Sidebar showSidebar={showSidebar} toggleSidebar={toggleSidebar} />
         <Routes location={background || location}>
           <Route
             path={urls.home}
