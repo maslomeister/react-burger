@@ -9,6 +9,7 @@ import { useGetOrdersQuery } from "../../services/rtk/web-socket";
 import { returnOrdersWithStatus } from "../../utils/utils";
 
 import styles from "./orders.module.css";
+import { urls } from "../../utils/urls";
 
 interface IOrdersFeed {
   orders: IOrder[];
@@ -90,7 +91,7 @@ export function Orders() {
   const previousPath = location.state && location.state.from;
 
   const motionInitialX = previousPath
-    ? previousPath === "/"
+    ? previousPath === urls.home
       ? "+200%"
       : "-200%"
     : 0;
