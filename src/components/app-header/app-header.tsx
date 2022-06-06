@@ -22,7 +22,7 @@ export function AppHeader({ showSidebar, toggleSidebar }: IAppHeader) {
   const { user } = useAppSelector((state) => state.authUser);
   const authorized = useMemo(() => userAuthorized(user), [user]);
 
-  const isMobileOrTablet = useMediaQuery({ query: "(max-width: 1280px)" });
+  const isMobileOrTablet = useMediaQuery({ query: "(max-width: 1024px)" });
 
   return (
     <>
@@ -80,7 +80,11 @@ export function AppHeader({ showSidebar, toggleSidebar }: IAppHeader) {
           </ul>
         </nav>
       </header>
-      <Sidebar showSidebar={showSidebar} toggleSidebar={toggleSidebar} />
+      <Sidebar
+        showSidebar={showSidebar}
+        toggleSidebar={toggleSidebar}
+        authorized={authorized}
+      />
     </>
   );
 }
