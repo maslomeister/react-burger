@@ -4,7 +4,7 @@ export const urls = {
   home: baseUrl,
   ingredientInfo: `${baseUrl}/ingredients/:id`,
   feed: `${baseUrl}/feed`,
-  feedOrder: `${baseUrl}/feed:id`,
+  feedOrder: `${baseUrl}/feed/:id`,
   login: `${baseUrl}/login`,
   register: `${baseUrl}/register`,
   forgotPassword: `${baseUrl}/forgot-password`,
