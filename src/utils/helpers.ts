@@ -9,7 +9,8 @@ export function generateIngredientsFromIds(
   allIngredients: Array<IIngredient>,
   receivedIngredients: Array<string>
 ): Array<IIngredient> {
-  return receivedIngredients.map((ingredient) => {
+  const validIngredients = receivedIngredients.filter((item) => item != null);
+  return validIngredients.map((ingredient) => {
     const foundIngredient = allIngredients.filter(
       (item) => item._id === ingredient
     )[0];
