@@ -26,7 +26,7 @@ export function Logout() {
 
   useEffect(() => {
     if (status === "logout/success") {
-      navigate(urls.login, { state: { from: "/profile" }, replace: true });
+      navigate(urls.login, { state: { from: urls.profile }, replace: true });
     }
   }, [navigate, status]);
 
