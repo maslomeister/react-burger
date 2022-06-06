@@ -31,7 +31,7 @@ const initialState: SliceState = {
   },
 };
 
-function arraymove(
+export function arraymove(
   ingredients: IIngredient[],
   fromIndex: number,
   toIndex: number
@@ -54,16 +54,11 @@ export const constructorIngredients = createSlice({
         uniqueId: action.payload.uniqueId,
       });
     },
-    loadIngredients: {
-      reducer: (state: SliceState, action: PayloadAction<SliceState>) => {
-        return (state = action.payload);
-      },
-      prepare: (value) => {
-        const payload = JSON.parse(value);
-        return {
-          payload,
-        };
-      },
+    loadDataFromLocalStorage: (
+      state: SliceState,
+      action: PayloadAction<SliceState>
+    ) => {
+      return (state = action.payload);
     },
     removeIngredient: (
       state: SliceState,
@@ -101,7 +96,7 @@ export const constructorIngredients = createSlice({
 
 export const {
   addIngredient,
-  loadIngredients,
+  loadDataFromLocalStorage,
   removeIngredient,
   moveIngredient,
   addOrReplaceBun,

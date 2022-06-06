@@ -13,7 +13,7 @@ import { TotalPrice } from "../total-price/total-price";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import {
   addIngredient,
-  loadIngredients,
+  loadDataFromLocalStorage,
   removeIngredient,
   moveIngredient,
   addOrReplaceBun,
@@ -62,9 +62,10 @@ function BurgerConstructor() {
   };
 
   useEffect(() => {
-    const constructorItems = localStorage.getItem("constructorIngredients");
-    if (constructorItems) {
-      dispatch(loadIngredients(constructorItems));
+    const locallyStoredState = localStorage.getItem("constructorIngredients");
+    if (locallyStoredState) {
+      console.log(locallyStoredState);
+      dispatch(loadDataFromLocalStorage(JSON.parse(locallyStoredState)));
     }
   }, [dispatch]);
 
