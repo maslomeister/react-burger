@@ -22,6 +22,7 @@ import {
 } from "../../services/reducers/burger-constructor/burger-constructor";
 import { getOrderNumber } from "../../services/reducers/order-details";
 import { userAuthorized } from "../../utils/utils";
+import { urls } from "../../utils/urls";
 
 import styles from "./burger-constructor.module.css";
 
@@ -115,7 +116,7 @@ function BurgerConstructor() {
       );
       localStorage.removeItem("constructorIngredients");
     } else {
-      navigate("/login", {
+      navigate(urls.login, {
         state: { from: "/" },
         replace: true,
       });
