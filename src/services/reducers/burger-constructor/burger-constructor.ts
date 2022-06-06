@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import missingIcon from "../../../assets/images/missing-icon.svg";
 
-export interface SliceState {
+interface ISliceState {
   ingredients: IIngredient[];
   bun: IIngredient;
 }
@@ -13,7 +13,7 @@ interface MoveIngredients {
   dragIndex: number;
 }
 
-const initialState: SliceState = {
+export const initialState: ISliceState = {
   ingredients: [],
   bun: {
     _id: "",
@@ -46,7 +46,7 @@ export const constructorIngredients = createSlice({
   initialState,
   reducers: {
     addIngredient: (
-      state: SliceState,
+      state: ISliceState,
       action: PayloadAction<{ ingredient: IIngredient; uniqueId: string }>
     ) => {
       state.ingredients.push({
@@ -55,13 +55,13 @@ export const constructorIngredients = createSlice({
       });
     },
     loadDataFromLocalStorage: (
-      state: SliceState,
-      action: PayloadAction<SliceState>
+      state: ISliceState,
+      action: PayloadAction<ISliceState>
     ) => {
       return (state = action.payload);
     },
     removeIngredient: (
-      state: SliceState,
+      state: ISliceState,
       action: PayloadAction<IIngredient>
     ) => {
       const filteredIngredients = state.ingredients.filter(
@@ -70,7 +70,7 @@ export const constructorIngredients = createSlice({
       state.ingredients = filteredIngredients;
     },
     moveIngredient: (
-      state: SliceState,
+      state: ISliceState,
       action: PayloadAction<MoveIngredients>
     ) => {
       let newIngredients = [...state.ingredients];

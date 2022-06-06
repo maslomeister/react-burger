@@ -1,5 +1,5 @@
 import reducer, {
-  SliceState,
+  initialState,
   addIngredient,
   loadDataFromLocalStorage,
   removeIngredient,
@@ -11,24 +11,6 @@ import reducer, {
 import { v4 as uuidv4 } from "uuid";
 
 import missingIcon from "../../../assets/images/missing-icon.svg";
-
-const initialState: SliceState = {
-  ingredients: [],
-  bun: {
-    _id: "",
-    name: "Нет булки",
-    type: "",
-    proteins: 0,
-    fat: 0,
-    carbohydrates: 0,
-    calories: 0,
-    price: 0,
-    image: missingIcon,
-    image_mobile: "",
-    image_large: "",
-    __v: 0,
-  },
-};
 
 const uniqueIdFirst = uuidv4();
 const uniqueIdSecond = uuidv4();
