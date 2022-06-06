@@ -2,8 +2,8 @@ import { useLocation, Navigate, RouteProps } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { getNewAccessToken } from "../../services/reducers/auth/auth";
-
 import { userAuthorized, isTokenExpired, tokenExists } from "../../utils/utils";
+import { urls } from "../../utils/urls";
 
 export function ProtectedRouteFromGuest({ children }: RouteProps) {
   let content = children;
@@ -20,7 +20,7 @@ export function ProtectedRouteFromGuest({ children }: RouteProps) {
   }
 
   if (!userAuthorized(user)) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to={urls.login} state={{ from: location }} replace />;
   }
 
   return <>{content}</>;
