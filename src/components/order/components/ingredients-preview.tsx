@@ -21,7 +21,7 @@ export function IngredientsPreview({ ingredients }: Props) {
             position={i}
             image={ingredient.image}
             amount={i === 6 ? amountOfHiddenIngredients : undefined}
-            key={ingredient.uniqueId}
+            key={i}
           />
         );
       })}
