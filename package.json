@@ -1,8 +1,8 @@
 {
   "name": "react-burger",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "private": true,
-  "homepage": "./react-burger",
+  "homepage": "https://maslomeister.github.io/react-burger/",
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.1",
     "@testing-library/jest-dom": "^5.16.2",
@@ -32,7 +32,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "set \"GENERATE_SOURCEMAP=false\" && react-scripts --optimize_for_size --max_old_space_size=460 --gc_interval=100 start",
+    "start": "set \"GENERATE_SOURCEMAP=false\" && react-scripts --optimize_for_size --max_old_space_size=460 --gc_interval=100 start /react-burger",
     "build": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
