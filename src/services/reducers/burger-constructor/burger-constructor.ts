@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 
-import missingIcon from "../../assets/images/missing-icon.svg";
+import missingIcon from "../../../assets/images/missing-icon.svg";
 
-interface SliceState {
+export interface SliceState {
   ingredients: IIngredient[];
   bun: IIngredient;
 }
@@ -49,7 +49,7 @@ export const constructorIngredients = createSlice({
       reducer: (state: SliceState, action: PayloadAction<IIngredient>) => {
         state.ingredients.push(action.payload);
       },
-      prepare: (value) => {
+      prepare: (value: IIngredient) => {
         return {
           payload: { ...value, _uniqueId: uuidv4() },
         };
