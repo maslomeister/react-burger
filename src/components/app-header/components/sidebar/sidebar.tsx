@@ -8,9 +8,22 @@ import { urls } from "../../../../utils/urls";
 
 import styles from "./sidebar.module.css";
 
+const enterAnimation = { y: "-50px", opacity: 0 };
+
+const animateWithDelay = (delayAmount: number) => {
+  return { y: "0", opacity: 1, transition: { delay: delayAmount * 0.025 } };
+};
+
+const exitAnimation = {
+  y: "-50px",
+  opacity: 0,
+  transition: { duration: 0.1 },
+};
+
 interface ISidebar {
   showSidebar: boolean;
   toggleSidebar: () => void;
+  authorized: boolean;
 }
 
 const setActive = ({ isActive }: { isActive: Boolean }) =>
@@ -27,7 +40,7 @@ const routeMatch = (link: string, active: string) => {
   return styles["menu__item"];
 };
 
-export function Sidebar({ showSidebar, toggleSidebar }: ISidebar) {
+export function Sidebar({ showSidebar, toggleSidebar, authorized }: ISidebar) {
   const location = useLocation();
   const [isProfileSubMenu, setProfileSubMenu] = useState(false);
 
@@ -59,84 +72,124 @@ export function Sidebar({ showSidebar, toggleSidebar }: ISidebar) {
               Меню
             </h1>
 
-            <div
-              className={styles["sidebar-submenu"]}
-              onClick={profileSubMenuToggle}
-            >
+            {authorized ? (
               <div
-                className={styles["sidebar-item"]}
+                className={styles["sidebar-submenu"]}
                 onClick={profileSubMenuToggle}
               >
-                <ProfileIcon
-                  type={buttonType(urls.profile, location.pathname)}
-                />
-                <p
-                  className={`${routeMatch(
-                    urls.profile,
-                    location.pathname
-                  )} ml-2`}
+                <div
+                  className={styles["sidebar-item"]}
+                  onClick={profileSubMenuToggle}
                 >
-                  Личный кабинет
-                </p>
+                  <ProfileIcon
+                    type={buttonType(urls.profile, location.pathname)}
+                  />
+                  <p
+                    className={`${routeMatch(
+                      urls.profile,
+                      location.pathname
+                    )} ml-2`}
+                  >
+                    Личный кабинет
+                  </p>
+                </div>
+                <p>open</p>
               </div>
-              <p>open</p>
-            </div>
-
-            {isProfileSubMenu && (
-              <>
-                <div className={styles["sidebar-submenu__item"]}>
-                  <NavLink
-                    className={setActive}
-                    to={urls.profile}
-                    state={{ from: location.pathname }}
-                    end
-                    onClick={toggleSidebar}
-                  >
-                    Профиль
-                  </NavLink>
-                </div>
-                <div className={styles["sidebar-submenu__item"]}>
-                  <NavLink
-                    className={setActive}
-                    to={urls.profileOrders}
-                    state={{ from: location.pathname }}
-                    end
-                    onClick={toggleSidebar}
-                  >
-                    История заказов
-                  </NavLink>
-                </div>
-                <div className={styles["sidebar-submenu__item"]}>
-                  <NavLink
-                    className={setActive}
-                    to={urls.logout}
-                    state={{ from: location.pathname }}
-                    end
-                    onClick={toggleSidebar}
-                  >
-                    Выход
-                  </NavLink>
-                </div>
-              </>
+            ) : (
+              <div className={styles["sidebar-item"]} onClick={toggleSidebar}>
+                <NavLinkWithIcon
+                  url={urls.login}
+                  pathname={location.pathname}
+                  text="Войти"
+                  iconType="profile"
+                />
+              </div>
             )}
 
-            <div className={styles["sidebar-item"]} onClick={toggleSidebar}>
+            <AnimatePresence>
+              {isProfileSubMenu && (
+                <>
+                  <motion.div
+                    key="submenu-first"
+                    initial={enterAnimation}
+                    animate={animateWithDelay(0)}
+                    exit={exitAnimation}
+                    className={styles["sidebar-submenu__item"]}
+                  >
+                    <NavLink
+                      className={setActive}
+                      to={urls.profile}
+                      state={{ from: location.pathname }}
+                      end
+                      onClick={toggleSidebar}
+                    >
+                      Профиль
+                    </NavLink>
+                  </motion.div>
+                  <motion.div
+                    key="submenu-second"
+                    initial={enterAnimation}
+                    animate={animateWithDelay(1)}
+                    exit={exitAnimation}
+                    className={styles["sidebar-submenu__item"]}
+                  >
+                    <NavLink
+                      className={setActive}
+                      to={urls.profileOrders}
+                      state={{ from: location.pathname }}
+                      end
+                      onClick={toggleSidebar}
+                    >
+                      История заказов
+                    </NavLink>
+                  </motion.div>
+
+                  <motion.div
+                    key="submenu-third"
+                    initial={enterAnimation}
+                    animate={animateWithDelay(2)}
+                    exit={exitAnimation}
+                    className={styles["sidebar-submenu__item"]}
+                  >
+                    <NavLink
+                      className={setActive}
+                      to={urls.logout}
+                      state={{ from: location.pathname }}
+                      end
+                      onClick={toggleSidebar}
+                    >
+                      Выход
+                    </NavLink>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
+
+            <motion.div
+              layout="position"
+              className={styles["sidebar-item"]}
+              onClick={toggleSidebar}
+            >
               <NavLinkWithIcon
                 url={urls.home}
                 pathname={location.pathname}
                 text="Конструктор бургеров"
                 iconType="home"
               />
-            </div>
+            </motion.div>
 
-            <div className={styles["sidebar-item"]} onClick={toggleSidebar}>
+            <motion.div
+              layout="position"
+              className={styles["sidebar-item"]}
+              onClick={toggleSidebar}
+            >
               <NavLinkWithIcon
                 url={urls.feed}
                 pathname={location.pathname}
                 text="Лента заказов"
                 iconType="feed"
               />
-            </div>
+            </motion.div>
           </div>
         </motion.div>
       ) : null}
