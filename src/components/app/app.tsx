@@ -24,7 +24,7 @@ import { OrderInfoModal } from "../../components/order-info-modal/order-info-mod
 import { ProtectedRouteFromGuest } from "../protected-routes/protected-route-from-guest";
 import { ProtectedRouteFromUser } from "../protected-routes/protected-route-from-user";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
-import { fetchIngredients } from "../../services/reducers/burger-ingredients";
+import { fetchIngredients } from "../../services/reducers/burger-ingredients/burger-ingredients";
 import { LoadingScreen } from "../loading-screen/loading-screen";
 import { ErrorScreen } from "../error-screen/error-screen";
 import { tokenExists, isTokenExpired } from "../../utils/utils";

@@ -1,7 +1,7 @@
 import { combineReducers } from "@reduxjs/toolkit";
 
-import burgerDetails from "./reducers/ingredient-details";
-import allIngredients from "./reducers/burger-ingredients";
+import burgerDetails from "./reducers/ingredient-details/ingredient-details";
+import allIngredients from "./reducers/burger-ingredients/burger-ingredients";
 import constructorIngredients from "./reducers/burger-constructor/burger-constructor";
 import orderDetails from "./reducers/order-details";
 import authUser from "./reducers/auth/auth";

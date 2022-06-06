@@ -64,7 +64,6 @@ function BurgerConstructor() {
   useEffect(() => {
     const locallyStoredState = localStorage.getItem("constructorIngredients");
     if (locallyStoredState) {
-      console.log(locallyStoredState);
       dispatch(loadDataFromLocalStorage(JSON.parse(locallyStoredState)));
     }
   }, [dispatch]);

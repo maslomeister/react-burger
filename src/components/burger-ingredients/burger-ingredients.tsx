@@ -5,7 +5,8 @@ import { BurgerIngredientItemMemoized } from "./components/burger-ingredients-it
 import { Tabs } from "../../utils/tabs-data";
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { BurgerIngredientsTabsMemoized } from "./components/burger-ingredients-tabs/burger-ingredients-tabs";
-import { addDataToModal } from "../../services/reducers/ingredient-details";
+import { addDataToModal } from "../../services/reducers/ingredient-details/ingredient-details";
+import { urls } from "../../utils/urls";
 
 import styles from "./burger-ingredients.module.css";
 
@@ -48,16 +49,15 @@ function BurgerIngredients() {
         (_ingredient) => _ingredient._id === location.state.id
       );
       if (ingredient) {
-        dispatch(
-          addDataToModal({
-            modalImage: ingredient.image_large,
-            modalName: ingredient.name,
-            modalCalories: ingredient.calories,
-            modalProteins: ingredient.price,
-            modalFat: ingredient.fat,
-            modalCarbohydrates: ingredient.carbohydrates,
-          })
-        );
+        const modalData = {
+          modalImage: ingredient.image_large,
+          modalName: ingredient.name,
+          modalCalories: ingredient.calories,
+          modalProteins: ingredient.price,
+          modalFat: ingredient.fat,
+          modalCarbohydrates: ingredient.carbohydrates,
+        };
+        dispatch(addDataToModal(modalData));
       }
     }
   }, [dispatch, ingredients, location.state]);
@@ -75,19 +75,18 @@ function BurgerIngredients() {
 
   const modalData = useCallback(
     (ingredient) => () => {
-      navigate(`/ingredients/${ingredient._id}`, {
+      navigate(`${urls.home}/ingredients/${ingredient._id}`, {
         state: { background: location, id: ingredient._id },
       });
-      dispatch(
-        addDataToModal({
-          modalImage: ingredient.image_large,
-          modalName: ingredient.name,
-          modalCalories: ingredient.calories,
-          modalProteins: ingredient.price,
-          modalFat: ingredient.fat,
-          modalCarbohydrates: ingredient.carbohydrates,
-        })
-      );
+      const modalData = {
+        modalImage: ingredient.image_large,
+        modalName: ingredient.name,
+        modalCalories: ingredient.calories,
+        modalProteins: ingredient.price,
+        modalFat: ingredient.fat,
+        modalCarbohydrates: ingredient.carbohydrates,
+      };
+      dispatch(addDataToModal(modalData));
     },
     [dispatch, location, navigate]
   );
