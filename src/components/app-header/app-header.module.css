@@ -100,6 +100,7 @@ ul {
 
   .menu-left {
     display: flex;
+    flex: none;
   }
 
   .logo {
@@ -122,5 +123,10 @@ ul {
 @media screen and (min-width: 1280px) {
   .header-inner {
     width: 1280px;
+  }
+
+  .menu-left {
+    display: flex;
+    flex: 1;
   }
 }
