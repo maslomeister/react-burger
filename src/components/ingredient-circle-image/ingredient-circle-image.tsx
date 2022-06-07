@@ -15,6 +15,8 @@ export function IngredientCircleImage({
     position = 0;
   }
 
+  const showOverlay = amount ? amount > 0 : false;
+
   return (
     <div
       className={`${styles["image-border"]} ${
@@ -22,7 +24,7 @@ export function IngredientCircleImage({
       }`}
     >
       <img className={styles["image"]} src={image} alt="ingredient" />
-      {amount && (
+      {showOverlay && (
         <>
           <div className={styles["image-overlay"]} />
           <p className={`${styles["amount"]} text text_type_digits-small`}>
