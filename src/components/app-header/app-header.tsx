@@ -9,7 +9,6 @@ import { Sidebar } from "./components/sidebar/sidebar";
 import { NavLinkWithIcon } from "./components/nav-link-with-icon/nav-link-with-icon";
 import { useAppSelector } from "../../services/hooks";
 import { userAuthorized } from "../../utils/utils";
-import { urls } from "../../utils/urls";
 
 import styles from "./app-header.module.css";
 
@@ -31,7 +30,7 @@ export function AppHeader({ showSidebar, toggleSidebar }: IAppHeader) {
           <ul className={`${styles["menu-left"]} mb-4 mt-4`}>
             <li className={`${styles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
               <NavLinkWithIcon
-                url={urls.home}
+                url="/"
                 pathname={location.pathname}
                 text="Конструктор"
                 iconType="home"
@@ -39,7 +38,7 @@ export function AppHeader({ showSidebar, toggleSidebar }: IAppHeader) {
             </li>
             <li className={`${styles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
               <NavLinkWithIcon
-                url={urls.feed}
+                url="/feed"
                 pathname={location.pathname}
                 text="Лента заказов"
                 iconType="feed"
@@ -47,7 +46,7 @@ export function AppHeader({ showSidebar, toggleSidebar }: IAppHeader) {
             </li>
           </ul>
           <div className={styles["logo"]}>
-            <NavLink to={urls.home} state={{ from: location }}>
+            <NavLink to="/" state={{ from: location }}>
               {isMobileOrTablet ? <LogoSmall /> : <Logo />}
             </NavLink>
           </div>
@@ -63,14 +62,14 @@ export function AppHeader({ showSidebar, toggleSidebar }: IAppHeader) {
             <li className={`${styles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
               {authorized ? (
                 <NavLinkWithIcon
-                  url={urls.profile}
+                  url="/profile"
                   pathname={location.pathname}
                   text="Личный кабинет"
                   iconType="profile"
                 />
               ) : (
                 <NavLinkWithIcon
-                  url={urls.login}
+                  url="/login"
                   pathname={location.pathname}
                   text="Войти"
                   iconType="profile"

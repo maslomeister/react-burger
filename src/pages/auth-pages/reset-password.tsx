@@ -9,7 +9,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useFormAndValidation } from "../../hooks/useFromAndValidate";
 import { resetPasswordUser } from "../../services/reducers/auth/auth";
-import { urls } from "../../utils/urls";
 
 import styles from "./auth-pages.module.css";
 
@@ -101,7 +100,7 @@ export function ResetPassword() {
             <p className="text text_type_main-default text_color_inactive">
               Вспомнили пароль?&nbsp;
             </p>
-            <Link to={urls.login}>
+            <Link to={"/login"}>
               <p
                 className={`${styles["text-link"]} text text_type_main-default`}
               >
@@ -123,11 +122,11 @@ export function ResetPassword() {
   }
 
   if (location.state?.from === undefined) {
-    return <Navigate to={urls.forgotPassword} replace={true} />;
+    return <Navigate to={"/forgot-password"} replace={true} />;
   }
 
   if (status === "resetPassword/success") {
-    return <Navigate to={urls.login} replace={true} />;
+    return <Navigate to={"login"} replace={true} />;
   }
 
   return (

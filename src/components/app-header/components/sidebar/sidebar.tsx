@@ -7,7 +7,6 @@ import {
   ProfileIcon,
   ArrowDownIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { urls } from "../../../../utils/urls";
 import { DropDownIcon } from "../drop-down-icon/drop-down-icon";
 
 import styles from "./sidebar.module.css";
@@ -86,11 +85,11 @@ export function Sidebar({ showSidebar, toggleSidebar, authorized }: ISidebar) {
                   onClick={profileSubMenuToggle}
                 >
                   <ProfileIcon
-                    type={buttonType(urls.profile, location.pathname)}
+                    type={buttonType("/profile", location.pathname)}
                   />
                   <p
                     className={`${routeMatch(
-                      urls.profile,
+                      "/profile",
                       location.pathname
                     )} ml-2`}
                   >
@@ -102,7 +101,7 @@ export function Sidebar({ showSidebar, toggleSidebar, authorized }: ISidebar) {
             ) : (
               <div className={styles["sidebar-item"]} onClick={toggleSidebar}>
                 <NavLinkWithIcon
-                  url={urls.login}
+                  url="/login"
                   pathname={location.pathname}
                   text="Войти"
                   iconType="profile"
@@ -122,7 +121,7 @@ export function Sidebar({ showSidebar, toggleSidebar, authorized }: ISidebar) {
                   >
                     <NavLink
                       className={setActive}
-                      to={urls.profile}
+                      to="/profile"
                       state={{ from: location.pathname }}
                       end
                       onClick={toggleSidebar}
@@ -139,7 +138,7 @@ export function Sidebar({ showSidebar, toggleSidebar, authorized }: ISidebar) {
                   >
                     <NavLink
                       className={setActive}
-                      to={urls.profileOrders}
+                      to="/profile/orders"
                       state={{ from: location.pathname }}
                       end
                       onClick={toggleSidebar}
@@ -157,7 +156,7 @@ export function Sidebar({ showSidebar, toggleSidebar, authorized }: ISidebar) {
                   >
                     <NavLink
                       className={setActive}
-                      to={urls.logout}
+                      to="/logout"
                       state={{ from: location.pathname }}
                       end
                       onClick={toggleSidebar}
@@ -175,7 +174,7 @@ export function Sidebar({ showSidebar, toggleSidebar, authorized }: ISidebar) {
                 onClick={toggleSidebar}
               >
                 <NavLinkWithIcon
-                  url={urls.home}
+                  url="/"
                   pathname={location.pathname}
                   text="Конструктор бургеров"
                   iconType="home"
@@ -189,7 +188,7 @@ export function Sidebar({ showSidebar, toggleSidebar, authorized }: ISidebar) {
                 onClick={toggleSidebar}
               >
                 <NavLinkWithIcon
-                  url={urls.feed}
+                  url="/feed"
                   pathname={location.pathname}
                   text="Лента заказов"
                   iconType="feed"

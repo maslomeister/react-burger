@@ -9,7 +9,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useFormAndValidation } from "../../hooks/useFromAndValidate";
 import { forgotUserPassword } from "../../services/reducers/auth/auth";
-import { urls } from "../../utils/urls";
 
 import styles from "./auth-pages.module.css";
 
@@ -31,7 +30,7 @@ export function ForgotPassword() {
   const checkEmail = async () => {
     await dispatch(forgotUserPassword(values.email!));
 
-    navigate(urls.resetPassword, {
+    navigate("/reset-password", {
       state: { from: "forgot-password" },
       replace: true,
     });
@@ -88,7 +87,7 @@ export function ForgotPassword() {
             <p className="text text_type_main-default text_color_inactive">
               Вспомнили пароль?&nbsp;
             </p>
-            <Link to={urls.login}>
+            <Link to={"/login"}>
               <p
                 className={`${styles["text-link"]} text text_type_main-default`}
               >

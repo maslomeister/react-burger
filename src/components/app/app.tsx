@@ -31,7 +31,6 @@ import {
   getUserData,
   getNewAccessToken,
 } from "../../services/reducers/auth/auth";
-import { urls } from "../../utils/urls";
 
 function App() {
   let content;
@@ -89,13 +88,9 @@ function App() {
       <>
         <AppHeader showSidebar={showSidebar} toggleSidebar={toggleSidebar} />
         <Routes location={background || location}>
+          <Route path="/" element={<Constructor />} key={location.pathname} />
           <Route
-            path={urls.home}
-            element={<Constructor />}
-            key={location.pathname}
-          />
-          <Route
-            path={urls.login}
+            path="/login"
             element={
               <ProtectedRouteFromUser>
                 <Login />
@@ -104,7 +99,7 @@ function App() {
             key={location.pathname}
           />
           <Route
-            path={urls.register}
+            path="/register"
             element={
               <ProtectedRouteFromUser>
                 <Register />
@@ -113,7 +108,7 @@ function App() {
             key={location.pathname}
           />
           <Route
-            path={urls.forgotPassword}
+            path="/forgot-password"
             element={
               <ProtectedRouteFromUser>
                 <ForgotPassword />
@@ -122,7 +117,7 @@ function App() {
             key={location.pathname}
           />
           <Route
-            path={urls.resetPassword}
+            path="/reset-password"
             element={
               <ProtectedRouteFromUser>
                 <ResetPassword />
@@ -130,17 +125,13 @@ function App() {
             }
             key={location.pathname}
           />
-          <Route path={urls.ingredientInfo} element={<IngredientInfo />} />
+          <Route path="/ingredients/:id" element={<IngredientInfo />} />
+
+          <Route path="/feed" element={<Orders />} key={location.pathname} />
+          <Route path="/feed/:id" element={<OrderInfoPage />} />
 
           <Route
-            path={urls.feed}
-            element={<Orders />}
-            key={location.pathname}
-          />
-          <Route path={urls.feedOrder} element={<OrderInfoPage />} />
-
-          <Route
-            path={urls.profile}
+            path="/profile"
             element={
               <ProtectedRouteFromGuest>
                 <Profile />
@@ -150,7 +141,7 @@ function App() {
           />
 
           <Route
-            path={urls.profileOrders}
+            path="/profile/orders"
             element={
               <ProtectedRouteFromGuest>
                 <ProfileOrders />
@@ -159,18 +150,14 @@ function App() {
             key={location.pathname}
           />
           <Route
-            path={urls.profileOrder}
+            path="/profile/orders/:id"
             element={
               <ProtectedRouteFromGuest>
                 <OrderInfoPage />
               </ProtectedRouteFromGuest>
             }
           />
-          <Route
-            path={urls.logout}
-            element={<Logout />}
-            key={location.pathname}
-          />
+          <Route path="/logout" element={<Logout />} key={location.pathname} />
           <Route path="*" element={<NotFound />} key={location.pathname} />
         </Routes>
         <AnimatePresence>
@@ -178,7 +165,7 @@ function App() {
             <Routes>
               {/* This route fixes end animation of modal window */}
               <Route
-                path={urls.home}
+                path="/"
                 element={
                   <Modal
                     title="Детали ингредиента"
@@ -190,7 +177,7 @@ function App() {
                 }
               />
               <Route
-                path={urls.ingredientInfo}
+                path="/ingredients/:id"
                 element={
                   <Modal
                     title="Детали ингредиента"
@@ -203,7 +190,7 @@ function App() {
               />
 
               <Route
-                path={urls.feed}
+                path="/feed"
                 element={
                   <Modal
                     titleIsNumber={true}
@@ -215,7 +202,7 @@ function App() {
                 }
               />
               <Route
-                path={urls.feedOrder}
+                path="/feed/:id"
                 element={
                   <Modal
                     titleIsNumber={true}
@@ -228,7 +215,7 @@ function App() {
               />
 
               <Route
-                path={urls.profileOrders}
+                path="/profile/orders"
                 element={
                   <ProtectedRouteFromGuest>
                     <Modal
@@ -242,7 +229,7 @@ function App() {
                 }
               />
               <Route
-                path={urls.profileOrder}
+                path="/profile/orders/:id"
                 element={
                   <ProtectedRouteFromGuest>
                     <Modal
