@@ -1,0 +1,8 @@
+.mobile-cart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  width: 100%;
+  background-color: #1c1c21;
+}
