@@ -6,7 +6,6 @@ import { Order } from "../../components/order/order";
 import { LoadingScreen } from "../../components/loading-screen/loading-screen";
 import { ErrorScreen } from "../../components/error-screen/error-screen";
 import { useGetOrdersQuery } from "../../services/rtk/web-socket";
-import { urls } from "../../utils/urls";
 
 import styles from "./profile-orders.module.css";
 
@@ -69,20 +68,20 @@ export function ProfileOrders() {
       <div className={styles["profile-container"]}>
         <div className={`${styles["profile-items-container"]} mt-30 mr-15`}>
           <NavLink
-            to={urls.profile}
+            to={"/profile"}
             className={(isActive) => setActive(isActive, "mb-6")}
             end
           >
             Профиль
           </NavLink>
           <NavLink
-            to={urls.profileOrders}
+            to={"/profile/orders"}
             className={(isActive) => setActive(isActive, "mb-6")}
           >
             История заказов
           </NavLink>
           <NavLink
-            to={urls.logout}
+            to={"/logout"}
             className={(isActive) => setActive(isActive, "mb-20")}
           >
             Выход
