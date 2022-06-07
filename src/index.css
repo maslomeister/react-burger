@@ -23,6 +23,20 @@ body {
   animation: hide-scroll 1s;
 }
 
+html,
+body,
+#root,
+.App {
+  height: 100%;
+  width: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 @keyframes hide-scroll {
   from,
   to {
@@ -41,10 +55,9 @@ code {
 
 .row {
   display: flex;
-  flex-flow: row;
+  flex-flow: row wrap;
   justify-content: center;
   align-content: center;
-  scrollbar-width: none; /* for Firefox */
   margin: auto;
   overflow-x: scroll;
   z-index: 0;
@@ -60,7 +73,7 @@ code {
 }
 
 .row::-webkit-scrollbar {
-  display: none; /* for Chrome, Safari, and Opera */
+  display: none; /* for Chrome, Safari, and Opera  */
 }
 
 /* ===== Scrollbar CSS ===== */
@@ -86,26 +99,30 @@ code {
   border: 0px none #ffffff;
 }
 
-@media screen and (min-width: 360px) {
+@media screen and (max-width: 1023px) {
   .row {
-    width: 360px;
+    width: 100%;
+    height: calc(100% - 80px);
   }
-}
 
-@media screen and (min-width: 768px) {
-  .row {
-    width: 768px;
+  .row_inner {
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 
 @media screen and (min-width: 1024px) {
   .row {
-    width: 1024px;
+    width: 984px;
+    gap: 0;
+    height: calc(100% - 100px);
   }
 }
 
 @media screen and (min-width: 1280px) {
   .row {
-    width: 1280px;
+    width: 1240px;
+    gap: 40px;
+    height: calc(100% - 100px);
   }
 }
