@@ -6,7 +6,6 @@ import { Tabs } from "../../utils/tabs-data";
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { BurgerIngredientsTabsMemoized } from "./components/burger-ingredients-tabs/burger-ingredients-tabs";
 import { addDataToModal } from "../../services/reducers/ingredient-details/ingredient-details";
-import { urls } from "../../utils/urls";
 
 import styles from "./burger-ingredients.module.css";
 
@@ -75,7 +74,7 @@ function BurgerIngredients() {
 
   const modalData = useCallback(
     (ingredient) => () => {
-      navigate(`${urls.home}/ingredients/${ingredient._id}`, {
+      navigate(`/ingredients/${ingredient._id}`, {
         state: { background: location, id: ingredient._id },
       });
       const modalData = {
@@ -93,26 +92,32 @@ function BurgerIngredients() {
 
   const ingredientsCategories = [buns, sauces, mains];
   return (
-    <div>
-      <p className="text text_type_main-large mb-5 mt-10">Соберите бургер</p>
-      <BurgerIngredientsTabsMemoized tabsRef={tabsRef} />
+    <div className={styles["ingredients-container"]}>
+      <div className={styles["ingredients"]}>
+        <p
+          className={`${styles["ingredients__title"]} text text_type_main-large mb-5 mt-10`}
+        >
+          Соберите бургер
+        </p>
+        <BurgerIngredientsTabsMemoized tabsRef={tabsRef} />
 
-      <div className={styles["components"]} ref={tabsRef}>
-        {Tabs.map((tab, index) => (
-          <section key={tab._id} className={`${tab._id}`}>
-            <p className="text text_type_main-medium">{tab.name}</p>
-            <div className={`${styles["item-container"]} ml-4`}>
-              {ingredientsCategories[index].map((ingredient) => (
-                <BurgerIngredientItemMemoized
-                  key={ingredient._id}
-                  ingredient={ingredient}
-                  onClick={modalData(ingredient)}
-                  counter={ingredientsCounter[ingredient._id]}
-                />
-              ))}
-            </div>
-          </section>
-        ))}
+        <div className={styles["components"]} ref={tabsRef}>
+          {Tabs.map((tab, index) => (
+            <section key={tab._id} className={`${tab._id}`}>
+              <p className="text text_type_main-medium">{tab.name}</p>
+              <div className={styles["item-container"]}>
+                {ingredientsCategories[index].map((ingredient) => (
+                  <BurgerIngredientItemMemoized
+                    key={ingredient._id}
+                    ingredient={ingredient}
+                    onClick={modalData(ingredient)}
+                    counter={ingredientsCounter[ingredient._id]}
+                  />
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -103,20 +103,19 @@ function BurgerIngredientsTabs({ tabsRef }: TabsTypes) {
   };
 
   return (
-    <nav>
-      <ul className={`${styles["tabs"]} mb-10`}>
-        {Tabs.map((tab) => (
+    <div className={`${styles["tabs"]} mb-10`}>
+      {Tabs.map((tab) => (
+        <div className={styles["tab-wrapper"]} key={tab._id}>
           <Tab
-            key={tab._id}
             value={tab.value}
             active={state.currentTab === tab.value}
             onClick={() => onTabClick(tab.value)}
           >
             {tab.name}
           </Tab>
-        ))}
-      </ul>
-    </nav>
+        </div>
+      ))}
+    </div>
   );
 }
 

@@ -21,24 +21,20 @@ function BurgerBunItem({
 }: BurgerConstructorItemTypes) {
   return (
     <div
-      className={`ml-4 mr-4 ${bottomPadding ? "mb-4" : ""} ${
-        topPadding ? "mt-4" : ""
-      }`}
+      className={`${styles["ingredient"]} ml-10 mr-4 ${
+        bottomPadding ? "mb-4" : ""
+      } ${topPadding ? "mt-4" : ""}`}
     >
-      <div className={styles["ingredient"]}>
-        <div className={styles["constructor-element-wrapper"]}>
-          <ConstructorElement
-            type={
-              top === "top" ? "top" : top === "bottom" ? "bottom" : undefined
-            }
-            text={`${ingredient.name} ${
-              top === "top" ? "(верх)" : top === "bottom" ? "(низ)" : ""
-            }`}
-            price={ingredient.price}
-            thumbnail={ingredient.image}
-            handleClose={handleClose}
-          />
-        </div>
+      <div className={styles["constructor-element-wrapper"]}>
+        <ConstructorElement
+          type={top === "top" ? "top" : top === "bottom" ? "bottom" : undefined}
+          text={`${ingredient.name} ${
+            top === "top" ? "(верх)" : top === "bottom" ? "(низ)" : ""
+          }`}
+          price={ingredient.price}
+          thumbnail={ingredient.image}
+          handleClose={handleClose}
+        />
       </div>
     </div>
   );

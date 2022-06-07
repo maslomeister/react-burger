@@ -99,28 +99,29 @@ function BurgerInnerItem({
   const opacity = beingDragged ? 0 : 1;
   return (
     <div
-      className={`ml-4 mr-4 ${bottomPadding ? "mb-4" : ""}`}
+      className={`${styles["ingredient"]} ml-4 mr-4 ${
+        bottomPadding ? "mb-4" : ""
+      }`}
+      ref={dropRef}
       style={{ opacity }}
     >
-      <div className={styles["ingredient"]} ref={dropRef}>
-        {draggable && (
-          <div
-            ref={ref}
-            data-handler-id={handlerId}
-            className={styles["_draggable"]}
-          >
-            <DragIcon type="primary" />
-          </div>
-        )}
-
-        <div className={styles["constructor-element-wrapper"]}>
-          <ConstructorElement
-            text={ingredient.name}
-            price={ingredient.price}
-            thumbnail={ingredient.image}
-            handleClose={handleClose}
-          />
+      {draggable && (
+        <div
+          ref={ref}
+          data-handler-id={handlerId}
+          className={styles["_draggable"]}
+        >
+          <DragIcon type="primary" />
         </div>
+      )}
+
+      <div className={styles["constructor-element-wrapper"]}>
+        <ConstructorElement
+          text={ingredient.name}
+          price={ingredient.price}
+          thumbnail={ingredient.image}
+          handleClose={handleClose}
+        />
       </div>
     </div>
   );

@@ -1,12 +1,22 @@
 .ingredient {
   display: flex;
   align-items: center;
-}
-
-.constructor-element-wrapper div {
-  width: 536px;
+  justify-content: flex-start;
 }
 
 li {
   list-style-type: none;
+}
+
+@media screen and (min-width: 1024px) {
+  .constructor-element-wrapper div {
+    width: 424px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .constructor-element-wrapper div {
+    width: 512px;
+    max-width: 512px;
+  }
 }

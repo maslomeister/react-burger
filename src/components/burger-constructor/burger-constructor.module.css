@@ -1,21 +1,22 @@
+.burger-constructor-container {
+  flex: 0 0 48%;
+  height: 100%;
+}
+
 .burger-constructor {
   display: flex;
   flex-flow: column;
-  width: 600px;
-  height: calc(100vh - 204px);
+  height: calc(100% - 100px);
   justify-content: space-between;
+}
+
+.burger-components {
+  height: calc(100% - 200px);
 }
 
 .outer_style {
   display: flex;
   flex-flow: column;
-  align-items: flex-end;
-  width: calc(600px - 8px);
-}
-
-.conditional {
-  width: calc(600px);
-  overflow-y: hidden;
 }
 
 .helper {
@@ -35,8 +36,12 @@
   display: flex;
   flex-flow: column;
   align-items: flex-end;
-  overflow-y: scroll;
-  max-height: 465px;
+  overflow-y: auto;
+  max-height: calc(100% - 140px);
+}
+
+.conditional {
+  overflow: hidden;
 }
 
 .ingredient {
@@ -44,14 +49,31 @@
   align-items: center;
 }
 
-.constructor-element-wrapper div {
-  width: 536px;
-}
-
 .cart {
   display: flex;
   flex-flow: row;
   align-items: center;
   justify-content: flex-end;
-  width: calc(600px - 8px);
+}
+
+@media screen and (max-width: 1023px) {
+  .row {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .constructor-element-wrapper div {
+    width: 400px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .constructor-element-wrapper div {
+    width: 536px;
+  }
+
+  .burger-constructor {
+    margin-left: 20px;
+  }
 }

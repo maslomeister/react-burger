@@ -22,7 +22,6 @@ import {
 } from "../../services/reducers/burger-constructor/burger-constructor";
 import { getOrderNumber } from "../../services/reducers/order-details";
 import { userAuthorized } from "../../utils/utils";
-import { urls } from "../../utils/urls";
 
 import styles from "./burger-constructor.module.css";
 
@@ -30,7 +29,7 @@ function BurgerConstructor() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const dropRef = useRef(null);
+  const dropRef = useRef<HTMLUListElement>(null);
   const [showModal, setShowModal] = useState(false);
   const [canOrder, setCanOrder] = useState(false);
 
@@ -50,8 +49,6 @@ function BurgerConstructor() {
       ingredients.reduce((s, v) => s + v.price, 0)
     );
   }, [bun.price, ingredients]);
-
-  let conditionalStyle;
 
   window.onbeforeunload = () => {
     if (ingredients || bun) {
@@ -116,7 +113,7 @@ function BurgerConstructor() {
       );
       localStorage.removeItem("constructorIngredients");
     } else {
-      navigate(urls.login, {
+      navigate("/login", {
         state: { from: "/" },
         replace: true,
       });
@@ -135,112 +132,105 @@ function BurgerConstructor() {
     [dispatch]
   );
 
-  if (ingredients.length > 5) {
-    conditionalStyle = "";
-  } else {
-    conditionalStyle = styles["conditional"];
-  }
-
   return (
-    <AnimatePresence>
-      {showModal && (
-        <OrderDetails
-          onClose={hideModal}
-          orderId={orderNumber}
-          status={status}
-          error={error}
-        />
-      )}
-      <motion.div
-        key="burger-constructor"
-        ref={dropTarget}
-        style={{ border: `2px dashed ${borderColor}`, borderRadius: 30 }}
-        className={`${styles["burger-constructor"]} mb-14 mt-25`}
-      >
-        {ingredients.length !== 0 || bun.price !== 0 ? (
-          <>
-            <div className="burgerComponents">
-              <div className={styles["outer_style"]}>
-                <BurgerBunItemMemoized
-                  bottomPadding={true}
-                  top={"top"}
-                  ingredient={bun}
-                  handleClose={deleteBun}
-                />
-              </div>
-
-              <ul
-                className={styles["inner_style"] + conditionalStyle}
-                ref={dropRef}
-              >
-                {ingredients.map((ingredient, index) => {
-                  const newItem = {
-                    ...ingredient,
-                    index: index,
-                  };
-                  const lastIndex = index === ingredients!.length - 1;
-                  return (
-                    <li key={newItem.uniqueId}>
-                      <BurgerInnerItemMemoized
-                        bottomPadding={!lastIndex}
-                        key={newItem._id}
-                        index={index}
-                        moveCard={moveCard}
-                        ingredient={newItem}
-                        draggable={true}
-                        handleClose={deleteIngredient(newItem)}
-                      />
-                    </li>
-                  );
-                })}
-              </ul>
-
-              <div className={styles["outer_style"]}>
-                <BurgerBunItemMemoized
-                  topPadding={true}
-                  top={"bottom"}
-                  ingredient={bun}
-                  handleClose={deleteBun}
-                />
-              </div>
-            </div>
-
-            <div className={`${styles["cart"]} mb-10 mt-10`}>
-              <div className="mr-10">
-                <TotalPrice price={totalPrice} size="medium" />
-              </div>
-              <div
-                data-tip={
-                  bun.price === 0
-                    ? "Добавьте булку в бургер чтобы сделать заказ"
-                    : ingredients.length === 0
-                    ? "Добавьте начинку в бургер чтобы сделать заказ"
-                    : ""
-                }
-              >
-                <Button
-                  type="primary"
-                  size="large"
-                  disabled={!canOrder}
-                  onClick={createOrder}
-                >
-                  Оформить заказ
-                </Button>
-              </div>
-            </div>
-            {!canOrder && <ReactTooltip place="top" effect="solid" />}
-          </>
-        ) : (
-          <div className={styles["helper"]}>
-            <div
-              className={`${styles["helper_shadow"]} text text_type_main-large mb-30 mt-30`}
-            >
-              Для создания бургера перетащите сюда ингредиент
-            </div>
-          </div>
+    <div className={styles["burger-constructor-container"]}>
+      <AnimatePresence>
+        {showModal && (
+          <OrderDetails
+            onClose={hideModal}
+            orderId={orderNumber}
+            status={status}
+            error={error}
+          />
         )}
-      </motion.div>
-    </AnimatePresence>
+        <motion.div
+          key="burger-constructor"
+          ref={dropTarget}
+          style={{ border: `2px dashed ${borderColor}`, borderRadius: 30 }}
+          className={`${styles["burger-constructor"]} mb-14 mt-25`}
+        >
+          {ingredients.length !== 0 || bun.price !== 0 ? (
+            <>
+              <div className={styles["burger-components"]}>
+                <div className={styles["outer_style"]}>
+                  <BurgerBunItemMemoized
+                    bottomPadding={true}
+                    top={"top"}
+                    ingredient={bun}
+                    handleClose={deleteBun}
+                  />
+                </div>
+
+                <ul className={styles["inner_style"]} ref={dropRef}>
+                  {ingredients.map((ingredient, index) => {
+                    const newItem = {
+                      ...ingredient,
+                      index: index,
+                    };
+                    const lastIndex = index === ingredients!.length - 1;
+                    return (
+                      <li key={newItem.uniqueId}>
+                        <BurgerInnerItemMemoized
+                          bottomPadding={!lastIndex}
+                          key={newItem._id}
+                          index={index}
+                          moveCard={moveCard}
+                          ingredient={newItem}
+                          draggable={true}
+                          handleClose={deleteIngredient(newItem)}
+                        />
+                      </li>
+                    );
+                  })}
+                </ul>
+
+                <div className={styles["outer_style"]}>
+                  <BurgerBunItemMemoized
+                    topPadding={true}
+                    top={"bottom"}
+                    ingredient={bun}
+                    handleClose={deleteBun}
+                  />
+                </div>
+              </div>
+
+              <div className={`${styles["cart"]} mb-10 mt-10 mr-4`}>
+                <div className="mr-10">
+                  <TotalPrice price={totalPrice} size="medium" />
+                </div>
+                <div
+                  data-tip={
+                    bun.price === 0
+                      ? "Добавьте булку в бургер чтобы сделать заказ"
+                      : ingredients.length === 0
+                      ? "Добавьте начинку в бургер чтобы сделать заказ"
+                      : ""
+                  }
+                >
+                  <Button
+                    type="primary"
+                    size="large"
+                    disabled={!canOrder}
+                    onClick={createOrder}
+                  >
+                    Оформить заказ
+                  </Button>
+                </div>
+              </div>
+              {!canOrder && <ReactTooltip place="top" effect="solid" />}
+            </>
+          ) : (
+            <div className={styles["helper"]}>
+              <div
+                className={`${styles["helper_shadow"]} text text_type_main-large mb-30 mt-30`}
+              >
+                Для создания бургера перетащите сюда ингредиент
+              </div>
+            </div>
+          )}
+        </motion.div>
+      </AnimatePresence>
+    </div>
   );
 }
 
