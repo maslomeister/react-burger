@@ -10,8 +10,6 @@ import reducer, {
 } from "./burger-constructor";
 import { v4 as uuidv4 } from "uuid";
 
-import missingIcon from "../../../assets/images/missing-icon.svg";
-
 const uniqueIdFirst = uuidv4();
 const uniqueIdSecond = uuidv4();
 
