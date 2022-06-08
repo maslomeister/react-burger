@@ -21,7 +21,7 @@
   flex-flow: column;
   align-items: center;
   justify-content: center;
-  width: calc(100% - 48px);
+  width: 100%;
   height: auto;
 }
 .item_name {
@@ -49,6 +49,16 @@
 
 .item-add:hover {
   cursor: pointer;
+}
+
+@media screen and (max-width: 767px) {
+  .item {
+    flex: 0 0 36%;
+  }
+
+  .item__image-container {
+    width: calc(100% + 24px);
+  }
 }
 
 @media screen and (min-width: 768px) and (max-width: 1023px) {

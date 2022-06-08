@@ -7,6 +7,12 @@
   height: calc(100% - 40px);
 }
 
+.ingredients__title {
+}
+
+.ingredients__tab__title {
+}
+
 .tabs {
   display: flex;
 }
@@ -20,7 +26,6 @@
 .item-container {
   display: flex;
   flex-flow: row wrap;
-  column-gap: 24px;
   width: 100%;
 }
 
@@ -29,10 +34,24 @@ p {
   white-space: normal;
 }
 
+@media screen and (max-width: 767px) {
+  .item-container {
+    justify-content: space-between;
+  }
+}
+
 @media screen and (max-width: 1023px) {
   .ingredients-container {
     flex: none;
     width: 100%;
+  }
+
+  .ingredients__title {
+    text-align: center;
+  }
+
+  .ingredients__tab__title {
+    margin-left: 24px;
   }
 
   .row {
@@ -46,12 +65,12 @@ p {
 
 @media screen and (min-width: 1024px) {
   .ingredients-container {
-    flex: 0 0 48%;
+    flex: 0 0 46%;
     width: 100%;
   }
 
   .ingredients {
-    width: 492px;
+    width: 440px;
   }
 
   .components {

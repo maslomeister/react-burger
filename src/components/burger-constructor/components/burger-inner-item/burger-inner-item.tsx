@@ -6,6 +6,7 @@ import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { MobileCartItem } from "../mobile-cart-item/mobile-cart-item";
 
 import styles from "../burger-item.module.css";
 
@@ -16,6 +17,7 @@ interface BurgerConstructorItemTypes {
   bottomPadding: boolean;
   moveCard: (dragIndex: number, hoverIndex: number) => void;
   handleClose: () => void;
+  isMobile: boolean;
 }
 
 function BurgerInnerItem({
@@ -25,6 +27,7 @@ function BurgerInnerItem({
   bottomPadding,
   moveCard,
   handleClose,
+  isMobile,
 }: BurgerConstructorItemTypes) {
   const ref = useRef<HTMLDivElement>(null);
   const dropRef = useRef<HTMLDivElement>(null);
@@ -99,9 +102,7 @@ function BurgerInnerItem({
   const opacity = beingDragged ? 0 : 1;
   return (
     <div
-      className={`${styles["ingredient"]} ml-4 mr-4 ${
-        bottomPadding ? "mb-4" : ""
-      }`}
+      className={`${styles["ingredient"]} ${bottomPadding ? "mb-4" : ""}`}
       ref={dropRef}
       style={{ opacity }}
     >
@@ -116,12 +117,20 @@ function BurgerInnerItem({
       )}
 
       <div className={styles["constructor-element-wrapper"]}>
-        <ConstructorElement
-          text={ingredient.name}
-          price={ingredient.price}
-          thumbnail={ingredient.image}
-          handleClose={handleClose}
-        />
+        {isMobile ? (
+          <MobileCartItem
+            name={ingredient.name}
+            image={ingredient.image_mobile}
+            price={ingredient.price}
+          />
+        ) : (
+          <ConstructorElement
+            text={ingredient.name}
+            price={ingredient.price}
+            thumbnail={ingredient.image}
+            handleClose={handleClose}
+          />
+        )}
       </div>
     </div>
   );

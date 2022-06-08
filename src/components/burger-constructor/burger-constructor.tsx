@@ -1,70 +1,58 @@
-import { useState, useCallback, useRef, useMemo, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { useCallback, useRef } from "react";
+import { motion } from "framer-motion";
 import { useDrop } from "react-dnd";
+import { useMediaQuery } from "react-responsive";
 import { v4 as uuidv4 } from "uuid";
 import ReactTooltip from "react-tooltip";
 
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { BurgerBunItemMemoized } from "./components/burger-bun-item/burger-bun-item";
 import { BurgerInnerItemMemoized } from "./components/burger-inner-item/burger-inner-item";
-import { OrderDetails } from "../../components/order-details/order-details";
+import { CloseIconAdaptive } from "../../assets/icons/close-icon";
+
 import { TotalPrice } from "../total-price/total-price";
-import { useAppDispatch, useAppSelector } from "../../services/hooks";
+import { useAppDispatch } from "../../services/hooks";
 import {
   addIngredient,
-  loadDataFromLocalStorage,
   removeIngredient,
   moveIngredient,
   addOrReplaceBun,
   removeBun,
-  resetState,
 } from "../../services/reducers/burger-constructor/burger-constructor";
-import { getOrderNumber } from "../../services/reducers/order-details";
-import { userAuthorized } from "../../utils/utils";
 
 import styles from "./burger-constructor.module.css";
 
-function BurgerConstructor() {
+interface IProps {
+  ingredients: IIngredient[];
+  bun: IIngredient;
+  totalPrice: number;
+  canOrder: boolean;
+  orderNumber: number;
+  status: string;
+  error: string;
+  toggleCheckout: () => void;
+  createOrder: () => void;
+  hideModal: () => void;
+  showModal: boolean;
+}
+
+function BurgerConstructor({
+  ingredients,
+  bun,
+  totalPrice,
+  canOrder,
+  orderNumber,
+  status,
+  error,
+  createOrder,
+  hideModal,
+  toggleCheckout,
+  showModal,
+}: IProps) {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
+  const isMobileOrTablet = useMediaQuery({ query: "(max-width: 1023px)" });
   const dropRef = useRef<HTMLUListElement>(null);
-  const [showModal, setShowModal] = useState(false);
-  const [canOrder, setCanOrder] = useState(false);
-
-  const { user, tokens } = useAppSelector((state) => state.authUser);
-
-  const { ingredients, bun } = useAppSelector(
-    (state) => state.constructorIngredients
-  );
-
-  const { orderNumber, status, error } = useAppSelector(
-    (state) => state.orderDetails
-  );
-
-  const totalPrice = useMemo(() => {
-    return (
-      (bun.price ? bun.price * 2 : 0) +
-      ingredients.reduce((s, v) => s + v.price, 0)
-    );
-  }, [bun.price, ingredients]);
-
-  window.onbeforeunload = () => {
-    if (ingredients || bun) {
-      localStorage.setItem(
-        "constructorIngredients",
-        JSON.stringify({ ingredients, bun })
-      );
-    }
-  };
-
-  useEffect(() => {
-    const locallyStoredState = localStorage.getItem("constructorIngredients");
-    if (locallyStoredState) {
-      dispatch(loadDataFromLocalStorage(JSON.parse(locallyStoredState)));
-    }
-  }, [dispatch]);
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
@@ -92,39 +80,6 @@ function BurgerConstructor() {
     dispatch(removeBun());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (bun.price && ingredients.length > 0) {
-      setCanOrder(true);
-    } else {
-      setCanOrder(false);
-    }
-  }, [bun.price, ingredients.length]);
-
-  const createOrder = () => {
-    if (userAuthorized(user)) {
-      setShowModal(true);
-
-      dispatch(
-        getOrderNumber({
-          ingredients: ingredients,
-          bun: bun,
-          accessToken: tokens.accessToken,
-        })
-      );
-      localStorage.removeItem("constructorIngredients");
-    } else {
-      navigate("/login", {
-        state: { from: "/" },
-        replace: true,
-      });
-    }
-  };
-
-  function hideModal() {
-    setShowModal(false);
-    dispatch(resetState());
-  }
-
   const moveCard = useCallback(
     (dragIndex: number, hoverIndex: number) => {
       dispatch(moveIngredient({ hoverIndex, dragIndex }));
@@ -133,90 +88,89 @@ function BurgerConstructor() {
   );
 
   return (
-    <div className={styles["burger-constructor-container"]}>
-      <AnimatePresence>
-        {showModal && (
-          <OrderDetails
-            onClose={hideModal}
-            orderId={orderNumber}
-            status={status}
-            error={error}
+    <>
+      {isMobileOrTablet && (
+        <div className={styles["mobile-cart__title-container"]}>
+          <h1 className="text text_type_main-large">Заказ</h1>
+          <CloseIconAdaptive
+            width={48}
+            height={48}
+            onClick={toggleCheckout}
+            type="primary"
           />
-        )}
+        </div>
+      )}
+      <div className={styles["burger-constructor-container"]}>
         <motion.div
           key="burger-constructor"
           ref={dropTarget}
-          style={{ border: `2px dashed ${borderColor}`, borderRadius: 30 }}
-          className={`${styles["burger-constructor"]} mb-14 mt-25`}
+          style={{ borderColor: borderColor }}
+          className={styles["burger-constructor"]}
         >
           {ingredients.length !== 0 || bun.price !== 0 ? (
             <>
-              <div className={styles["burger-components"]}>
-                <div className={styles["outer_style"]}>
-                  <BurgerBunItemMemoized
-                    bottomPadding={true}
-                    top={"top"}
-                    ingredient={bun}
-                    handleClose={deleteBun}
-                  />
-                </div>
+              <BurgerBunItemMemoized
+                bottomPadding={true}
+                top={"top"}
+                ingredient={bun}
+                handleClose={deleteBun}
+                isMobile={isMobileOrTablet}
+              />
 
-                <ul className={styles["inner_style"]} ref={dropRef}>
-                  {ingredients.map((ingredient, index) => {
-                    const newItem = {
-                      ...ingredient,
-                      index: index,
-                    };
-                    const lastIndex = index === ingredients!.length - 1;
-                    return (
-                      <li key={newItem.uniqueId}>
-                        <BurgerInnerItemMemoized
-                          bottomPadding={!lastIndex}
-                          key={newItem._id}
-                          index={index}
-                          moveCard={moveCard}
-                          ingredient={newItem}
-                          draggable={true}
-                          handleClose={deleteIngredient(newItem)}
-                        />
-                      </li>
-                    );
-                  })}
-                </ul>
+              <ul className={styles["inner_style"]} ref={dropRef}>
+                {ingredients.map((ingredient, index) => {
+                  const newItem = {
+                    ...ingredient,
+                    index: index,
+                  };
+                  const lastIndex = index === ingredients!.length - 1;
+                  return (
+                    <BurgerInnerItemMemoized
+                      bottomPadding={!lastIndex}
+                      key={newItem.uniqueId}
+                      index={index}
+                      moveCard={moveCard}
+                      ingredient={newItem}
+                      draggable={true}
+                      handleClose={deleteIngredient(newItem)}
+                      isMobile={isMobileOrTablet}
+                    />
+                  );
+                })}
+              </ul>
+              <BurgerBunItemMemoized
+                topPadding={true}
+                top={"bottom"}
+                ingredient={bun}
+                handleClose={deleteBun}
+                isMobile={isMobileOrTablet}
+              />
 
-                <div className={styles["outer_style"]}>
-                  <BurgerBunItemMemoized
-                    topPadding={true}
-                    top={"bottom"}
-                    ingredient={bun}
-                    handleClose={deleteBun}
-                  />
-                </div>
-              </div>
-
-              <div className={`${styles["cart"]} mb-10 mt-10 mr-4`}>
-                <div className="mr-10">
-                  <TotalPrice price={totalPrice} size="medium" />
-                </div>
-                <div
-                  data-tip={
-                    bun.price === 0
-                      ? "Добавьте булку в бургер чтобы сделать заказ"
-                      : ingredients.length === 0
-                      ? "Добавьте начинку в бургер чтобы сделать заказ"
-                      : ""
-                  }
-                >
-                  <Button
-                    type="primary"
-                    size="large"
-                    disabled={!canOrder}
-                    onClick={createOrder}
+              {!isMobileOrTablet && (
+                <div className={styles["cart"]}>
+                  <div className="mr-10">
+                    <TotalPrice price={totalPrice} size="medium" />
+                  </div>
+                  <div
+                    data-tip={
+                      bun.price === 0
+                        ? "Добавьте булку в бургер чтобы сделать заказ"
+                        : ingredients.length === 0
+                        ? "Добавьте начинку в бургер чтобы сделать заказ"
+                        : ""
+                    }
                   >
-                    Оформить заказ
-                  </Button>
+                    <Button
+                      type="primary"
+                      size="large"
+                      disabled={!canOrder}
+                      onClick={createOrder}
+                    >
+                      "Оформить заказ"
+                    </Button>
+                  </div>
                 </div>
-              </div>
+              )}
               {!canOrder && <ReactTooltip place="top" effect="solid" />}
             </>
           ) : (
@@ -229,8 +183,26 @@ function BurgerConstructor() {
             </div>
           )}
         </motion.div>
-      </AnimatePresence>
-    </div>
+      </div>
+      {isMobileOrTablet && (
+        <div className={styles["mobile-cart__order-container"]}>
+          <div className="mr-10">
+            <TotalPrice price={totalPrice} size="medium" />
+          </div>
+          <Button
+            type="primary"
+            size="medium"
+            disabled={!canOrder}
+            onClick={() => {
+              toggleCheckout();
+              createOrder();
+            }}
+          >
+            Заказать
+          </Button>
+        </div>
+      )}
+    </>
   );
 }
 

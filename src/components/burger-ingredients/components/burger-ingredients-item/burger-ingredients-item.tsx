@@ -56,9 +56,7 @@ function BurgerIngredientItem({
 
   return (
     <motion.div
-      className={`${styles["item"]} ml-4 mt-6 ${
-        isMobileOrTablet ? "" : "mb-10"
-      }`}
+      className={`${styles["item"]} ml-4 mr-4 mt-6 mb-10`}
       whileHover="hover"
       variants={textMotion}
       ref={dragRef}
@@ -81,7 +79,7 @@ function BurgerIngredientItem({
       </p>
       {isMobileOrTablet && shouldAddBunText && (
         <p
-          className={`${styles["item-add"]} text text_type_main-small mt-10 mb-10`}
+          className={`${styles["item-add"]} text text_type_main-small mt-10`}
           onClick={addIngredientMobile}
         >
           Добавить

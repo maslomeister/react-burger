@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 
-import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ModalOverlay } from "../../components/modal-overlay/modal-overlay";
+import { CloseIconAdaptive } from "../../assets/icons/close-icon";
 
 import styles from "./modal.module.css";
 
@@ -11,22 +11,16 @@ declare type TIconTypes = "secondary" | "primary" | "error" | "success";
 
 interface ModalProps {
   children: React.ReactNode;
-  title: string;
+  title?: string;
   titleIsNumber?: boolean;
   closeIconType: TIconTypes;
   onClose: () => void;
 }
 
-const defaultProps = {
-  title: "",
-};
-
-Modal.defaultProps = defaultProps;
-
 export function Modal({
   onClose,
   children,
-  title,
+  title = "",
   closeIconType,
   titleIsNumber,
 }: ModalProps) {
@@ -62,26 +56,25 @@ export function Modal({
         }}
       >
         {title ? (
-          <div className={`${styles["modal_title"]} ml-10 mr-10 mt-10`}>
+          <div className={styles["modal-header"]}>
             <p
-              className={
-                titleIsNumber
-                  ? "text text_type_digits-default"
-                  : "text text_type_main-medium"
-              }
+              className={`${styles["modal-title"]}
+                ${
+                  titleIsNumber
+                    ? "text text_type_digits-default"
+                    : "text text_type_main-medium"
+                }
+              `}
             >
               {title}
             </p>
             <div className={styles["close-icon_flex"]} onClick={onClose}>
-              <CloseIcon type={closeIconType} />
+              <CloseIconAdaptive width={48} height={48} type={closeIconType} />
             </div>
           </div>
         ) : (
-          <div
-            className={`${styles["close-icon_absolute"]} mr-10 mt-15`}
-            onClick={onClose}
-          >
-            <CloseIcon type={closeIconType} />
+          <div className={styles["close-icon_absolute"]} onClick={onClose}>
+            <CloseIconAdaptive width={48} height={48} type={closeIconType} />
           </div>
         )}
         {children}

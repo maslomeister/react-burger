@@ -104,7 +104,11 @@ function BurgerIngredients() {
         <div className={styles["components"]} ref={tabsRef}>
           {Tabs.map((tab, index) => (
             <section key={tab._id} className={`${tab._id}`}>
-              <p className="text text_type_main-medium">{tab.name}</p>
+              <p
+                className={`${styles["ingredients__tab__title"]} text text_type_main-medium`}
+              >
+                {tab.name}
+              </p>
               <div className={styles["item-container"]}>
                 {ingredientsCategories[index].map((ingredient) => (
                   <BurgerIngredientItemMemoized

@@ -6,17 +6,15 @@
 .burger-constructor {
   display: flex;
   flex-flow: column;
-  height: calc(100% - 100px);
+  height: calc(100% - 68px);
   justify-content: space-between;
+  border: 2px dashed transparent;
+  border-radius: 30px;
+  margin-top: 60px;
 }
 
 .burger-components {
   height: calc(100% - 200px);
-}
-
-.outer_style {
-  display: flex;
-  flex-flow: column;
 }
 
 .helper {
@@ -37,7 +35,7 @@
   flex-flow: column;
   align-items: flex-end;
   overflow-y: auto;
-  max-height: calc(100% - 140px);
+  max-height: calc(100% - 360px);
 }
 
 .conditional {
@@ -54,9 +52,60 @@
   flex-flow: row;
   align-items: center;
   justify-content: flex-end;
+  margin-top: 40px;
+  margin-right: 24px;
+  margin-top: auto;
+}
+
+.mobile-cart__title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 80px;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.mobile-cart__ingredient-container {
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  height: calc(100% - 160px);
+  overflow-y: auto;
+}
+
+.mobile-cart__order-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 80px;
+  padding-left: 24px;
+  padding-right: 24px;
 }
 
 @media screen and (max-width: 1023px) {
+  .burger-constructor-container {
+    flex: none;
+    height: calc(100% - 160px);
+    overflow-y: auto;
+    background-color: #131316;
+  }
+
+  .burger-constructor {
+    border: none;
+    margin-top: 0;
+    height: 100%;
+    justify-content: flex-start;
+  }
+
+  .inner_style {
+    max-height: none;
+    overflow-y: unset;
+    width: 100%;
+  }
+
   .row {
     width: 100%;
   }
