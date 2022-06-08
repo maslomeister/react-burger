@@ -3,10 +3,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { NavLinkWithIcon } from "../nav-link-with-icon/nav-link-with-icon";
-import {
-  ProfileIcon,
-  ArrowDownIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { DropDownIcon } from "../drop-down-icon/drop-down-icon";
 
 import styles from "./sidebar.module.css";

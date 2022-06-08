@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import {
   BurgerIcon,
@@ -23,11 +23,6 @@ const setActive = ({ isActive }: { isActive: Boolean }) =>
 const buttonType = (link: string, active: string) => {
   if (active === link) return "primary";
   return "secondary";
-};
-
-const routeMatch = (link: string, active: string) => {
-  if (active === link) return styles["menu__item_active"];
-  return styles["menu__item"];
 };
 
 export function NavLinkWithIcon({ url, pathname, text, iconType }: TProps) {

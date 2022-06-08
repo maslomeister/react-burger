@@ -13,7 +13,7 @@ import {
   resetPassword,
 } from "../../../utils/api";
 
-interface SliceState {
+interface ISliceState {
   user: IUserData;
   tokens: ITokenData;
   status: string;
@@ -21,7 +21,7 @@ interface SliceState {
   error: string;
 }
 
-const initialState: SliceState = {
+const initialState: ISliceState = {
   user: {
     name: "",
     email: "",
@@ -192,16 +192,16 @@ export const authUser = createSlice({
   name: "authUser",
   initialState,
   reducers: {
-    setIdle: (state: SliceState) => {
+    setIdle: (state: ISliceState) => {
       state.status = "idle";
     },
-    loadTokens: (state: SliceState, action: PayloadAction<ITokenData>) => {
+    loadTokens: (state: ISliceState, action: PayloadAction<ITokenData>) => {
       state.tokens = {
         accessToken: action.payload.accessToken,
         refreshToken: action.payload.refreshToken,
       };
     },
-    resetState: (state: SliceState) => {
+    resetState: (state: ISliceState) => {
       return (state = initialState);
     },
   },

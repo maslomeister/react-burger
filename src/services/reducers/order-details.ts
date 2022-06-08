@@ -2,14 +2,14 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 
 import { createOrder, getOrder } from "../../utils/api";
 
-interface SliceState {
+interface ISliceState {
   orderNumber: number;
   orderData?: IOrder;
   status: string;
   error: string;
 }
 
-const initialState: SliceState = {
+const initialState: ISliceState = {
   orderNumber: 0,
   status: "",
   error: "",

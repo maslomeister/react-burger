@@ -1,6 +1,5 @@
 import React from "react";
 
-import { DragIcon } from "../../../../assets/icons/drag-icon";
 import { TotalPrice } from "../../../total-price/total-price";
 import styles from "./mobile-cart-item.module.css";
 
