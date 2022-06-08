@@ -2,13 +2,13 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import { getIngredients } from "../../../utils/api";
 
-interface SliceState {
+interface ISliceState {
   ingredients: IIngredient[];
   status: string;
   error: string;
 }
 
-const initialState: SliceState = {
+const initialState: ISliceState = {
   ingredients: [],
   status: "idle",
   error: "",
