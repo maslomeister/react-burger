@@ -37,11 +37,16 @@ li {
   }
 
   ._draggable {
-    width: 48px;
+    height: 100%;
+    width: 80px;
+  }
+
+  ._draggable > svg {
+    margin: auto;
   }
 
   .constructor-element-wrapper {
-    width: calc(100% - 48px);
+    width: calc(100% - 80px);
   }
 }
 

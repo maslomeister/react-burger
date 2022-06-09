@@ -97,7 +97,6 @@
     flex: none;
     height: calc(100% - 160px);
     overflow-y: auto;
-    background-color: #131316;
   }
 
   .burger-constructor {
