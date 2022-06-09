@@ -186,9 +186,7 @@ function BurgerConstructor({
       </div>
       {isMobileOrTablet && (
         <div className={styles["mobile-cart__order-container"]}>
-          <div className="mr-10">
-            <TotalPrice price={totalPrice} size="medium" />
-          </div>
+          <TotalPrice price={totalPrice} size="medium" />
           <Button
             type="primary"
             size="medium"

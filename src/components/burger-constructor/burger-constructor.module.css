@@ -11,6 +11,7 @@
   border: 2px dashed transparent;
   border-radius: 30px;
   margin-top: 60px;
+  width: calc(100% - 4px);
 }
 
 .burger-components {
@@ -38,6 +39,10 @@
   max-height: calc(100% - 360px);
 }
 
+.constructor-element-wrapper {
+  width: 100%;
+}
+
 .conditional {
   overflow: hidden;
 }
@@ -53,7 +58,7 @@
   align-items: center;
   justify-content: flex-end;
   margin-top: 40px;
-  margin-right: 24px;
+  margin-right: 20px;
   margin-top: auto;
 }
 
@@ -97,6 +102,7 @@
     border: none;
     margin-top: 0;
     height: 100%;
+    width: 100%;
     justify-content: flex-start;
   }
 
@@ -112,17 +118,13 @@
 }
 
 @media screen and (min-width: 1024px) {
-  .constructor-element-wrapper div {
-    width: 400px;
+  .burger-constructor-container {
+    flex: 0 0 54%;
   }
 }
 
 @media screen and (min-width: 1280px) {
-  .constructor-element-wrapper div {
-    width: 536px;
-  }
-
-  .burger-constructor {
-    margin-left: 20px;
+  .burger-constructor-container {
+    flex: 0 0 48%;
   }
 }

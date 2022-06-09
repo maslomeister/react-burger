@@ -65,7 +65,7 @@ p {
 
 @media screen and (min-width: 1024px) {
   .ingredients-container {
-    flex: 0 0 46%;
+    flex: 0 0 44%;
     width: 100%;
   }
 

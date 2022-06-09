@@ -2,14 +2,22 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 100%;
+  width: calc(100% - 8px);
+}
+
+.ingredient-outer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: calc(100% - 32px);
+  margin-left: 48px;
 }
 
 ._draggable {
   cursor: move;
   display: flex;
   justify-content: center;
-  width: 48px;
+  width: 24px;
 }
 
 li {
@@ -17,20 +25,41 @@ li {
 }
 
 @media screen and (max-width: 1023px) {
-  .constructor-element-wrapper {
+  .ingredient {
+    justify-content: flex-end;
     width: 100%;
+  }
+
+  .ingredient-outer {
+    width: 100%;
+    margin-left: 0;
+    justify-content: flex-end;
+  }
+
+  ._draggable {
+    width: 48px;
+  }
+
+  .constructor-element-wrapper {
+    width: calc(100% - 48px);
   }
 }
 
 @media screen and (min-width: 1024px) {
+  .ingredient-outer {
+    margin-left: 32px;
+  }
   .constructor-element-wrapper div {
     width: 460px;
   }
 }
 
 @media screen and (min-width: 1280px) {
+  .ingredient-outer {
+    margin-left: 32px;
+  }
   .constructor-element-wrapper div {
-    width: 512px;
-    max-width: 512px;
+    width: 524px;
+    max-width: 524px;
   }
 }
