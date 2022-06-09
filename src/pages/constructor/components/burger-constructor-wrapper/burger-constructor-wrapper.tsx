@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { memo, useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import { useBeforeunload } from "react-beforeunload";
@@ -20,7 +20,7 @@ import { BurgerConstructorModal } from "../burger-constructor-modal/burger-const
 
 import styles from "./burger-constructor-wrapper.module.css";
 
-export function BurgerConstructorWrapper() {
+function BurgerConstructorWrapper() {
   const isMobileOrTablet = useMediaQuery({ query: "(max-width: 1023px)" });
 
   const dispatch = useAppDispatch();
@@ -106,6 +106,26 @@ export function BurgerConstructorWrapper() {
     setShowCheckout(!showCheckout);
   }
 
+  const ingredientsElement: HTMLElement = document.getElementById(
+    "ingredients-container"
+  ) as HTMLElement;
+
+  ////////////////////////////////////////////////////////
+  // Убирает баг с отображением текста страницы ингредиентов
+  // на фоне перетаскиваемого элемента на IOS 15(chrome, safari, yandex)
+
+  const onAnimationFinish = (e: any) => {
+    if (e.y === "0") {
+      ingredientsElement.style.visibility = "hidden";
+    }
+  };
+
+  const onCartClose = () => {
+    ingredientsElement.style.visibility = "visible";
+  };
+
+  ///////////////////////////////////////////////////////
+
   return (
     <>
       {showModal && (
@@ -129,7 +149,7 @@ export function BurgerConstructorWrapper() {
           </Button>
           <AnimatePresence>
             {showCheckout && (
-              <BurgerConstructorModal>
+              <BurgerConstructorModal onAnimationFinish={onAnimationFinish}>
                 <BurgerConstructor
                   ingredients={ingredients}
                   bun={bun}
@@ -138,7 +158,10 @@ export function BurgerConstructorWrapper() {
                   orderNumber={orderNumber}
                   status={status}
                   error={error}
-                  toggleCheckout={toggleCheckout}
+                  toggleCheckout={() => {
+                    onCartClose();
+                    toggleCheckout();
+                  }}
                   createOrder={createOrder}
                   hideModal={hideModal}
                   showModal={showModal}
@@ -165,3 +188,5 @@ export function BurgerConstructorWrapper() {
     </>
   );
 }
+
+export const BurgerConstructorWrapperMemoized = memo(BurgerConstructorWrapper);

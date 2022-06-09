@@ -92,7 +92,7 @@ function BurgerIngredients() {
 
   const ingredientsCategories = [buns, sauces, mains];
   return (
-    <div className={styles["ingredients-container"]}>
+    <div className={styles["ingredients-container"]} id="ingredients-container">
       <div className={styles["ingredients"]}>
         <p
           className={`${styles["ingredients__title"]} text text_type_main-large mb-5 mt-10`}
