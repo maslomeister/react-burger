@@ -6,13 +6,16 @@ import styles from "./burger-constructor-modal.module.css";
 
 type Props = {
   children: any;
+  onAnimationFinish: (e: any) => void;
 };
 
-export function BurgerConstructorModal({ children }: Props) {
+export function BurgerConstructorModal({ children, onAnimationFinish }: Props) {
   const modalRoot: Element = document.getElementById("modal-root") as Element;
+
   return createPortal(
     <motion.div
       key="mobile-cart-popup"
+      onAnimationComplete={onAnimationFinish}
       initial={{ y: "+100%" }}
       animate={{ y: "0", transition: { duration: 0.25 } }}
       exit={{ y: "+100%", transition: { duration: 0.15 } }}

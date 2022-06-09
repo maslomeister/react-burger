@@ -59,7 +59,7 @@ function BurgerIngredientItem({
       className={`${styles["item"]} ml-4 mr-4 mt-6 mb-10`}
       whileHover="hover"
       variants={textMotion}
-      ref={dragRef}
+      ref={isMobileOrTablet ? undefined : dragRef}
     >
       <div className={styles["item__image-container"]}>
         <motion.img
