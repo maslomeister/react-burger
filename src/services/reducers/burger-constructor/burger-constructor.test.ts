@@ -80,70 +80,72 @@ const stateWithIngredients = {
   ingredients: [ingredientFirst, ingredientSecond],
 };
 
-test("Should return the initial state", () => {
-  expect(reducer(undefined, { type: "" })).toEqual(initialState);
-});
-
-test("Should handle addition of ingredient to empty initial state", () => {
-  expect(
-    reducer(
-      initialState,
-      addIngredient({ ingredient: ingredientFirst, uniqueId: uniqueIdFirst })
-    )
-  ).toEqual({
-    ...initialState,
-    ingredients: [ingredientFirst],
+describe("Redux burger-constructor store", () => {
+  test("Should return the initial state", () => {
+    expect(reducer(undefined, { type: "" })).toEqual(initialState);
   });
-});
 
-test("Should load ingredients from local storage", () => {
-  expect(
-    reducer(initialState, loadDataFromLocalStorage(stateWithIngredients))
-  ).toEqual(stateWithIngredients);
-});
-
-test("Should remove ingredient", () => {
-  expect(
-    reducer(stateWithIngredients, removeIngredient(ingredientFirst))
-  ).toEqual({
-    ...stateWithIngredients,
-    ingredients: [ingredientSecond],
+  test("Should handle addition of ingredient to empty initial state", () => {
+    expect(
+      reducer(
+        initialState,
+        addIngredient({ ingredient: ingredientFirst, uniqueId: uniqueIdFirst })
+      )
+    ).toEqual({
+      ...initialState,
+      ingredients: [ingredientFirst],
+    });
   });
-});
 
-test("Should move ingredient from 0 to 1 position", () => {
-  expect(
-    reducer(
-      stateWithIngredients,
-      moveIngredient({ hoverIndex: 0, dragIndex: 1 })
-    )
-  ).toEqual({
-    ...stateWithIngredients,
-    ingredients: [ingredientSecond, ingredientFirst],
+  test("Should load ingredients from local storage", () => {
+    expect(
+      reducer(initialState, loadDataFromLocalStorage(stateWithIngredients))
+    ).toEqual(stateWithIngredients);
   });
-});
 
-test("Should add bun", () => {
-  expect(reducer(initialState, addOrReplaceBun(secondBun))).toEqual({
-    ...initialState,
-    bun: secondBun,
+  test("Should remove ingredient", () => {
+    expect(
+      reducer(stateWithIngredients, removeIngredient(ingredientFirst))
+    ).toEqual({
+      ...stateWithIngredients,
+      ingredients: [ingredientSecond],
+    });
   });
-});
 
-test("Should replace bun", () => {
-  expect(reducer(stateWithIngredients, addOrReplaceBun(secondBun))).toEqual({
-    ...stateWithIngredients,
-    bun: secondBun,
+  test("Should move ingredient from 0 to 1 position", () => {
+    expect(
+      reducer(
+        stateWithIngredients,
+        moveIngredient({ hoverIndex: 0, dragIndex: 1 })
+      )
+    ).toEqual({
+      ...stateWithIngredients,
+      ingredients: [ingredientSecond, ingredientFirst],
+    });
   });
-});
 
-test("Should remove bun", () => {
-  expect(reducer(stateWithIngredients, removeBun())).toEqual({
-    ...stateWithIngredients,
-    bun: initialState.bun,
+  test("Should add bun", () => {
+    expect(reducer(initialState, addOrReplaceBun(secondBun))).toEqual({
+      ...initialState,
+      bun: secondBun,
+    });
   });
-});
 
-test("Should return initial state", () => {
-  expect(reducer(stateWithIngredients, resetState())).toEqual(initialState);
+  test("Should replace bun", () => {
+    expect(reducer(stateWithIngredients, addOrReplaceBun(secondBun))).toEqual({
+      ...stateWithIngredients,
+      bun: secondBun,
+    });
+  });
+
+  test("Should remove bun", () => {
+    expect(reducer(stateWithIngredients, removeBun())).toEqual({
+      ...stateWithIngredients,
+      bun: initialState.bun,
+    });
+  });
+
+  test("Should return initial state", () => {
+    expect(reducer(stateWithIngredients, resetState())).toEqual(initialState);
+  });
 });

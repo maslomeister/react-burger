@@ -14,15 +14,17 @@ const data: ISliceState = {
   modalCarbohydrates: 85,
 };
 
-test("Should add data to modal", () => {
-  expect(reducer(initialState, addDataToModal(data))).toEqual({
-    ...data,
-    showModal: true,
+describe("Redux ingredient info modal store", () => {
+  test("Should add data to modal", () => {
+    expect(reducer(initialState, addDataToModal(data))).toEqual({
+      ...data,
+      showModal: true,
+    });
   });
-});
 
-test("Should reset modal data", () => {
-  expect(reducer({ ...data, showModal: true }, resetModalData())).toEqual(
-    initialState
-  );
+  test("Should reset modal data", () => {
+    expect(reducer({ ...data, showModal: true }, resetModalData())).toEqual(
+      initialState
+    );
+  });
 });
