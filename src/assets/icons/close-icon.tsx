@@ -16,7 +16,7 @@ export function CloseIconAdaptive({
   onClick,
   type,
 }: ISize) {
-  const isMobileOrTablet = useMediaQuery({ query: "(max-width: 1024px)" });
+  const isMobileOrTablet = useMediaQuery({ query: "(max-width: 1023px)" });
   return isMobileOrTablet ? (
     <svg
       width={width}

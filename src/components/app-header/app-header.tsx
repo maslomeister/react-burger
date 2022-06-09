@@ -21,7 +21,7 @@ export function AppHeader({ showSidebar, toggleSidebar }: IAppHeader) {
   const { user } = useAppSelector((state) => state.authUser);
   const authorized = useMemo(() => userAuthorized(user), [user]);
 
-  const isMobileOrTablet = useMediaQuery({ query: "(max-width: 1024px)" });
+  const isMobileOrTablet = useMediaQuery({ query: "(max-width: 1023px)" });
 
   return (
     <>

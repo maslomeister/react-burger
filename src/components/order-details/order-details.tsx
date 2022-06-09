@@ -18,7 +18,7 @@ export function OrderDetails({
   error,
   orderId,
 }: OrderDetailsProps) {
-  const isMobileOrTablet = useMediaQuery({ query: "(max-width: 1024px)" });
+  const isMobileOrTablet = useMediaQuery({ query: "(max-width: 1023px)" });
 
   let content;
   if (status === "getOrderNumber/loading") {

@@ -28,7 +28,7 @@ function BurgerIngredientItem({
 }: BurgerIngredientItemPropTypes) {
   const dispatch = useAppDispatch();
   const { bun } = useAppSelector((state) => state.constructorIngredients);
-  const isMobileOrTablet = useMediaQuery({ query: "(max-width: 1024px)" });
+  const isMobileOrTablet = useMediaQuery({ query: "(max-width: 1023px)" });
 
   const [, dragRef] = useDrag({
     type: "ingredient",
