@@ -23,11 +23,7 @@ function BurgerBunItem({
   isMobile,
 }: BurgerConstructorItemTypes) {
   return (
-    <div
-      className={`${styles["ingredient-outer"]} ${
-        bottomPadding ? "mb-4" : ""
-      } ${topPadding ? "mt-4" : ""}`}
-    >
+    <div className={styles["ingredient-outer"]}>
       <div className={styles["constructor-element-wrapper"]}>
         {isMobile ? (
           <MobileCartItem

@@ -36,7 +36,9 @@
   flex-flow: column;
   align-items: flex-end;
   overflow-y: auto;
-  max-height: calc(100% - 360px);
+  max-height: calc(100% - 370px);
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 
 .constructor-element-wrapper {
@@ -110,6 +112,8 @@
     max-height: none;
     overflow-y: unset;
     width: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
   }
 
   .row {
