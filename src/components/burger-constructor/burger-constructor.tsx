@@ -160,7 +160,9 @@ function BurgerConstructor({
                         ? "Добавьте начинку в бургер чтобы сделать заказ"
                         : ""
                     }
+                    data-testid="place-order"
                   >
+                    {!canOrder && <ReactTooltip place="top" effect="solid" />}
                     <Button
                       type="primary"
                       size="large"
@@ -172,7 +174,6 @@ function BurgerConstructor({
                   </div>
                 </div>
               )}
-              {!canOrder && <ReactTooltip place="top" effect="solid" />}
             </>
           ) : (
             <div className={styles["helper"]}>
@@ -196,6 +197,7 @@ function BurgerConstructor({
               toggleCheckout();
               createOrder();
             }}
+            data-testid="make-order"
           >
             Заказать
           </Button>

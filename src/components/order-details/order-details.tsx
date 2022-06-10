@@ -52,6 +52,7 @@ export function OrderDetails({
           } text text_type_digits-large ${
             isMobileOrTablet ? "mt-15" : "mt-30"
           }`}
+          data-testid="placed-order-number"
         >
           {orderId}
         </div>
