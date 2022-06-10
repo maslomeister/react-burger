@@ -78,8 +78,6 @@ function App() {
     navigate(-1);
   }
 
-  console.log(background);
-
   if (status === "loading" || status === "idle") {
     content = <LoadingScreen text="Данные загружаются" size="medium" />;
   }

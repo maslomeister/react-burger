@@ -1,4 +1,2 @@
-test("Should return all components", () => {
-  expect(console.log("true")).toEqual(console.log("true"));
-});
+test("Should return all components", () => {});
 export {};
