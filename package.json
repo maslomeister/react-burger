@@ -33,12 +33,13 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "set \"GENERATE_SOURCEMAP=false\" && react-scripts --optimize_for_size --max_old_space_size=460 --gc_interval=100 start /react-burger",
+    "start": "react-scripts --optimize_for_size --max_old_space_size=460 --gc_interval=100 start /react-burger",
     "build": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "test": "react-scripts test",
+    "test": "react-scripts test a",
     "test:cypress": "cypress run",
+    "cy:open": "cypress open",
     "eject": "react-scripts eject",
     "eslint": "eslint ./src",
     "eslint:fix": "eslint ./src --fix"
@@ -75,7 +76,6 @@
     "gh-pages": "^4.0.0",
     "jest": "^28.1.0",
     "react-test-renderer": "^18.1.0",
-    "redux-mock-store": "^1.5.4",
-    "start-server-and-test": "^1.14.0"
+    "redux-mock-store": "^1.5.4"
   }
 }
