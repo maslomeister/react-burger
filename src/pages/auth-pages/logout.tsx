@@ -6,7 +6,6 @@ import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { LoadingScreen } from "../../components/loading-screen/loading-screen";
 import { logoutUserProfile } from "../../services/reducers/auth/auth";
 import { userAuthorized } from "../../utils/utils";
-import { urls } from "../../utils/urls";
 
 import styles from "./auth-pages.module.css";
 
@@ -18,7 +17,7 @@ export function Logout() {
 
   useEffect(() => {
     if (!userAuthorized(user)) {
-      navigate(urls.login, { replace: true });
+      navigate("/login", { replace: true });
     } else {
       dispatch(logoutUserProfile());
     }
@@ -26,7 +25,7 @@ export function Logout() {
 
   useEffect(() => {
     if (status === "logout/success") {
-      navigate(urls.login, { state: { from: "/profile" }, replace: true });
+      navigate("/login", { state: { from: "/profile" }, replace: true });
     }
   }, [navigate, status]);
 

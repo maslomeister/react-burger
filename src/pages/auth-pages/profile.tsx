@@ -89,7 +89,7 @@ export function Profile() {
     e.preventDefault();
     if (!tokenExists(tokens.refreshToken)) {
       dispatch(resetState());
-      navigate(urls.login, { replace: true });
+      navigate("/login", { replace: true });
     } else {
       if (inputFieldsChanged) {
         if (isValidCheck()) changeUserData();
