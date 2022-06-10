@@ -38,6 +38,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "test": "react-scripts test",
+    "test:cypress": "cypress run",
     "eject": "react-scripts eject",
     "eslint": "eslint ./src",
     "eslint:fix": "eslint ./src --fix"
@@ -61,6 +62,7 @@
     ]
   },
   "devDependencies": {
+    "@4tw/cypress-drag-drop": "^2.1.0",
     "@cypress/react": "^5.12.5",
     "@cypress/webpack-dev-server": "^1.8.4",
     "@testing-library/react": "^13.3.0",
@@ -73,6 +75,7 @@
     "gh-pages": "^4.0.0",
     "jest": "^28.1.0",
     "react-test-renderer": "^18.1.0",
-    "redux-mock-store": "^1.5.4"
+    "redux-mock-store": "^1.5.4",
+    "start-server-and-test": "^1.14.0"
   }
 }
