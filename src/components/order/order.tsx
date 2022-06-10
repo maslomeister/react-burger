@@ -5,7 +5,7 @@ import { IngredientsPreview } from "./components/ingredients-preview";
 import { TotalPrice } from "../total-price/total-price";
 import { formatDisplayDate } from "../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
-import { addDataToModal } from "../../services/reducers/order-details";
+import { addDataToModal } from "../../services/reducers/order-details/order-details";
 import {
   generateIngredientsFromIds,
   getTotalPriceOfIngredients,

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { OrderInfo } from "../../components/order-info/order-info";
-import { getOrderByNumber } from "../../services/reducers/order-details";
+import { getOrderByNumber } from "../../services/reducers/order-details/order-details";
 import { LoadingScreen } from "../../components/loading-screen/loading-screen";
 
 import styles from "./order-info-page.module.css";

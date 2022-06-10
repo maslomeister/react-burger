@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { createOrder, getOrder } from "../../utils/api";
+import { createOrder, getOrder } from "../../../utils/api";
 
 interface ISliceState {
   orderNumber: number;
@@ -9,7 +9,7 @@ interface ISliceState {
   error: string;
 }
 
-const initialState: ISliceState = {
+export const initialState: ISliceState = {
   orderNumber: 0,
   status: "",
   error: "",

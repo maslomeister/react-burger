@@ -14,7 +14,7 @@ import {
   loadDataFromLocalStorage,
   resetState,
 } from "../../../../services/reducers/burger-constructor/burger-constructor";
-import { getOrderNumber } from "../../../../services/reducers/order-details";
+import { getOrderNumber } from "../../../../services/reducers/order-details/order-details";
 import { userAuthorized } from "../../../../utils/utils";
 import { BurgerConstructorModal } from "../burger-constructor-modal/burger-constructor-modal";
 
