@@ -68,12 +68,20 @@ export function Modal({
             >
               {title}
             </p>
-            <div className={styles["close-icon_flex"]} onClick={onClose}>
+            <div
+              className={styles["close-icon_flex"]}
+              onClick={onClose}
+              data-testid="modal-close-icon"
+            >
               <CloseIconAdaptive width={48} height={48} type={closeIconType} />
             </div>
           </div>
         ) : (
-          <div className={styles["close-icon_absolute"]} onClick={onClose}>
+          <div
+            className={styles["close-icon_absolute"]}
+            onClick={onClose}
+            data-testid="modal-close-icon"
+          >
             <CloseIconAdaptive width={48} height={48} type={closeIconType} />
           </div>
         )}

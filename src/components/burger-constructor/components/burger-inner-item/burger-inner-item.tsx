@@ -105,6 +105,7 @@ function BurgerInnerItem({
       className={`${styles["ingredient"]} ${bottomPadding ? "mb-4" : ""}`}
       ref={dropRef}
       style={{ opacity }}
+      data-testid={"inner" + ingredient._id}
     >
       {draggable && (
         <div

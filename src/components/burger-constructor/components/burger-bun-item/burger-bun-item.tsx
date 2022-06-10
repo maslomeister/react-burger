@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import { MobileCartItem } from "../mobile-cart-item/mobile-cart-item";
@@ -22,25 +22,42 @@ function BurgerBunItem({
   handleClose,
   isMobile,
 }: BurgerConstructorItemTypes) {
+  const bunName = useMemo(() => {
+    switch (top) {
+      case "top":
+        return " (верх)";
+      case "bottom":
+        return " (низ)";
+    }
+  }, [top]);
+
+  const bunType = useMemo(() => {
+    switch (top) {
+      case "top":
+        return "top";
+      case "bottom":
+        return "bottom";
+      default:
+        return undefined;
+    }
+  }, [top]);
+
   return (
     <div className={styles["ingredient-outer"]}>
-      <div className={styles["constructor-element-wrapper"]}>
+      <div
+        className={styles["constructor-element-wrapper"]}
+        data-testid={bunType + ingredient._id}
+      >
         {isMobile ? (
           <MobileCartItem
-            name={`${ingredient.name} ${
-              top === "top" ? "(верх)" : top === "bottom" ? "(низ)" : ""
-            }`}
+            name={ingredient.name + bunName}
             price={ingredient.price}
             image={ingredient.image_mobile}
           />
         ) : (
           <ConstructorElement
-            type={
-              top === "top" ? "top" : top === "bottom" ? "bottom" : undefined
-            }
-            text={`${ingredient.name} ${
-              top === "top" ? "(верх)" : top === "bottom" ? "(низ)" : ""
-            }`}
+            type={bunType}
+            text={ingredient.name + bunName}
             price={ingredient.price}
             thumbnail={ingredient.image}
             handleClose={handleClose}

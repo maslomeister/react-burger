@@ -104,6 +104,7 @@ function BurgerConstructor({
         <motion.div
           key="burger-constructor"
           ref={dropTarget}
+          data-testid="constructor-drop-target"
           style={{ borderColor: borderColor }}
           className={styles["burger-constructor"]}
         >
