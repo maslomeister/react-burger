@@ -1,7 +1,6 @@
 import React, { memo, useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
-import { useBeforeunload } from "react-beforeunload";
 import { AnimatePresence } from "framer-motion";
 
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -45,19 +44,6 @@ function BurgerConstructorWrapper() {
     );
   }, [bun.price, ingredients]);
 
-  useBeforeunload(() => {
-    const emptyStore =
-      ingredients === initialState.ingredients && bun === initialState.bun
-        ? true
-        : false;
-    if (!emptyStore) {
-      localStorage.setItem(
-        "constructorIngredients",
-        JSON.stringify({ ingredients, bun })
-      );
-    }
-  });
-
   useEffect(() => {
     const locallyStoredState = localStorage.getItem("constructorIngredients");
     const emptyStore =
@@ -68,6 +54,20 @@ function BurgerConstructorWrapper() {
       dispatch(loadDataFromLocalStorage(JSON.parse(locallyStoredState)));
     }
   }, [bun, dispatch, ingredients]);
+
+  useEffect(() => {
+    const emptyStore =
+      ingredients === initialState.ingredients && bun === initialState.bun
+        ? true
+        : false;
+
+    if (emptyStore) return;
+
+    localStorage.setItem(
+      "constructorIngredients",
+      JSON.stringify({ ingredients, bun })
+    );
+  }, [bun, ingredients]);
 
   useEffect(() => {
     if (bun.price && ingredients.length > 0) {
