@@ -7,4 +7,6 @@
   padding-left: 24px;
   padding-right: 24px;
   background-color: #1c1c21;
+  /* fixes weird bug on ios/safari  */
+  -webkit-transform: translateX(0) translateZ(0);
 }
