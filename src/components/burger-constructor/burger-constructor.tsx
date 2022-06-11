@@ -160,7 +160,6 @@ function BurgerConstructor({
                         ? "Добавьте начинку в бургер чтобы сделать заказ"
                         : ""
                     }
-                    data-test-id="place-order"
                   >
                     {!canOrder && <ReactTooltip place="top" effect="solid" />}
                     <Button
@@ -169,7 +168,7 @@ function BurgerConstructor({
                       disabled={!canOrder}
                       onClick={createOrder}
                     >
-                      "Оформить заказ"
+                      Оформить заказ
                     </Button>
                   </div>
                 </div>
