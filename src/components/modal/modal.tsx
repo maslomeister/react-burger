@@ -71,7 +71,7 @@ export function Modal({
             <div
               className={styles["close-icon_flex"]}
               onClick={onClose}
-              data-testid="modal-close-icon"
+              data-test-id="modal-close-icon"
             >
               <CloseIconAdaptive width={48} height={48} type={closeIconType} />
             </div>
@@ -80,7 +80,7 @@ export function Modal({
           <div
             className={styles["close-icon_absolute"]}
             onClick={onClose}
-            data-testid="modal-close-icon"
+            data-test-id="modal-close-icon"
           >
             <CloseIconAdaptive width={48} height={48} type={closeIconType} />
           </div>

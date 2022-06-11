@@ -104,7 +104,7 @@ function BurgerConstructor({
         <motion.div
           key="burger-constructor"
           ref={dropTarget}
-          data-testid="constructor-drop-target"
+          data-test-id="constructor-drop-target"
           style={{ borderColor: borderColor }}
           className={styles["burger-constructor"]}
         >
@@ -160,7 +160,7 @@ function BurgerConstructor({
                         ? "Добавьте начинку в бургер чтобы сделать заказ"
                         : ""
                     }
-                    data-testid="place-order"
+                    data-test-id="place-order"
                   >
                     {!canOrder && <ReactTooltip place="top" effect="solid" />}
                     <Button
@@ -197,7 +197,7 @@ function BurgerConstructor({
               toggleCheckout();
               createOrder();
             }}
-            data-testid="make-order"
+            data-test-id="make-order"
           >
             Заказать
           </Button>

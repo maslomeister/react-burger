@@ -68,7 +68,7 @@ function BurgerIngredientItem({
           alt="previewImage"
           src={ingredient.image_large}
           variants={imageMotion}
-          data-testid={ingredient._id}
+          data-test-id={ingredient._id}
         />
       </div>
       <div className={`${styles["item_price"]} mb-1 mt-1`}>

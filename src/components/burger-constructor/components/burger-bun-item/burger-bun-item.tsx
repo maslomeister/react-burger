@@ -46,7 +46,7 @@ function BurgerBunItem({
     <div className={styles["ingredient-outer"]}>
       <div
         className={styles["constructor-element-wrapper"]}
-        data-testid={bunType + ingredient._id}
+        data-test-id={bunType + ingredient._id}
       >
         {isMobile ? (
           <MobileCartItem
