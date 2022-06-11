@@ -35,7 +35,7 @@ describe("Desktop constructor E2E authorized tests", () => {
       '[data-test-id="constructor-drop-target"]'
     );
 
-    cy.get('[data-test-id="place-order"]').click();
+    cy.get("button").contains("Оформить заказ").click();
 
     cy.get('[data-test-id="placed-order-number"]', { timeout: 30000 }).should(
       "be.visible"

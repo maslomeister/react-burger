@@ -1,12 +1,13 @@
+import configureMockStore from "redux-mock-store";
+
 import reducer, {
   initialState,
   getOrderNumber,
   getOrderByNumber,
 } from "./order-details";
 
-jest.mock("../../../utils/api");
-
 describe("Redux order details store", () => {
+  // const mockStore = configureMockStore(initialState)
   it("Should set status to 'getOrderNumber/loading when pending'", () => {
     const action = { type: getOrderNumber.pending.type };
     const state = reducer(initialState, action);

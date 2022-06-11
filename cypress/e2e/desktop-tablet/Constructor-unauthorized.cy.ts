@@ -53,26 +53,22 @@ describe("Desktop constructor E2E unauthorized tests", () => {
       '[data-test-id="constructor-drop-target"]'
     );
 
-    cy.get('[data-test-id="top60d3b41abdacab0026a733c6"]').should("be.visible");
-
     cy.get('[data-test-id="60d3b41abdacab0026a733cd"]').drag(
       '[data-test-id="constructor-drop-target"]'
     );
 
-    cy.get('[data-test-id="inner60d3b41abdacab0026a733cd"]').should(
-      "be.visible"
-    );
-
     cy.log(Cypress.env("username"));
 
-    cy.get('[data-test-id="place-order"]').click();
+    cy.get("button").contains("Оформить заказ").click();
 
     cy.get('input[name="email"]').type(Cypress.env("email"));
     cy.get('input[name="password"]').type(Cypress.env("password"));
 
-    cy.get('button[type="submit').click();
+    cy.get('button[type="submit"]').click();
 
-    cy.get('[data-test-id="place-order"]').click();
+    cy.wait(1000);
+
+    cy.get("button").contains("Оформить заказ").click();
 
     cy.get('[data-test-id="placed-order-number"]', { timeout: 30000 }).should(
       "be.visible"
