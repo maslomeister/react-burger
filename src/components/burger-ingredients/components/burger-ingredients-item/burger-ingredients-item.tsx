@@ -80,7 +80,7 @@ function BurgerIngredientItem({
       </p>
       {isMobileOrTablet && shouldAddBunText && (
         <p
-          className={`${styles["item-add"]} text text_type_main-small mt-10`}
+          className={`${styles["item-add"]} text text_type_main-small mt-10 noselect`}
           onClick={addIngredientMobile}
         >
           Добавить
