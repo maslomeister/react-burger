@@ -2,14 +2,24 @@
   font-family: "JetBrainsMono-Regular";
   font-style: normal;
   font-weight: 400;
-  src: url("./assets/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  src: local(""),
+    url("./assets/fonts/jetbrainsmono-regular/jetbrains-mono-v12-latin-ext_latin_cyrillic-ext_cyrillic-regular.woff2")
+      format("woff2"),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+      url("./assets/fonts/jetbrainsmono-regular/jetbrains-mono-v12-latin-ext_latin_cyrillic-ext_cyrillic-regular.woff")
+      format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
 @font-face {
   font-family: "Iceland";
   font-style: normal;
   font-weight: 400;
-  src: url("./assets/fonts/Iceland-Regular.ttf") format("ttf");
+  src: local(""),
+    url("./assets/fonts/iceland/iceland-v16-latin-regular.woff2")
+      format("woff2"),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+      url("./assets/fonts/iceland/iceland-v16-latin-regular.woff")
+      format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
 body {
@@ -96,6 +106,12 @@ code {
   background-color: #8585ad;
   border-radius: 0px;
   border: 0px none #ffffff;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 @media screen and (max-width: 1023px) {
