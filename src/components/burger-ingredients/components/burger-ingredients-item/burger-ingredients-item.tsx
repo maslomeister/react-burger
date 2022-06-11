@@ -56,7 +56,7 @@ function BurgerIngredientItem({
 
   return (
     <motion.div
-      className={`${styles["item"]} ml-4 mr-4 mt-6 mb-10`}
+      className={`${styles["item"]} mt-6 mb-10`}
       whileHover="hover"
       variants={textMotion}
       ref={isMobileOrTablet ? undefined : dragRef}
