@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import Hamburger from "hamburger-react";
@@ -12,16 +12,19 @@ import { userAuthorized } from "../../utils/utils";
 
 import styles from "./app-header.module.css";
 
-interface IAppHeader {
-  showSidebar: boolean;
-  toggleSidebar: () => void;
-}
-export function AppHeader({ showSidebar, toggleSidebar }: IAppHeader) {
+interface IAppHeader {}
+export function AppHeader({}: IAppHeader) {
   const location = useLocation();
   const { user } = useAppSelector((state) => state.authUser);
   const authorized = useMemo(() => userAuthorized(user), [user]);
 
   const isMobileOrTablet = useMediaQuery({ query: "(max-width: 1023px)" });
+
+  const [showSidebar, setShowSidebar] = useState(false);
+
+  const toggleSidebar = () => {
+    setShowSidebar(!showSidebar);
+  };
 
   return (
     <>

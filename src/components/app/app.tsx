@@ -44,12 +44,6 @@ function App() {
   const accessToken = tokens.accessToken;
   const refreshToken = tokens.refreshToken;
 
-  const [showSidebar, setShowSidebar] = useState(false);
-
-  const toggleSidebar = () => {
-    setShowSidebar(!showSidebar);
-  };
-
   useEffect(() => {
     if (tokenExists(accessToken)) {
       if (!isTokenExpired(accessToken)) {
@@ -87,7 +81,7 @@ function App() {
     content = (
       <>
         {/*TODO загрузка истории замедляет сайдбар  */}
-        <AppHeader showSidebar={showSidebar} toggleSidebar={toggleSidebar} />
+        <AppHeader />
         <Routes location={background || location}>
           <Route path="/" element={<Constructor />} key={location.pathname} />
           <Route
