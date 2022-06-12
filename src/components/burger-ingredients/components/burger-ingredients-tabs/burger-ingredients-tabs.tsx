@@ -61,7 +61,7 @@ function BurgerIngredientsTabs({ tabsRef }: TabsTypes) {
   const catchScroll = useCallback(() => {
     const { current } = _tabsRef;
 
-    if (current) {
+    if (current && !isScrollingRef.current) {
       const firstTabTop = current.children[0].getBoundingClientRect().top;
 
       if (firstTabTop > 30 && firstTabTop <= 300) {
