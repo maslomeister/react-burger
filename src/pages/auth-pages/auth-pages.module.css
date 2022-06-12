@@ -1,9 +1,11 @@
 .container {
-  height: calc(100vh - 100px);
+  height: calc(100% - 100px);
+  width: 100%;
   display: flex;
   flex-flow: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  margin-top: 180px;
 }
 
 .inner-container {
@@ -14,10 +16,11 @@
 }
 
 .profile-container {
-  width: 1240px;
+  width: 100%;
   margin: auto;
   display: flex;
   flex-flow: row;
+  justify-content: center;
 }
 
 .profile-items-container {
@@ -30,7 +33,7 @@
 
 .form-container {
   display: flex;
-  width: 480px;
+  width: 100%;
   flex-flow: column;
   align-items: center;
   justify-content: center;
