@@ -86,6 +86,7 @@ function App() {
   } else if (status === "succeeded") {
     content = (
       <>
+        {/*TODO загрузка истории замедляет сайдбар  */}
         <AppHeader showSidebar={showSidebar} toggleSidebar={toggleSidebar} />
         <Routes location={background || location}>
           <Route path="/" element={<Constructor />} key={location.pathname} />
