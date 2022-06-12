@@ -107,7 +107,7 @@ function BurgerConstructorWrapper() {
   }
 
   const ingredientsElement: HTMLElement = document.getElementById(
-    "ingredients-container"
+    "ingredients-row"
   ) as HTMLElement;
 
   ////////////////////////////////////////////////////////
@@ -116,12 +116,12 @@ function BurgerConstructorWrapper() {
 
   const onAnimationFinish = (e: any) => {
     if (e.y === "0") {
-      ingredientsElement.style.visibility = "hidden";
+      ingredientsElement.style.display = "none";
     }
   };
 
   const onCartClose = () => {
-    ingredientsElement.style.visibility = "visible";
+    ingredientsElement.style.display = "flex";
   };
 
   ///////////////////////////////////////////////////////

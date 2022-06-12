@@ -16,6 +16,7 @@ export function Constructor() {
         type: "ease-in-out",
       }}
       className="row"
+      id="ingredients-row"
     >
       <DndProvider backend={HTML5Backend}>
         <BurgerIngredientsMemoized />
