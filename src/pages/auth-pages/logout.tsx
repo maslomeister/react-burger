@@ -31,7 +31,9 @@ export function Logout() {
 
   if (status === "logout/loading") {
     content = (
-      <LoadingScreen text={"Выполняется выход из профиля"} size={"medium"} />
+      <div className={styles["container"]}>
+        <LoadingScreen text={"Выполняется выход из профиля"} size={"medium"} />
+      </div>
     );
   } else if (status === "logout/failed") {
     content = (
