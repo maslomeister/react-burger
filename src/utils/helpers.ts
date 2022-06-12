@@ -64,3 +64,36 @@ export function getTotalPriceOfIngredientsWithAmount(
     return acc + obj.price * obj.amount;
   }, 0);
 }
+
+export const setActiveHelper = (
+  isActive: boolean,
+  activeStyle: string,
+  inActiveStyle: string
+) => (isActive ? activeStyle : inActiveStyle);
+
+export const iconTypeHelper = (
+  link: string,
+  active: string,
+  activeStyle: "secondary" | "primary" | "error" | "success",
+  inActiveStyle: "secondary" | "primary" | "error" | "success",
+  end?: boolean
+) => {
+  if (active === link || (!end && active.includes(link))) return activeStyle;
+  return inActiveStyle;
+};
+
+export const routeMatchHelper = (
+  link: string,
+  active: string,
+  activeStyle: string,
+  inActiveStyles: string,
+  end?: boolean
+) => {
+  if (active === link || (!end && active.includes(link))) return activeStyle;
+  return inActiveStyles;
+};
+
+export const buttonType = (link: string, active: string, end?: boolean) => {
+  if (active === link) return "primary";
+  return "secondary";
+};

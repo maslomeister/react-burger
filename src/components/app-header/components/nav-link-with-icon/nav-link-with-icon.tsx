@@ -6,6 +6,7 @@ import {
   ListIcon,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { setActiveHelper, iconTypeHelper } from "../../../../utils/helpers";
 
 import styles from "./nav-link-with-icon.module.css";
 
@@ -14,36 +15,58 @@ type TProps = {
   pathname: string;
   text: string;
   iconType: "home" | "feed" | "profile";
+  end?: boolean;
 };
 
-const setActive = ({ isActive }: { isActive: Boolean }) =>
-  "text text_type_main-default ml-2 " +
-  (isActive ? styles["menu__item_active"] : styles["menu__item"]);
-
-const buttonType = (link: string, active: string) => {
-  if (active === link) return "primary";
-  return "secondary";
-};
-
-export function NavLinkWithIcon({ url, pathname, text, iconType }: TProps) {
+export function NavLinkWithIcon({
+  url,
+  pathname,
+  text,
+  iconType,
+  end,
+}: TProps) {
   let Icon = <></>;
 
   switch (iconType) {
     case "home":
-      Icon = <BurgerIcon type={buttonType(url, pathname)} />;
+      Icon = (
+        <BurgerIcon
+          type={iconTypeHelper(url, pathname, "primary", "secondary", end)}
+        />
+      );
       break;
     case "feed":
-      Icon = <ListIcon type={buttonType(url, pathname)} />;
+      Icon = (
+        <ListIcon
+          type={iconTypeHelper(url, pathname, "primary", "secondary", end)}
+        />
+      );
       break;
     case "profile":
-      Icon = <ProfileIcon type={buttonType(url, pathname)} />;
+      Icon = (
+        <ProfileIcon
+          type={iconTypeHelper(url, pathname, "primary", "secondary", end)}
+        />
+      );
       break;
   }
 
   return (
     <>
       {Icon}
-      <NavLink className={setActive} to={url} state={{ from: pathname }} end>
+
+      <NavLink
+        className={({ isActive }) =>
+          `text text_type_main-default ml-2 ${setActiveHelper(
+            isActive,
+            styles["menu__item_active"],
+            styles["menu__item"]
+          )}`
+        }
+        to={url}
+        state={{ from: pathname }}
+        end
+      >
         {text}
       </NavLink>
     </>

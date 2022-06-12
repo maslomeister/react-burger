@@ -5,6 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { NavLinkWithIcon } from "../nav-link-with-icon/nav-link-with-icon";
 import { ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { DropDownIcon } from "../drop-down-icon/drop-down-icon";
+import {
+  setActiveHelper,
+  iconTypeHelper,
+  routeMatchHelper,
+} from "../../../../utils/helpers";
 
 import styles from "./sidebar.module.css";
 
@@ -25,20 +30,6 @@ interface ISidebar {
   toggleSidebar: () => void;
   authorized: boolean;
 }
-
-const setActive = ({ isActive }: { isActive: Boolean }) =>
-  "text text_type_main-default ml-2 " +
-  (isActive ? styles["menu__item_active"] : styles["menu__item"]);
-
-const buttonType = (link: string, active: string) => {
-  if (active === link) return "primary";
-  return "secondary";
-};
-
-const routeMatch = (link: string, active: string) => {
-  if (active === link) return styles["menu__item_active"];
-  return styles["menu__item"];
-};
 
 export function Sidebar({ showSidebar, toggleSidebar, authorized }: ISidebar) {
   const location = useLocation();
@@ -82,13 +73,20 @@ export function Sidebar({ showSidebar, toggleSidebar, authorized }: ISidebar) {
                   onClick={profileSubMenuToggle}
                 >
                   <ProfileIcon
-                    type={buttonType("/profile", location.pathname)}
+                    type={iconTypeHelper(
+                      "/profile",
+                      location.pathname,
+                      "primary",
+                      "secondary"
+                    )}
                   />
                   <p
-                    className={`${routeMatch(
+                    className={`text text_type_main-default ml-2 ${routeMatchHelper(
                       "/profile",
-                      location.pathname
-                    )} ml-2`}
+                      location.pathname,
+                      styles["menu__item_active"],
+                      styles["menu__item"]
+                    )}`}
                   >
                     Личный кабинет
                   </p>
@@ -102,6 +100,7 @@ export function Sidebar({ showSidebar, toggleSidebar, authorized }: ISidebar) {
                   pathname={location.pathname}
                   text="Войти"
                   iconType="profile"
+                  end
                 />
               </div>
             )}
@@ -117,7 +116,13 @@ export function Sidebar({ showSidebar, toggleSidebar, authorized }: ISidebar) {
                     className={styles["sidebar-submenu__item"]}
                   >
                     <NavLink
-                      className={setActive}
+                      className={({ isActive }) =>
+                        `text text_type_main-default ml-2 ${setActiveHelper(
+                          isActive,
+                          styles["menu__item_active"],
+                          styles["menu__item"]
+                        )}`
+                      }
                       to="/profile"
                       state={{ from: location.pathname }}
                       end
@@ -134,7 +139,13 @@ export function Sidebar({ showSidebar, toggleSidebar, authorized }: ISidebar) {
                     className={styles["sidebar-submenu__item"]}
                   >
                     <NavLink
-                      className={setActive}
+                      className={({ isActive }) =>
+                        `text text_type_main-default ml-2 ${setActiveHelper(
+                          isActive,
+                          styles["menu__item_active"],
+                          styles["menu__item"]
+                        )}`
+                      }
                       to="/profile/orders"
                       state={{ from: location.pathname }}
                       end
@@ -152,7 +163,13 @@ export function Sidebar({ showSidebar, toggleSidebar, authorized }: ISidebar) {
                     className={styles["sidebar-submenu__item"]}
                   >
                     <NavLink
-                      className={setActive}
+                      className={({ isActive }) =>
+                        `text text_type_main-default ml-2 ${setActiveHelper(
+                          isActive,
+                          styles["menu__item_active"],
+                          styles["menu__item"]
+                        )}`
+                      }
                       to="/logout"
                       state={{ from: location.pathname }}
                       end
@@ -175,6 +192,7 @@ export function Sidebar({ showSidebar, toggleSidebar, authorized }: ISidebar) {
                   pathname={location.pathname}
                   text="Конструктор бургеров"
                   iconType="home"
+                  end
                 />
               </motion.div>
 
@@ -189,6 +207,7 @@ export function Sidebar({ showSidebar, toggleSidebar, authorized }: ISidebar) {
                   pathname={location.pathname}
                   text="Лента заказов"
                   iconType="feed"
+                  end
                 />
               </motion.div>
             </AnimatePresence>
