@@ -20,7 +20,7 @@ import { BurgerConstructorModal } from "../burger-constructor-modal/burger-const
 import styles from "./burger-constructor-wrapper.module.css";
 
 function BurgerConstructorWrapper() {
-  const isMobileOrTablet = useMediaQuery({ query: "(max-width: 1023px)" });
+  const isMobile = useMediaQuery({ query: "(max-width: 1023px)" });
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -136,7 +136,7 @@ function BurgerConstructorWrapper() {
           error={error}
         />
       )}
-      {isMobileOrTablet ? (
+      {isMobile ? (
         <div className={styles["mobile-checkout"]}>
           <TotalPrice price={totalPrice} size="medium" />
           <Button

@@ -1,12 +1,14 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useMediaQuery } from "react-responsive";
 
 import { Order } from "../../components/order/order";
 import { LoadingScreen } from "../../components/loading-screen/loading-screen";
 import { ErrorScreen } from "../../components/error-screen/error-screen";
 import { useGetOrdersQuery } from "../../services/rtk/web-socket";
 import { returnOrdersWithStatus } from "../../utils/utils";
+import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from "./orders.module.css";
 
@@ -16,11 +18,18 @@ interface IOrdersFeed {
 
 function OrdersFeed({ orders }: IOrdersFeed) {
   return (
-    <div className={styles["orders_feed"]}>
+    <motion.div
+      key="mobile-stats"
+      initial={{ x: "-100%" }}
+      animate={{ x: "0", transition: { duration: 0.25 } }}
+      exit={{ x: "-100%", transition: { duration: 0.15 } }}
+      transition={{ type: "ease-in-out" }}
+      className={styles["orders_feed"]}
+    >
       {orders.map((order) => (
         <Order order={order} key={order._id} />
       ))}
-    </div>
+    </motion.div>
   );
 }
 
@@ -41,7 +50,14 @@ function Stats({ orders, ordersAll, ordersToday }: IStats) {
   );
 
   return (
-    <div className={`${styles["stats"]} pl-15`}>
+    <motion.div
+      key="mobile-stats"
+      initial={{ x: "+100%" }}
+      animate={{ x: "0", transition: { duration: 0.25 } }}
+      exit={{ x: "+100%", transition: { duration: 0.15 } }}
+      transition={{ type: "ease-in-out" }}
+      className={styles["stats"]}
+    >
       <div className={`${styles["stats_orders_container"]} mb-15`}>
         <div className={styles["stats_orders_container_child"]}>
           <p className="text text_type_main-medium mb-6">Готовы:</p>
@@ -76,11 +92,15 @@ function Stats({ orders, ordersAll, ordersToday }: IStats) {
       <h1 className={`${styles["text_shadow"]} text text_type_digits-large`}>
         {ordersToday}
       </h1>
-    </div>
+    </motion.div>
   );
 }
 
 export function Orders() {
+  const isMobile = useMediaQuery({ query: "(max-width: 1023px)" });
+
+  const [activeTab, setActiveTab] = useState("orders");
+
   let content = null;
   const { data, isLoading, error } = useGetOrdersQuery(
     "wss://norma.nomoreparties.space/orders/all"
@@ -94,6 +114,10 @@ export function Orders() {
       ? "+200%"
       : "-200%"
     : 0;
+
+  const onTabClick = (value: string) => {
+    setActiveTab(value);
+  };
 
   if ((data && data.success === false) || isLoading) {
     content = (
@@ -110,19 +134,46 @@ export function Orders() {
   if (data && data.orders.length > 1) {
     content = (
       <>
-        <div className={styles["text_row"]}>
-          <h1 className="text text_type_main-large mt-10 mb-6">
-            Лента заказов
-          </h1>
+        <div className={styles["text-row"]}>
+          <h1 className="text text_type_main-large">Лента заказов</h1>
         </div>
 
+        {isMobile && (
+          <div className={styles["tabs"]}>
+            <div className={styles["tab-wrapper"]}>
+              <Tab
+                value={"orders"}
+                active={activeTab === "orders"}
+                onClick={onTabClick}
+              >
+                Заказы
+              </Tab>
+            </div>
+            <div className={styles["tab-wrapper"]}>
+              <Tab
+                value={"stats"}
+                active={activeTab === "stats"}
+                onClick={onTabClick}
+              >
+                Статистика
+              </Tab>
+            </div>
+          </div>
+        )}
+
         <div className={styles["row"]}>
-          <OrdersFeed orders={data.orders} />
-          <Stats
-            orders={data.orders}
-            ordersAll={data.total}
-            ordersToday={data.totalToday}
-          />
+          <AnimatePresence>
+            {((isMobile && activeTab === "orders") || !isMobile) && (
+              <OrdersFeed orders={data.orders} />
+            )}
+            {((isMobile && activeTab === "stats") || !isMobile) && (
+              <Stats
+                orders={data.orders}
+                ordersAll={data.total}
+                ordersToday={data.totalToday}
+              />
+            )}
+          </AnimatePresence>
         </div>
       </>
     );

@@ -67,3 +67,27 @@
   margin-left: -20px;
   z-index: 0;
 }
+
+@media screen and (max-width: 1023px) {
+  .image-border {
+    width: 52px;
+    height: 52px;
+  }
+
+  .image-overlay {
+    width: 46px;
+    height: 46px;
+  }
+
+  .image {
+    width: 48px;
+    height: 48px;
+  }
+
+  .amount {
+    position: absolute;
+    top: 50%;
+    left: 30%;
+    transform: translate(-30%, -50%);
+  }
+}

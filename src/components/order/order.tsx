@@ -57,7 +57,7 @@ export function Order(props: Props) {
 
   return (
     <div
-      className={`${styles["order-container"]} mr-2 mb-4`}
+      className={`${styles["order-container"]} ml-2 mr-2 mb-4`}
       onClick={modalData}
     >
       <div className={`${styles["order-container_inner"]} mt-6 mb-6 ml-6 mr-6`}>

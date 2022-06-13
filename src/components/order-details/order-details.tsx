@@ -18,7 +18,7 @@ export function OrderDetails({
   error,
   orderId,
 }: OrderDetailsProps) {
-  const isMobileOrTablet = useMediaQuery({ query: "(max-width: 1023px)" });
+  const isMobile = useMediaQuery({ query: "(max-width: 1023px)" });
 
   let content;
   if (status === "getOrderNumber/loading") {
@@ -41,7 +41,7 @@ export function OrderDetails({
   } else if (status === "getOrderNumber/succeeded") {
     content = (
       <div className={styles["order-details"]}>
-        {isMobileOrTablet && (
+        {isMobile && (
           <h1 className={`${styles["order-title"]} text text_type_main_medium`}>
             Заказ оформлен
           </h1>
@@ -49,9 +49,7 @@ export function OrderDetails({
         <div
           className={`${
             styles["order-number_shadow"]
-          } text text_type_digits-large ${
-            isMobileOrTablet ? "mt-15" : "mt-30"
-          }`}
+          } text text_type_digits-large ${isMobile ? "mt-15" : "mt-30"}`}
           data-test-id="placed-order-number"
         >
           {orderId}
@@ -59,7 +57,7 @@ export function OrderDetails({
 
         <div
           className={`text text_type_main-${
-            isMobileOrTablet ? "medium" : "default"
+            isMobile ? "medium" : "default"
           } mt-8`}
         >
           идентификатор заказа
