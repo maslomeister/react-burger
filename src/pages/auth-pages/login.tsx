@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useMediaQuery } from "react-responsive";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { loginUserProfile } from "../../services/reducers/auth/auth";
@@ -13,6 +14,8 @@ import { useFormAndValidation } from "../../hooks/useFromAndValidate";
 import styles from "./auth-pages.module.css";
 
 export function Login() {
+  const isMobile = useMediaQuery({ query: "(max-width: 1023px)" });
+
   let content;
   const dispatch = useAppDispatch();
 
@@ -41,8 +44,14 @@ export function Login() {
     return (
       <>
         <form className={styles["form-container"]} onSubmit={submitForm}>
-          <p className="text text_type_main-medium mb-6">Вход</p>
-          <div className="mb-6">
+          <h1
+            className={`text text_type_main-${
+              isMobile ? "large" : "medium"
+            } mb-6`}
+          >
+            Вход
+          </h1>
+          <div className={`${styles["input-wrapper"]} mb-6`}>
             <Input
               name="email"
               type="email"
@@ -56,7 +65,7 @@ export function Login() {
             />
           </div>
 
-          <div className="mb-6">
+          <div className={`${styles["input-wrapper"]} mb-6`}>
             <Input
               name="password"
               icon={revealPassword ? "HideIcon" : "ShowIcon"}
@@ -72,7 +81,7 @@ export function Login() {
             />
           </div>
 
-          <div className={error ? "mb-5" : "mb-20"}>
+          <div className={`${styles["button"]} ${error ? "mb-5" : ""}`}>
             <Button
               disabled={loading ? true : false}
               type="primary"
@@ -151,7 +160,7 @@ export function Login() {
 
   return (
     <motion.div
-      key="constructor-page-cf"
+      key="login-page"
       initial={{ x: "+200%" }}
       animate={{ x: "0" }}
       transition={{

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useMediaQuery } from "react-responsive";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { resetState } from "../../services/reducers/auth/auth";
@@ -23,6 +24,8 @@ const setActive = (
   additionalClass;
 
 export function Profile() {
+  const isMobile = useMediaQuery({ query: "(max-width: 1023px)" });
+
   let content = null;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -125,8 +128,8 @@ export function Profile() {
 
   const input = (loading: boolean, error?: string) => {
     return (
-      <form onSubmit={submitForm}>
-        <div className="mb-6">
+      <form className={styles["form"]} onSubmit={submitForm}>
+        <div className={`${styles["input-wrapper"]} mb-6`}>
           <Input
             icon={"EditIcon"}
             name="name"
@@ -144,7 +147,7 @@ export function Profile() {
             }}
           />
         </div>
-        <div className="mb-6">
+        <div className={`${styles["input-wrapper"]} mb-6`}>
           <Input
             icon={"EditIcon"}
             name="email"
@@ -193,7 +196,7 @@ export function Profile() {
 
   return (
     <motion.div
-      className="mt-30"
+      className={isMobile ? "mt-4" : "mt-30"}
       key="profile-page"
       initial={{ x: "+100%" }}
       animate={{ x: "0" }}
@@ -202,30 +205,35 @@ export function Profile() {
       }}
     >
       <div className={styles["profile-container"]}>
-        <div className={`${styles["profile-items-container"]} mr-15`}>
-          <NavLink
-            to={"/profile"}
-            className={(isActive) => setActive(isActive, "mb-6")}
-            end
-          >
-            Профиль
-          </NavLink>
-          <NavLink
-            to={"/profile/orders"}
-            className={(isActive) => setActive(isActive, "mb-6")}
-          >
-            История заказов
-          </NavLink>
-          <NavLink
-            to={"/logout"}
-            className={(isActive) => setActive(isActive, "mb-20")}
-          >
-            Выход
-          </NavLink>
-          <p className="text text_type_main-default text_color_inactive">
-            В этом разделе вы можете изменить свои персональные данные
-          </p>
-        </div>
+        {isMobile && (
+          <h1 className="text text_type_main-large mb-8">Профиль</h1>
+        )}
+        {!isMobile && (
+          <div className={`${styles["profile-items-container"]} mr-15`}>
+            <NavLink
+              to={"/profile"}
+              className={(isActive) => setActive(isActive, "mb-6")}
+              end
+            >
+              Профиль
+            </NavLink>
+            <NavLink
+              to={"/profile/orders"}
+              className={(isActive) => setActive(isActive, "mb-6")}
+            >
+              История заказов
+            </NavLink>
+            <NavLink
+              to={"/logout"}
+              className={(isActive) => setActive(isActive, "mb-20")}
+            >
+              Выход
+            </NavLink>
+            <p className="text text_type_main-default text_color_inactive">
+              В этом разделе вы можете изменить свои персональные данные
+            </p>
+          </div>
+        )}
         {content}
       </div>
     </motion.div>

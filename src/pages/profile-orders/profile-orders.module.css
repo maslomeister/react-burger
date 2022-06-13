@@ -1,5 +1,10 @@
+.container {
+  width: 100%;
+}
+
 .profile-container {
-  width: 1240px;
+  width: 100%;
+  height: 100%;
   margin: auto;
   display: flex;
   align-items: flex-start;
@@ -18,7 +23,45 @@
   display: flex;
   flex-flow: column;
   scroll-behavior: smooth;
-  height: calc(100vh - 150px);
+  height: calc(100% - 150px);
   width: 760px;
   overflow-y: auto;
+  margin-top: 40px;
+}
+
+@media screen and (max-width: 1023px) {
+  .container {
+    height: calc(100% - 80px);
+  }
+  .profile-container {
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .orders-container {
+    height: calc(100% - 80px);
+    width: 100%;
+
+    margin-top: 0;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .container {
+    height: calc(100% - 100px);
+  }
+  .profile-container {
+    height: calc(100% - 100px);
+    width: 1024px;
+  }
+}
+
+@media screen and (min-width: 1240px) {
+  .container {
+    height: calc(100% - 100px);
+  }
+  .profile-container {
+    height: calc(100% - 100px);
+    width: 1240px;
+  }
 }

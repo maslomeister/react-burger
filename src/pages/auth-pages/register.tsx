@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useMediaQuery } from "react-responsive";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { createUserProfile } from "../../services/reducers/auth/auth";
@@ -13,6 +14,8 @@ import { useFormAndValidation } from "../../hooks/useFromAndValidate";
 import styles from "./auth-pages.module.css";
 
 export function Register() {
+  const isMobile = useMediaQuery({ query: "(max-width: 1023px)" });
+
   let content;
   const dispatch = useAppDispatch();
 
@@ -44,8 +47,15 @@ export function Register() {
   const input = (loading: boolean, error?: string) => {
     return (
       <>
-        <form className={styles["inner-container"]} onSubmit={submitForm}>
-          <div className="mb-6">
+        <form className={styles["form-container"]} onSubmit={submitForm}>
+          <h1
+            className={`text text_type_main-${
+              isMobile ? "large" : "medium"
+            } mb-6`}
+          >
+            Регистрация
+          </h1>
+          <div className={`${styles["input-wrapper"]} mb-6`}>
             <Input
               name="name"
               type="text"
@@ -58,7 +68,7 @@ export function Register() {
               onFocus={handleFocus}
             />
           </div>
-          <div className="mb-6">
+          <div className={`${styles["input-wrapper"]} mb-6`}>
             <Input
               name="email"
               type="email"
@@ -71,7 +81,7 @@ export function Register() {
               onFocus={handleFocus}
             />
           </div>
-          <div className="mb-6">
+          <div className={`${styles["input-wrapper"]} mb-6`}>
             <Input
               name="password"
               icon={revealPassword ? "HideIcon" : "ShowIcon"}
@@ -86,7 +96,8 @@ export function Register() {
               onIconClick={() => setRevealPassword(!revealPassword)}
             />
           </div>
-          <div className={error ? "mb-5" : "mb-20"}>
+
+          <div className={`${styles["button"]} ${error ? "mb-5" : ""}`}>
             <Button
               disabled={loading ? true : false}
               type="primary"
@@ -111,7 +122,7 @@ export function Register() {
             <p className="text text_type_main-default text_color_inactive">
               Уже зарегистрированы?&nbsp;
             </p>
-            <Link to={"login"}>
+            <Link to={"/login"}>
               <p
                 className={`${styles["text-link"]} text text_type_main-default`}
               >

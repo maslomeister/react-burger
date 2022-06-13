@@ -31,7 +31,7 @@ export function AppHeader({}: IAppHeader) {
       <header className={styles["header"]}>
         <nav className={styles["header-inner"]}>
           <ul className={`${styles["menu-left"]} mb-4 mt-4`}>
-            <li className={`${styles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
+            <li className={`${styles["menu__item"]} mr-5 mb-5 mt-5`}>
               <NavLinkWithIcon
                 url="/"
                 pathname={location.pathname}
@@ -62,7 +62,7 @@ export function AppHeader({}: IAppHeader) {
             />
           </div>
           <ul className={`${styles["menu-right"]} mb-4 mt-4`}>
-            <li className={`${styles["menu__item"]} ml-5 mr-5 mb-5 mt-5`}>
+            <li className={`${styles["menu__item"]} ml-5 mb-5 mt-5`}>
               {authorized ? (
                 <NavLinkWithIcon
                   url="/profile"

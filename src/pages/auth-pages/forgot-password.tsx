@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useMediaQuery } from "react-responsive";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import {
@@ -13,6 +14,8 @@ import { forgotUserPassword } from "../../services/reducers/auth/auth";
 import styles from "./auth-pages.module.css";
 
 export function ForgotPassword() {
+  const isMobile = useMediaQuery({ query: "(max-width: 1023px)" });
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -45,10 +48,14 @@ export function ForgotPassword() {
     return (
       <>
         <form className={styles["form-container"]} onSubmit={submitForm}>
-          <p className="text text_type_main-medium mb-6">
+          <h1
+            className={`text text_type_main-${
+              isMobile ? "large" : "medium"
+            } mb-6`}
+          >
             Восстановление пароля
-          </p>
-          <div className={`${styles["input-item"]} mb-6`}>
+          </h1>
+          <div className={`${styles["input-wrapper"]} mb-6`}>
             <Input
               name="email"
               type="email"
@@ -62,7 +69,7 @@ export function ForgotPassword() {
             />
           </div>
 
-          <div className={error ? "mb-5" : "mb-20"}>
+          <div className={`${styles["button"]} ${error ? "mb-5" : ""}`}>
             <Button
               disabled={loading ? true : false}
               type="primary"

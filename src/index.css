@@ -114,13 +114,11 @@ code {
   user-select: none;
 }
 
-@media screen and (max-width: 768px) {
-  .input_size_default {
-    width: 360px;
-  }
-}
-
 @media screen and (max-width: 1023px) {
+  .input_size_default {
+    width: 100%;
+  }
+
   .row {
     width: 100%;
     height: calc(100% - 80px);

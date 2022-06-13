@@ -8,18 +8,12 @@
   margin-top: 180px;
 }
 
-.inner-container {
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  justify-content: flex-start;
-}
-
 .profile-container {
   width: 100%;
   margin: auto;
   display: flex;
   flex-flow: row;
+  align-items: center;
   justify-content: center;
 }
 
@@ -46,6 +40,16 @@
   justify-content: flex-end;
 }
 
+.button {
+  margin-bottom: 60px;
+}
+
+.form {
+}
+
+.input-wrapper {
+}
+
 .text {
   display: flex;
 }
@@ -64,4 +68,46 @@
 
 .text-link:hover {
   text-decoration: underline;
+}
+
+@media screen and (max-width: 1023px) {
+  .container {
+    margin-top: 16px;
+  }
+
+  .form {
+    width: 100%;
+  }
+
+  .input-wrapper {
+    width: 100%;
+  }
+
+  .profile-container {
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .profile-buttons {
+    display: flex;
+    flex-flow: column-reverse;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .button {
+    margin-bottom: 40px;
+  }
+
+  .text {
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .input-wrapper > div {
+    width: calc(100% - 48px);
+    margin: auto;
+  }
 }
