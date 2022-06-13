@@ -1,5 +1,6 @@
 .container {
   width: 100%;
+  height: calc(100% - 100px);
 }
 
 .profile-container {
@@ -23,7 +24,7 @@
   display: flex;
   flex-flow: column;
   scroll-behavior: smooth;
-  height: calc(100% - 150px);
+  height: 100%;
   width: 760px;
   overflow-y: auto;
   margin-top: 40px;
@@ -47,21 +48,13 @@
 }
 
 @media screen and (min-width: 1024px) {
-  .container {
-    height: calc(100% - 100px);
-  }
   .profile-container {
-    height: calc(100% - 100px);
     width: 1024px;
   }
 }
 
 @media screen and (min-width: 1240px) {
-  .container {
-    height: calc(100% - 100px);
-  }
   .profile-container {
-    height: calc(100% - 100px);
     width: 1240px;
   }
 }

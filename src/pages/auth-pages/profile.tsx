@@ -196,13 +196,13 @@ export function Profile() {
 
   return (
     <motion.div
-      className={isMobile ? "mt-4" : "mt-30"}
       key="profile-page"
       initial={{ x: "+100%" }}
       animate={{ x: "0" }}
       transition={{
         type: "ease",
       }}
+      className={isMobile ? "mt-4" : "mt-30"}
     >
       <div className={styles["profile-container"]}>
         {isMobile && (
