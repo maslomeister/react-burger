@@ -78,7 +78,11 @@ export const iconTypeHelper = (
   inActiveStyle: "secondary" | "primary" | "error" | "success",
   end?: boolean
 ) => {
-  if (active === link || (!end && active.includes(link))) return activeStyle;
+  if (
+    active === link ||
+    (!end && active.includes(link) && active.charAt(link.length) === "/")
+  )
+    return activeStyle;
   return inActiveStyle;
 };
 
@@ -89,7 +93,11 @@ export const routeMatchHelper = (
   inActiveStyles: string,
   end?: boolean
 ) => {
-  if (active === link || (!end && active.includes(link))) return activeStyle;
+  if (
+    active === link ||
+    (!end && active.includes(link) && active.charAt(link.length) === "/")
+  )
+    return activeStyle;
   return inActiveStyles;
 };
 
