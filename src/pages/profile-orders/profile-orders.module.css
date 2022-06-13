@@ -24,7 +24,7 @@
   display: flex;
   flex-flow: column;
   scroll-behavior: smooth;
-  height: 100%;
+  height: calc(100% - 40px);
   width: 760px;
   overflow-y: auto;
   margin-top: 40px;

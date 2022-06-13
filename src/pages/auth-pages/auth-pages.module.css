@@ -6,6 +6,7 @@
   align-items: center;
   justify-content: flex-start;
   margin-top: 180px;
+  margin: auto;
 }
 
 .profile-container {
@@ -115,7 +116,7 @@
 @media screen and (min-width: 1024px) {
   .container {
     width: 1024px;
-    margin-top: 16px;
+    margin-top: 180px;
   }
   .profile-container {
     width: 1024px;
@@ -125,7 +126,7 @@
 @media screen and (min-width: 1240px) {
   .container {
     width: 1240px;
-    margin-top: 16px;
+    margin-top: 180px;
   }
 
   .profile-container {
