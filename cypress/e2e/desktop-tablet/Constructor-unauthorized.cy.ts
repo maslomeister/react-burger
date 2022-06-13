@@ -5,56 +5,54 @@ describe("Desktop constructor E2E unauthorized tests", () => {
   });
 
   it("Should open and close ingredient info modal", () => {
-    cy.get('[data-test-id="60d3b41abdacab0026a733c6"]').click();
+    cy.get('[data-testid="60d3b41abdacab0026a733c6"]').click();
 
-    cy.get('[data-test-id="modal-close-icon"]', { timeout: 1000 }).should(
+    cy.get('[data-testid="modal-close-icon"]', { timeout: 1000 }).should(
       "be.visible"
     );
 
-    cy.get('[data-test-id="modal-close-icon"]').click();
+    cy.get('[data-testid="modal-close-icon"]').click();
 
-    cy.get('[data-test-id="modal-close-icon"]').should("not.exist");
+    cy.get('[data-testid="modal-close-icon"]').should("not.exist");
   });
 
   it("Should drop bun to constructor and then remove it", () => {
-    cy.get('[data-test-id="60d3b41abdacab0026a733c6"]').drag(
-      '[data-test-id="constructor-drop-target"]'
+    cy.get('[data-testid="60d3b41abdacab0026a733c6"]').drag(
+      '[data-testid="constructor-drop-target"]'
     );
 
-    cy.get('[data-test-id="top60d3b41abdacab0026a733c6"]').should("be.visible");
+    cy.get('[data-testid="top60d3b41abdacab0026a733c6"]').should("be.visible");
 
-    cy.get('[data-test-id="top60d3b41abdacab0026a733c6"]')
+    cy.get('[data-testid="top60d3b41abdacab0026a733c6"]')
       .find('*[class^="constructor-element__action"]')
-      .click();
+      .trigger("click");
 
-    cy.get('[data-test-id="top60d3b41abdacab0026a733c6"]').should("not.exist");
+    cy.get('[data-testid="top60d3b41abdacab0026a733c6"]').should("not.exist");
   });
 
   it("Should drop ingredient to constructor and remove it", () => {
-    cy.get('[data-test-id="60d3b41abdacab0026a733cd"]').drag(
-      '[data-test-id="constructor-drop-target"]'
+    cy.get('[data-testid="60d3b41abdacab0026a733cd"]').drag(
+      '[data-testid="constructor-drop-target"]'
     );
 
-    cy.get('[data-test-id="inner60d3b41abdacab0026a733cd"]').should(
+    cy.get('[data-testid="inner60d3b41abdacab0026a733cd"]').should(
       "be.visible"
     );
 
-    cy.get('[data-test-id="inner60d3b41abdacab0026a733cd"]')
+    cy.get('[data-testid="inner60d3b41abdacab0026a733cd"]')
       .find('*[class^="constructor-element__action"]')
-      .click();
+      .trigger("click");
 
-    cy.get('[data-test-id="inner60d3b41abdacab0026a733cd"]').should(
-      "not.exist"
-    );
+    cy.get('[data-testid="inner60d3b41abdacab0026a733cd"]').should("not.exist");
   });
 
   it("Should place order if user is not logged in", () => {
-    cy.get('[data-test-id="60d3b41abdacab0026a733c6"]').drag(
-      '[data-test-id="constructor-drop-target"]'
+    cy.get('[data-testid="60d3b41abdacab0026a733c6"]').drag(
+      '[data-testid="constructor-drop-target"]'
     );
 
-    cy.get('[data-test-id="60d3b41abdacab0026a733cd"]').drag(
-      '[data-test-id="constructor-drop-target"]'
+    cy.get('[data-testid="60d3b41abdacab0026a733cd"]').drag(
+      '[data-testid="constructor-drop-target"]'
     );
 
     cy.log(Cypress.env("username"));
@@ -70,10 +68,10 @@ describe("Desktop constructor E2E unauthorized tests", () => {
 
     cy.get("button").contains("Оформить заказ").click();
 
-    cy.get('[data-test-id="placed-order-number"]', { timeout: 30000 }).should(
+    cy.get('[data-testid="placed-order-number"]', { timeout: 30000 }).should(
       "be.visible"
     );
 
-    cy.get('[data-test-id="modal-close-icon"]').click();
+    cy.get('[data-testid="modal-close-icon"]').click();
   });
 });

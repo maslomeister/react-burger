@@ -27,20 +27,20 @@ describe("Desktop constructor E2E authorized tests", () => {
   });
 
   it("Should be able to place order", () => {
-    cy.get('[data-test-id="60d3b41abdacab0026a733c6"]').drag(
-      '[data-test-id="constructor-drop-target"]'
+    cy.get('[data-testid="60d3b41abdacab0026a733c6"]').drag(
+      '[data-testid="constructor-drop-target"]'
     );
 
-    cy.get('[data-test-id="60d3b41abdacab0026a733cd"]').drag(
-      '[data-test-id="constructor-drop-target"]'
+    cy.get('[data-testid="60d3b41abdacab0026a733cd"]').drag(
+      '[data-testid="constructor-drop-target"]'
     );
 
     cy.get("button").contains("Оформить заказ").click();
 
-    cy.get('[data-test-id="placed-order-number"]', { timeout: 30000 }).should(
+    cy.get('[data-testid="placed-order-number"]', { timeout: 30000 }).should(
       "be.visible"
     );
 
-    cy.get('[data-test-id="modal-close-icon"]').click();
+    cy.get('[data-testid="modal-close-icon"]').click();
   });
 });
