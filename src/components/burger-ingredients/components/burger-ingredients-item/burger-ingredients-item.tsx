@@ -28,7 +28,7 @@ function BurgerIngredientItem({
 }: BurgerIngredientItemPropTypes) {
   const dispatch = useAppDispatch();
   const { bun } = useAppSelector((state) => state.constructorIngredients);
-  const isMobileOrTablet = useMediaQuery({ query: "(max-width: 1023px)" });
+  const isMobile = useMediaQuery({ query: "(max-width: 1023px)" });
 
   const [, dragRef] = useDrag({
     type: "ingredient",
@@ -59,7 +59,7 @@ function BurgerIngredientItem({
       className={`${styles["item"]} mt-6 mb-10`}
       whileHover="hover"
       variants={textMotion}
-      ref={isMobileOrTablet ? undefined : dragRef}
+      ref={isMobile ? undefined : dragRef}
     >
       <div className={styles["item__image-container"]}>
         <motion.img
@@ -78,7 +78,7 @@ function BurgerIngredientItem({
       <p className={`${styles["item_name"]} text text_type_main-small`}>
         {ingredient.name}
       </p>
-      {isMobileOrTablet && shouldAddBunText && (
+      {isMobile && shouldAddBunText && (
         <p
           className={`${styles["item-add"]} text text_type_main-small mt-10 noselect`}
           onClick={addIngredientMobile}

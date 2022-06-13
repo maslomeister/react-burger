@@ -18,7 +18,7 @@ export function AppHeader({}: IAppHeader) {
   const { user } = useAppSelector((state) => state.authUser);
   const authorized = useMemo(() => userAuthorized(user), [user]);
 
-  const isMobileOrTablet = useMediaQuery({ query: "(max-width: 1023px)" });
+  const isMobile = useMediaQuery({ query: "(max-width: 1023px)" });
 
   const [showSidebar, setShowSidebar] = useState(false);
 
@@ -50,7 +50,7 @@ export function AppHeader({}: IAppHeader) {
           </ul>
           <div className={styles["logo"]}>
             <NavLink to="/" state={{ from: location }}>
-              {isMobileOrTablet ? <LogoSmall /> : <Logo />}
+              {isMobile ? <LogoSmall /> : <Logo />}
             </NavLink>
           </div>
           <div className={styles["hamburger"]}>

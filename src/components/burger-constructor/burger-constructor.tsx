@@ -52,7 +52,7 @@ function BurgerConstructor({
 }: IProps) {
   const dispatch = useAppDispatch();
 
-  const isMobileOrTablet = useMediaQuery({ query: "(max-width: 1023px)" });
+  const isMobile = useMediaQuery({ query: "(max-width: 1023px)" });
   const dropRef = useRef<HTMLUListElement>(null);
 
   const [{ isHover }, dropTarget] = useDrop({
@@ -90,7 +90,7 @@ function BurgerConstructor({
 
   return (
     <>
-      {isMobileOrTablet && (
+      {isMobile && (
         <div className={styles["mobile-cart__title-container"]}>
           <h1 className="text text_type_main-large">Заказ</h1>
           <CloseIconAdaptive
@@ -116,7 +116,7 @@ function BurgerConstructor({
                 top={"top"}
                 ingredient={bun}
                 handleClose={deleteBun}
-                isMobile={isMobileOrTablet}
+                isMobile={isMobile}
               />
 
               <ul className={styles["inner_style"]} ref={dropRef}>
@@ -135,7 +135,7 @@ function BurgerConstructor({
                       ingredient={newItem}
                       draggable={true}
                       handleClose={deleteIngredient(newItem)}
-                      isMobile={isMobileOrTablet}
+                      isMobile={isMobile}
                     />
                   );
                 })}
@@ -145,10 +145,10 @@ function BurgerConstructor({
                 top={"bottom"}
                 ingredient={bun}
                 handleClose={deleteBun}
-                isMobile={isMobileOrTablet}
+                isMobile={isMobile}
               />
 
-              {!isMobileOrTablet && (
+              {!isMobile && (
                 <div className={styles["cart"]}>
                   <div className="mr-10">
                     <TotalPrice price={totalPrice} size="medium" />
@@ -186,7 +186,7 @@ function BurgerConstructor({
           )}
         </motion.div>
       </div>
-      {isMobileOrTablet && (
+      {isMobile && (
         <div className={styles["mobile-cart__order-container"]}>
           <TotalPrice price={totalPrice} size="medium" />
           <Button
