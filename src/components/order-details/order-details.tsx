@@ -50,7 +50,7 @@ export function OrderDetails({
           className={`${
             styles["order-number_shadow"]
           } text text_type_digits-large ${isMobile ? "mt-15" : "mt-30"}`}
-          data-test-id="placed-order-number"
+          data-testid="placed-order-number"
         >
           {orderId}
         </div>

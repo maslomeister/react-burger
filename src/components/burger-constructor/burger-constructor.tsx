@@ -105,7 +105,7 @@ function BurgerConstructor({
         <motion.div
           key="burger-constructor"
           ref={dropTarget}
-          data-test-id="constructor-drop-target"
+          data-testid="constructor-drop-target"
           style={{ borderColor: borderColor }}
           className={styles["burger-constructor"]}
         >
@@ -197,7 +197,7 @@ function BurgerConstructor({
               toggleCheckout();
               createOrder();
             }}
-            data-test-id="make-order"
+            data-testid="make-order"
           >
             Заказать
           </Button>
