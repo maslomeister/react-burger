@@ -1,12 +1,13 @@
+import { useRef, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
 
 import { useAppSelector } from "../../services/hooks";
-import { Order } from "../../components/order/order";
 import { LoadingScreen } from "../../components/loading-screen/loading-screen";
 import { ErrorScreen } from "../../components/error-screen/error-screen";
 import { useGetOrdersQuery } from "../../services/rtk/web-socket";
+import { OrdersInfinityScroll } from "../../components/orders-inifinity-scroll/orders-infinity-scroll";
 
 import styles from "./profile-orders.module.css";
 
@@ -20,6 +21,13 @@ const setActive = (
 
 export function ProfileOrders() {
   const isMobile = useMediaQuery({ query: "(max-width: 1023px)" });
+  const ordersRef = useRef<HTMLDivElement>(null);
+
+  const [ordersHeight, setOrdersHeight] = useState(0);
+
+  useEffect(() => {
+    setOrdersHeight(ordersRef?.current?.clientHeight ?? 0);
+  }, []);
 
   let content = null;
 
@@ -31,7 +39,7 @@ export function ProfileOrders() {
     }`
   );
 
-  if ((data && data.success === false) || isLoading) {
+  if ((data && data.success === false) || isLoading || ordersHeight === 0) {
     content = (
       <LoadingScreen text="Загружается история заказов" size="medium" />
     );
@@ -45,17 +53,12 @@ export function ProfileOrders() {
     );
   }
 
-  if (data && data.orders.length > 1) {
+  if (data && data.orders.length >= 1 && ordersHeight > 0) {
     content = (
-      <>
-        {data &&
-          data.orders
-            .slice(0)
-            .reverse()
-            .map((order) => {
-              return <Order order={order} key={order._id} />;
-            })}
-      </>
+      <OrdersInfinityScroll
+        orders={data.orders.slice(0).reverse()}
+        height={ordersHeight}
+      />
     );
   }
 
@@ -101,7 +104,9 @@ export function ProfileOrders() {
             </p>
           </div>
         )}
-        <div className={styles["orders-container"]}>{content}</div>
+        <div className={styles["orders-container"]} ref={ordersRef}>
+          {content}
+        </div>
       </div>
     </motion.div>
   );

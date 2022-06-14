@@ -1,14 +1,14 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
 
-import { Order } from "../../components/order/order";
 import { LoadingScreen } from "../../components/loading-screen/loading-screen";
 import { ErrorScreen } from "../../components/error-screen/error-screen";
 import { useGetOrdersQuery } from "../../services/rtk/web-socket";
 import { returnOrdersWithStatus } from "../../utils/utils";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import { OrdersInfinityScroll } from "../../components/orders-inifinity-scroll/orders-infinity-scroll";
 
 import styles from "./orders.module.css";
 
@@ -17,18 +17,28 @@ interface IOrdersFeed {
 }
 
 function OrdersFeed({ orders }: IOrdersFeed) {
+  const ordersRef = useRef<HTMLDivElement>(null);
+  const [ordersHeight, setOrdersHeight] = useState(0);
+
+  useEffect(() => {
+    setOrdersHeight(ordersRef?.current?.clientHeight ?? 0);
+  }, []);
+
   return (
     <motion.div
-      key="mobile-stats"
+      key="mobile-orders"
       initial={{ x: "-100%" }}
       animate={{ x: "0", transition: { duration: 0.25 } }}
       exit={{ x: "-100%", transition: { duration: 0.15 } }}
       transition={{ type: "ease-in-out" }}
       className={styles["orders_feed"]}
+      ref={ordersRef}
     >
-      {orders.map((order) => (
-        <Order order={order} key={order._id} />
-      ))}
+      {ordersHeight > 0 ? (
+        <OrdersInfinityScroll orders={orders} height={ordersHeight} />
+      ) : (
+        <LoadingScreen text="Загружаются заказы" size="small" />
+      )}
     </motion.div>
   );
 }
@@ -164,7 +174,7 @@ export function Orders() {
         <div className={styles["row"]}>
           <AnimatePresence>
             {((isMobile && activeTab === "orders") || !isMobile) && (
-              <OrdersFeed orders={data.orders} key={"mobile-feed"} />
+              <OrdersFeed orders={data.orders} key={"mobile-orders"} />
             )}
             {((isMobile && activeTab === "stats") || !isMobile) && (
               <Stats
