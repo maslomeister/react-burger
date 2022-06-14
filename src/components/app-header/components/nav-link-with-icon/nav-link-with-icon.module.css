@@ -1,3 +1,8 @@
+.item {
+  flex-direction: row-reverse;
+  gap: 8px;
+}
+
 .menu__item {
   display: flex;
   align-items: center;

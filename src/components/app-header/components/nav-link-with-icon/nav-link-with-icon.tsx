@@ -16,6 +16,7 @@ type TProps = {
   text: string;
   iconType: "home" | "feed" | "profile";
   end?: boolean;
+  onClick?: () => void;
 };
 
 export function NavLinkWithIcon({
@@ -24,6 +25,7 @@ export function NavLinkWithIcon({
   text,
   iconType,
   end,
+  onClick,
 }: TProps) {
   let Icon = <></>;
 
@@ -53,11 +55,9 @@ export function NavLinkWithIcon({
 
   return (
     <>
-      {Icon}
-
       <NavLink
         className={({ isActive }) =>
-          `text text_type_main-default ml-2 ${setActiveHelper(
+          `${styles["item"]} text text_type_main-default ${setActiveHelper(
             isActive,
             styles["menu__item_active"],
             styles["menu__item"]
@@ -65,9 +65,11 @@ export function NavLinkWithIcon({
         }
         to={url}
         state={{ from: pathname }}
+        onClick={onClick}
         end
       >
         {text}
+        {Icon}
       </NavLink>
     </>
   );
