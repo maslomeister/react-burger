@@ -1,6 +1,6 @@
 .ingredients-container {
   flex: 0 0 48%;
-  height: calc(100% - 80px);
+  height: calc(100% - 55px);
 }
 
 .ingredients {

@@ -14,7 +14,7 @@
   margin: auto;
   display: flex;
   flex-flow: row;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
 }
 
