@@ -7,7 +7,7 @@ import reducer, {
   addOrReplaceBun,
   removeBun,
   resetState,
-} from "./burger-constructor";
+} from "../../services/reducers/burger-constructor/burger-constructor";
 import { v4 as uuidv4 } from "uuid";
 
 const uniqueIdFirst = uuidv4();
@@ -80,7 +80,7 @@ const stateWithIngredients = {
   ingredients: [ingredientFirst, ingredientSecond],
 };
 
-describe("Redux burger-constructor store", () => {
+describe("Redux burger constructor reducer", () => {
   test("Should return the initial state", () => {
     expect(reducer(undefined, { type: "" })).toEqual(initialState);
   });

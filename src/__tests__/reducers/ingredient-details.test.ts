@@ -1,9 +1,10 @@
+import { text } from "stream/consumers";
 import reducer, {
   initialState,
   ISliceState,
   addDataToModal,
   resetModalData,
-} from "./ingredient-details";
+} from "../../services/reducers/ingredient-details/ingredient-details";
 
 const data: ISliceState = {
   modalImage: "https://code.s3.yandex.net/react/code/bun-01-large.png",
@@ -14,7 +15,11 @@ const data: ISliceState = {
   modalCarbohydrates: 85,
 };
 
-describe("Redux ingredient info modal store", () => {
+describe("Redux ingredient details reducer", () => {
+  test("Should return the initial state", () => {
+    expect(reducer(undefined, { type: "" })).toEqual(initialState);
+  });
+
   test("Should add data to modal", () => {
     expect(reducer(initialState, addDataToModal(data))).toEqual({
       ...data,

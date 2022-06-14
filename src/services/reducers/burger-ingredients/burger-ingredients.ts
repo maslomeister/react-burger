@@ -8,7 +8,7 @@ interface ISliceState {
   error: string;
 }
 
-const initialState: ISliceState = {
+export const initialState: ISliceState = {
   ingredients: [],
   status: "idle",
   error: "",

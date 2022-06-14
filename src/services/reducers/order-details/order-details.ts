@@ -63,10 +63,13 @@ export const orderDetails = createSlice({
       .addCase(getOrderNumber.pending, (state) => {
         state.status = "getOrderNumber/loading";
       })
-      .addCase(getOrderNumber.fulfilled, (state, action) => {
-        state.status = "getOrderNumber/succeeded";
-        state.orderNumber = action.payload;
-      })
+      .addCase(
+        getOrderNumber.fulfilled,
+        (state, action: PayloadAction<number>) => {
+          state.status = "getOrderNumber/succeeded";
+          state.orderNumber = action.payload;
+        }
+      )
       .addCase(getOrderNumber.rejected, (state, action) => {
         state.orderNumber = 0;
         state.status = "getOrderNumber/failed";

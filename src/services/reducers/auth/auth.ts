@@ -21,7 +21,7 @@ interface ISliceState {
   error: string;
 }
 
-const initialState: ISliceState = {
+export const initialState: ISliceState = {
   user: {
     name: "",
     email: "",

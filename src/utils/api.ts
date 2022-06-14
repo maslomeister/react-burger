@@ -57,10 +57,10 @@ export const getOrder = async (number: number): Promise<IOrder[]> => {
 
 export const createUser = async (
   requestOptions: IRequestOptions
-): Promise<ICreateUser> => {
+): Promise<ILoginUser> => {
   const res = await fetch(`${BURGER_API_URL}/auth/register`, requestOptions);
   const data = await checkResponse(res);
-  const success: ICreateUser = checkSuccess(data, data);
+  const success: ILoginUser = checkSuccess(data, data);
   if (success) {
     setCookie("accessToken", success.accessToken);
     setCookie("refreshToken", success.refreshToken);

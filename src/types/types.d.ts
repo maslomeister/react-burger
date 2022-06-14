@@ -18,10 +18,6 @@ interface IMessageData {
   message: string;
 }
 
-interface ICreateUser extends ITokenData {
-  user: IUser;
-}
-
 interface ILoginUser extends ITokenData {
   user: IUser;
 }
