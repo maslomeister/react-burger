@@ -16,9 +16,9 @@ export function ModalOverlay({ onClose, children }: ModalOverlayProps) {
       onClick={onClose}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: 0.2 } }}
+      exit={{ opacity: 0, transition: { duration: 0.1 } }}
       transition={{
-        type: "ease",
+        type: "tween",
       }}
     >
       {children}

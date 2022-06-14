@@ -159,7 +159,7 @@ export const formatDisplayDate = (date: string): string => {
       "день",
       "дня",
       "дней",
-    ])} назад, `;
+    ])} назад`;
   }
   const time = new Date(date).toLocaleTimeString("ru-Ru", {
     hour: "2-digit",
