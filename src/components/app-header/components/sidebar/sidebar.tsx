@@ -94,12 +94,13 @@ export function Sidebar({ showSidebar, toggleSidebar, authorized }: ISidebar) {
                 <DropDownIcon isOpened={showProfileSubMenu} />
               </div>
             ) : (
-              <div className={styles["sidebar-item"]} onClick={toggleSidebar}>
+              <div className={styles["sidebar-item"]}>
                 <NavLinkWithIcon
                   url="/login"
                   pathname={location.pathname}
                   text="Войти"
                   iconType="profile"
+                  onClick={toggleSidebar}
                   end
                 />
               </div>
@@ -185,13 +186,13 @@ export function Sidebar({ showSidebar, toggleSidebar, authorized }: ISidebar) {
                 layout="position"
                 key="Конструктор бургеров"
                 className={styles["sidebar-item"]}
-                onClick={toggleSidebar}
               >
                 <NavLinkWithIcon
                   url="/"
                   pathname={location.pathname}
                   text="Конструктор бургеров"
                   iconType="home"
+                  onClick={toggleSidebar}
                   end
                 />
               </motion.div>
@@ -200,13 +201,13 @@ export function Sidebar({ showSidebar, toggleSidebar, authorized }: ISidebar) {
                 layout="position"
                 key="Лента заказов"
                 className={styles["sidebar-item"]}
-                onClick={toggleSidebar}
               >
                 <NavLinkWithIcon
                   url="/feed"
                   pathname={location.pathname}
                   text="Лента заказов"
                   iconType="feed"
+                  onClick={toggleSidebar}
                   end
                 />
               </motion.div>
