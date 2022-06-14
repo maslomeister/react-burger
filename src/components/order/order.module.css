@@ -8,6 +8,7 @@
 .order-container_inner {
   display: flex;
   flex-flow: column;
+  padding: 24px 24px;
 }
 
 .order-number-date {
