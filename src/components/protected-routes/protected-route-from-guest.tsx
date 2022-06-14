@@ -3,6 +3,7 @@ import { useLocation, Navigate, RouteProps } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { getNewAccessToken } from "../../services/reducers/auth/auth";
 import { userAuthorized, isTokenExpired, tokenExists } from "../../utils/utils";
+import { LoadingScreen } from "../loading-screen/loading-screen";
 
 export function ProtectedRouteFromGuest({ children }: RouteProps) {
   let content = children;
@@ -15,7 +16,7 @@ export function ProtectedRouteFromGuest({ children }: RouteProps) {
   }
 
   if (status === "getUserData/loading" || status === "getToken/loading") {
-    return <></>;
+    return <LoadingScreen text="Загрузка данных" size="medium" />;
   }
 
   if (!userAuthorized(user)) {
