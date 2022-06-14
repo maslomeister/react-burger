@@ -164,13 +164,14 @@ export function Orders() {
         <div className={styles["row"]}>
           <AnimatePresence>
             {((isMobile && activeTab === "orders") || !isMobile) && (
-              <OrdersFeed orders={data.orders} />
+              <OrdersFeed orders={data.orders} key={"mobile-feed"} />
             )}
             {((isMobile && activeTab === "stats") || !isMobile) && (
               <Stats
                 orders={data.orders}
                 ordersAll={data.total}
                 ordersToday={data.totalToday}
+                key={"mobile-stats"}
               />
             )}
           </AnimatePresence>

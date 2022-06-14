@@ -12,8 +12,7 @@ import { userAuthorized } from "../../utils/utils";
 
 import styles from "./app-header.module.css";
 
-interface IAppHeader {}
-export function AppHeader({}: IAppHeader) {
+export function AppHeader() {
   const location = useLocation();
   const { user } = useAppSelector((state) => state.authUser);
   const authorized = useMemo(() => userAuthorized(user), [user]);

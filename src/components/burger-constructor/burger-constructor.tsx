@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useRef } from "react";
+import { useCallback, useRef } from "react";
 import { motion } from "framer-motion";
 import { useDrop } from "react-dnd";
 import { useMediaQuery } from "react-responsive";
@@ -13,7 +13,6 @@ import { CloseIconAdaptive } from "../../assets/icons/close-icon";
 import { TotalPrice } from "../total-price/total-price";
 import { useAppDispatch } from "../../services/hooks";
 import {
-  initialState,
   addIngredient,
   removeIngredient,
   moveIngredient,
