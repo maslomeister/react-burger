@@ -25,6 +25,8 @@ export function OrdersInfinityScroll({ orders, height }: IProps) {
     }
   };
 
+  console.log(height);
+
   const items = useMemo(() => orders.slice(0, loadNext), [loadNext, orders]);
 
   return (

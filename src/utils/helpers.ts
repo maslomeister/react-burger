@@ -102,6 +102,10 @@ export const routeMatchHelper = (
 };
 
 export const buttonType = (link: string, active: string, end?: boolean) => {
-  if (active === link) return "primary";
+  if (
+    active === link ||
+    (!end && active.includes(link) && active.charAt(link.length) === "/")
+  )
+    return "primary";
   return "secondary";
 };

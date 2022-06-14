@@ -60,7 +60,7 @@ export function Order(props: Props) {
       className={`${styles["order-container"]} ml-2 mr-2 mb-4`}
       onClick={modalData}
     >
-      <div className={`${styles["order-container_inner"]} mt-6 mb-6 ml-6 mr-6`}>
+      <div className={styles["order-container_inner"]}>
         <div className={`${styles["order-number-date"]} mb-6`}>
           <p className="text text_type_digits-default">#{props.order.number}</p>
           <p className="text text_type_main-default text_color_inactive">

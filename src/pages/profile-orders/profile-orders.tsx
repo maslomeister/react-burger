@@ -21,8 +21,8 @@ const setActive = (
 
 export function ProfileOrders() {
   const isMobile = useMediaQuery({ query: "(max-width: 1023px)" });
-  const ordersRef = useRef<HTMLDivElement>(null);
 
+  const ordersRef = useRef<HTMLDivElement>(null);
   const [ordersHeight, setOrdersHeight] = useState(0);
 
   useEffect(() => {
