@@ -40,6 +40,7 @@ p {
   .ingredients-container {
     flex: none;
     width: 100%;
+    height: calc(100% - 80px);
   }
 
   .ingredients__title {
