@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/react-burger/static/css/main.23b44390.css",
-    "main.js": "/react-burger/static/js/main.d4f29f5b.js",
+    "main.css": "/react-burger/static/css/main.c0725b8e.css",
+    "main.js": "/react-burger/static/js/main.0078cee4.js",
     "static/js/27.9c179b83.chunk.js": "/react-burger/static/js/27.9c179b83.chunk.js",
     "static/media/JetBrainsMono-Bold.woff": "/react-burger/static/media/JetBrainsMono-Bold.3914674f1cb2335acf26.woff",
     "static/media/JetBrainsMono-Regular.woff": "/react-burger/static/media/JetBrainsMono-Regular.f52bee61d00ce995b89f.woff",
@@ -17,7 +17,7 @@
     "index.html": "/react-burger/index.html"
   },
   "entrypoints": [
-    "static/css/main.23b44390.css",
-    "static/js/main.d4f29f5b.js"
+    "static/css/main.c0725b8e.css",
+    "static/js/main.0078cee4.js"
   ]
 }
