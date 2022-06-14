@@ -24,15 +24,14 @@
   display: flex;
   flex-flow: column;
   scroll-behavior: smooth;
-  height: calc(100% - 40px);
+  height: calc(100% - 45px);
   width: 760px;
-  overflow-y: auto;
   margin-top: 40px;
 }
 
 @media screen and (max-width: 1023px) {
   .container {
-    height: calc(100% - 80px);
+    height: calc(100% - 82px);
   }
   .profile-container {
     flex-flow: column;

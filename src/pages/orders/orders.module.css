@@ -123,7 +123,7 @@
   .stats {
     flex: unset;
     margin-top: 20px;
-    height: calc(100% - 56px);
+    height: calc(100% - 20px);
     margin-left: 10px;
     overflow-y: auto;
   }
@@ -131,7 +131,7 @@
   .orders_feed {
     flex: unset;
     margin-top: 20px;
-    height: calc(100% - 56px);
+    height: calc(100% - 20px);
   }
 
   .tab-wrapper {
