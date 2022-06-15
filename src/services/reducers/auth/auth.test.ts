@@ -13,7 +13,7 @@ import reducer, {
   getNewAccessToken,
   forgotUserPassword,
   resetPasswordUser,
-} from "../../services/reducers/auth/auth";
+} from "./auth";
 
 describe("Redux auth reducer", () => {
   let store = configureStore({

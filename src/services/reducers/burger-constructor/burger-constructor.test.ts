@@ -7,7 +7,7 @@ import reducer, {
   addOrReplaceBun,
   removeBun,
   resetState,
-} from "../../services/reducers/burger-constructor/burger-constructor";
+} from "./burger-constructor";
 import { v4 as uuidv4 } from "uuid";
 
 const uniqueIdFirst = uuidv4();

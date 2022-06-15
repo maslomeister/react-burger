@@ -4,7 +4,7 @@ import reducer, {
   initialState,
   getOrderNumber,
   getOrderByNumber,
-} from "../../services/reducers/order-details/order-details";
+} from "./order-details";
 
 const bun = {
   _id: "60d3b41abdacab0026a733c6",

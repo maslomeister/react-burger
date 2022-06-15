@@ -3,7 +3,7 @@ import reducer, {
   ISliceState,
   addDataToModal,
   resetModalData,
-} from "../../services/reducers/ingredient-details/ingredient-details";
+} from "./ingredient-details";
 
 const data: ISliceState = {
   modalImage: "https://code.s3.yandex.net/react/code/bun-01-large.png",

@@ -1,9 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import reducer, {
-  initialState,
-  fetchIngredients,
-} from "../../services/reducers/burger-ingredients/burger-ingredients";
+import reducer, { initialState, fetchIngredients } from "./burger-ingredients";
 
 const ingredients = [
   {
