@@ -230,6 +230,10 @@ describe("Redux burger ingredients reducer", () => {
     });
   });
 
+  afterEach(() => {
+    jest.spyOn(global, "fetch").mockClear();
+  });
+
   test("Should return the initial state", () => {
     expect(reducer(undefined, { type: "" })).toEqual(initialState);
   });
@@ -253,8 +257,6 @@ describe("Redux burger ingredients reducer", () => {
       ingredients: ingredients,
       status: "succeeded",
     });
-
-    jest.spyOn(global, "fetch").mockClear();
   });
 
   test("Should fail fetchIngredients", async () => {
@@ -271,7 +273,5 @@ describe("Redux burger ingredients reducer", () => {
       ingredients: [],
       status: "failed",
     });
-
-    jest.spyOn(global, "fetch").mockClear();
   });
 });
