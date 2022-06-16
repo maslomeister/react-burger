@@ -64,13 +64,23 @@ describe("Desktop constructor E2E unauthorized tests", () => {
 
     cy.get('button[type="submit"]').click();
 
-    cy.wait(1000);
+    cy.intercept("POST", "https://norma.nomoreparties.space/api/auth/login").as(
+      "login"
+    );
+
+    cy.wait("@login").its("response.statusCode").should("eq", 200);
 
     cy.get("button").contains("Оформить заказ").click();
 
-    cy.get('[data-testid="placed-order-number"]', { timeout: 30000 }).should(
-      "be.visible"
+    cy.intercept("POST", "https://norma.nomoreparties.space/api/orders").as(
+      "getOrder"
     );
+
+    cy.wait("@getOrder", { timeout: 30000 })
+      .its("response.statusCode")
+      .should("eq", 200);
+
+    cy.get('[data-testid="placed-order-number"]').should("be.visible");
 
     cy.get('[data-testid="modal-close-icon"]').click();
   });

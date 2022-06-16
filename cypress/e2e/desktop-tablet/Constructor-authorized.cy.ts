@@ -9,9 +9,12 @@ describe("Desktop constructor E2E authorized tests", () => {
         cy.get('input[name="password"]').type(Cypress.env("password"));
         cy.get('button[type="submit').click();
 
-        cy.url().should("contain", "/");
+        cy.intercept(
+          "POST",
+          "https://norma.nomoreparties.space/api/auth/login"
+        ).as("login");
 
-        cy.wait(1500);
+        cy.wait("@login").its("response.statusCode").should("eq", 200);
 
         cy.getCookie("accessToken").get("value").should("not.be.empty");
         cy.getCookie("refreshToken").get("value").should("not.be.empty");
@@ -37,9 +40,15 @@ describe("Desktop constructor E2E authorized tests", () => {
 
     cy.get("button").contains("Оформить заказ").click();
 
-    cy.get('[data-testid="placed-order-number"]', { timeout: 30000 }).should(
-      "be.visible"
+    cy.intercept("POST", "https://norma.nomoreparties.space/api/orders").as(
+      "getOrder"
     );
+
+    cy.wait("@getOrder", { timeout: 30000 })
+      .its("response.statusCode")
+      .should("eq", 200);
+
+    cy.get('[data-testid="placed-order-number"]').should("be.visible");
 
     cy.get('[data-testid="modal-close-icon"]').click();
   });
