@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 
 import { TotalPrice } from "../../../total-price/total-price";
 import styles from "./mobile-cart-item.module.css";
@@ -9,20 +9,20 @@ interface IProps {
   price: number;
 }
 
-export function MobileCartItem({ image, name, price }: IProps) {
-  return (
-    <div className={styles["mobile-cart-item-inner"]}>
+export const MobileCartItem = forwardRef<HTMLDivElement, IProps>(
+  (props, ref) => (
+    <div className={styles["mobile-cart-item-inner"] + " noselect"} ref={ref}>
       <img
         className={styles["mobile-cart-image"]}
-        src={image}
+        src={props.image}
         alt="ingredient preview"
       />
       <p
         className={`${styles["mobile-cart-name"]} text text_type_main-default`}
       >
-        {name}
+        {props.name}
       </p>
-      <TotalPrice price={price} />
+      <TotalPrice price={props.price} />
     </div>
-  );
-}
+  )
+);

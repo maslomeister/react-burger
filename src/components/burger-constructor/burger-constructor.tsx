@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useDrop } from "react-dnd";
 import { useMediaQuery } from "react-responsive";
@@ -36,6 +36,27 @@ interface IProps {
   showModal: boolean;
 }
 
+let firstClientX: number, clientX: number;
+
+const preventTouch = (e: any) => {
+  const minValue = 10; // threshold
+
+  clientX = e.touches[0].clientX - firstClientX;
+
+  // Vertical scrolling does not work when you start swiping horizontally.
+  if (Math.abs(clientX) > minValue) {
+    e.returnValue = false;
+
+    return false;
+  }
+};
+
+const touchStart = (e: any) => {
+  firstClientX = e.touches[0].clientX;
+};
+
+const opts: AddEventListenerOptions & EventListenerOptions = { passive: false };
+
 function BurgerConstructor({
   ingredients,
   bun,
@@ -49,6 +70,32 @@ function BurgerConstructor({
   toggleCheckout,
   showModal,
 }: IProps) {
+  const noScrollOnRemoveRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (noScrollOnRemoveRef.current) {
+      noScrollOnRemoveRef.current.addEventListener("touchstart", touchStart);
+      noScrollOnRemoveRef.current.addEventListener(
+        "touchmove",
+        preventTouch,
+        opts
+      );
+    }
+
+    return () => {
+      if (noScrollOnRemoveRef.current) {
+        noScrollOnRemoveRef.current.removeEventListener(
+          "touchstart",
+          touchStart
+        );
+        noScrollOnRemoveRef.current.removeEventListener(
+          "touchmove",
+          preventTouch,
+          opts
+        );
+      }
+    };
+  });
+
   const dispatch = useAppDispatch();
 
   const isMobile = useMediaQuery({ query: "(max-width: 1023px)" });
@@ -87,6 +134,12 @@ function BurgerConstructor({
     [dispatch]
   );
 
+  useEffect(() => {
+    if (isMobile && !canOrder) {
+      toggleCheckout();
+    }
+  }, [canOrder, isMobile, toggleCheckout]);
+
   return (
     <>
       {isMobile && (
@@ -100,7 +153,10 @@ function BurgerConstructor({
           />
         </div>
       )}
-      <div className={styles["burger-constructor-container"]}>
+      <div
+        className={styles["burger-constructor-container"]}
+        ref={noScrollOnRemoveRef}
+      >
         <motion.div
           key="burger-constructor"
           ref={dropTarget}

@@ -1,7 +1,9 @@
-import { memo, useMemo } from "react";
+import { memo, useMemo, useState, useCallback } from "react";
+import SwipeToDelete from "react-swipe-to-delete-ios";
 
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import { MobileCartItem } from "../mobile-cart-item/mobile-cart-item";
+import { DeleteComponent } from "../delete-component/delete-component";
 
 import styles from "../burger-item.module.css";
 
@@ -10,7 +12,7 @@ interface BurgerConstructorItemTypes {
   top?: string;
   bottomPadding?: boolean;
   topPadding?: boolean;
-  handleClose?: () => void;
+  handleClose: () => void;
   isMobile: boolean;
 }
 
@@ -22,6 +24,13 @@ function BurgerBunItem({
   handleClose,
   isMobile,
 }: BurgerConstructorItemTypes) {
+  const [itemHeight, setItemHeight] = useState(0);
+  const measuredRef = useCallback((node: HTMLDivElement) => {
+    if (node !== null) {
+      setItemHeight(node.clientHeight);
+    }
+  }, []);
+
   const bunName = useMemo(() => {
     switch (top) {
       case "top":
@@ -43,28 +52,45 @@ function BurgerBunItem({
   }, [top]);
 
   return (
-    <div className={styles["ingredient-outer"]}>
-      <div
-        className={styles["constructor-element-wrapper"]}
-        data-testid={bunType + ingredient._id}
-      >
-        {isMobile ? (
-          <MobileCartItem
-            name={ingredient.name + bunName}
-            price={ingredient.price}
-            image={ingredient.image_mobile}
-          />
-        ) : (
-          <ConstructorElement
-            type={bunType}
-            text={ingredient.name + bunName}
-            price={ingredient.price}
-            thumbnail={ingredient.image}
-            handleClose={handleClose}
-          />
-        )}
-      </div>
-    </div>
+    <>
+      {isMobile ? (
+        <SwipeToDelete
+          onDelete={handleClose}
+          height={itemHeight}
+          deleteComponent={<DeleteComponent />}
+          transitionDuration={200}
+        >
+          <div className={styles["ingredient-outer"]}>
+            <div
+              className={styles["constructor-element-wrapper"]}
+              data-testid={bunType + ingredient._id}
+            >
+              <MobileCartItem
+                name={ingredient.name + bunName}
+                price={ingredient.price}
+                image={ingredient.image_mobile}
+                ref={measuredRef}
+              />
+            </div>
+          </div>
+        </SwipeToDelete>
+      ) : (
+        <div className={styles["ingredient-outer"]}>
+          <div
+            className={styles["constructor-element-wrapper"]}
+            data-testid={bunType + ingredient._id}
+          >
+            <ConstructorElement
+              type={bunType}
+              text={ingredient.name + bunName}
+              price={ingredient.price}
+              thumbnail={ingredient.image}
+              handleClose={handleClose}
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

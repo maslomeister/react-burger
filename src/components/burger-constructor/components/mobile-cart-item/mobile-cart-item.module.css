@@ -1,21 +1,15 @@
-.mobile-cart-item {
-  display: flex;
-  width: calc(100% - 24px);
-  align-items: center;
-  margin-left: 24px;
-}
-
 .mobile-cart-item-inner {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   width: 100%;
   gap: 8px;
-  border-spacing: 16px;
-  border-bottom: 1px solid #2f2f37;
-  margin-top: 16px;
+  box-shadow: inset 0px -1px 0px #2f2f37;
+  height: auto;
+  padding-top: 16px;
   padding-bottom: 16px;
   padding-right: 24px;
+  background: #131316;
 }
 
 .mobile-cart-name {
@@ -24,6 +18,7 @@
 
 .mobile-cart-image {
   width: 80px;
-  height: auto;
+  height: 40px;
   object-fit: cover;
+  pointer-events: none;
 }
