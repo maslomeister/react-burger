@@ -6,7 +6,6 @@ import { userAuthorized, isTokenExpired, tokenExists } from "../../utils/utils";
 import { LoadingScreen } from "../loading-screen/loading-screen";
 
 export function ProtectedRouteFromGuest({ children }: RouteProps) {
-  let content = children;
   const dispatch = useAppDispatch();
   const { user, tokens, status } = useAppSelector((state) => state.authUser);
   const location = useLocation();
@@ -23,5 +22,5 @@ export function ProtectedRouteFromGuest({ children }: RouteProps) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  return <>{content}</>;
+  return <>{children}</>;
 }
