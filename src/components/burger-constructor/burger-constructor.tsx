@@ -1,4 +1,4 @@
-import { useCallback, useRef, useEffect } from "react";
+import React, { useCallback, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useDrop } from "react-dnd";
 import { useMediaQuery } from "react-responsive";
@@ -71,6 +71,7 @@ function BurgerConstructor({
   showModal,
 }: IProps) {
   const noScrollOnRemoveRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (noScrollOnRemoveRef.current) {
       noScrollOnRemoveRef.current.addEventListener("touchstart", touchStart);
@@ -94,7 +95,7 @@ function BurgerConstructor({
         );
       }
     };
-  });
+  }, []);
 
   const dispatch = useAppDispatch();
 
