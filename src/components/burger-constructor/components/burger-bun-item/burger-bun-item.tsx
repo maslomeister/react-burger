@@ -58,7 +58,9 @@ function BurgerBunItem({
           onDelete={handleClose}
           height={itemHeight}
           deleteComponent={<DeleteComponent />}
-          transitionDuration={200}
+          transitionDuration={300}
+          deleteThreshold={20}
+          showDeleteAction={false}
         >
           <div className={styles["ingredient-outer"]}>
             <div

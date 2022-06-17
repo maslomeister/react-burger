@@ -118,7 +118,9 @@ function BurgerInnerItem({
           height={itemHeight}
           className={beingDragged ? styles["swipe-to-delete_moving"] : ""}
           deleteComponent={<DeleteComponent />}
-          transitionDuration={200}
+          transitionDuration={300}
+          deleteThreshold={45}
+          showDeleteAction={false}
         >
           <div
             className={styles["ingredient"]}
