@@ -1,12 +1,11 @@
 {
   "name": "react-burger",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "private": true,
-  "homepage": "./react-burger",
+  "homepage": "https://maslomeister.github.io/react-burger",
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.1",
     "@testing-library/jest-dom": "^5.16.2",
-    "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.4.1",
     "@types/node": "^16.11.26",
@@ -15,14 +14,18 @@
     "@types/uuid": "^8.3.4",
     "@ya.praktikum/react-developer-burger-ui-components": "^1.13.1",
     "framer-motion": "^6.2.8",
+    "hamburger-react": "^2.5.0",
     "jwt-decode": "^3.1.2",
     "react": "^17.0.2",
     "react-dnd": "15.1.2",
     "react-dnd-html5-backend": "^15.1.3",
     "react-dom": "^17.0.2",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-redux": "^7.2.7",
+    "react-responsive": "^9.0.0-beta.8",
     "react-router-dom": "^6.2.2",
     "react-scripts": "5.0.0",
+    "react-swipe-to-delete-ios": "^2.0.71",
     "react-tooltip": "^4.2.21",
     "redux": "^4.1.2",
     "smooth-scroll-into-view-if-needed": "^1.1.33",
@@ -31,9 +34,13 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "set \"GENERATE_SOURCEMAP=false\" && react-scripts --optimize_for_size --max_old_space_size=460 --gc_interval=100 start",
+    "start": "react-scripts --optimize_for_size --max_old_space_size=460 --gc_interval=100 start /react-burger",
     "build": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
-    "test": "react-scripts test",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "test": "react-scripts test a",
+    "test:cypress": "cypress run",
+    "cy:open": "cypress open",
     "eject": "react-scripts eject",
     "eslint": "eslint ./src",
     "eslint:fix": "eslint ./src --fix"
@@ -55,5 +62,14 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@4tw/cypress-drag-drop": "^2.1.0",
+    "@cypress/react": "^5.12.5",
+    "@cypress/webpack-dev-server": "^1.8.4",
+    "@testing-library/react": "^13.3.0",
+    "cypress": "^10.0.3",
+    "gh-pages": "^4.0.0",
+    "jest": "^28.1.0"
   }
 }

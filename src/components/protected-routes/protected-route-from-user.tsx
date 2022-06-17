@@ -9,13 +9,7 @@ export function ProtectedRouteFromUser({ children }: RouteProps) {
   const location = useLocation() as TLocationProps;
 
   if (userAuthorized(user)) {
-    return (
-      <Navigate
-        to={location.state?.from ?? "/"}
-        state={{ from: location }}
-        replace
-      />
-    );
+    return <Navigate to={"/"} state={{ from: location }} replace />;
   }
 
   return <>{children}</>;

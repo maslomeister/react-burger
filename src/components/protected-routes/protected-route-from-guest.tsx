@@ -3,10 +3,9 @@ import { useLocation, Navigate, RouteProps } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { getNewAccessToken } from "../../services/reducers/auth/auth";
 import { userAuthorized, isTokenExpired, tokenExists } from "../../utils/utils";
-import { urls } from "../../utils/urls";
+import { LoadingScreen } from "../loading-screen/loading-screen";
 
 export function ProtectedRouteFromGuest({ children }: RouteProps) {
-  let content = children;
   const dispatch = useAppDispatch();
   const { user, tokens, status } = useAppSelector((state) => state.authUser);
   const location = useLocation();
@@ -16,12 +15,12 @@ export function ProtectedRouteFromGuest({ children }: RouteProps) {
   }
 
   if (status === "getUserData/loading" || status === "getToken/loading") {
-    return <></>;
+    return <LoadingScreen text="Загрузка данных" size="medium" />;
   }
 
   if (!userAuthorized(user)) {
-    return <Navigate to={urls.login} state={{ from: location }} replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  return <>{content}</>;
+  return <>{children}</>;
 }

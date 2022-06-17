@@ -11,7 +11,7 @@ import "./index.css";
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/react-burger">
       <Provider store={store}>
         <App />
       </Provider>

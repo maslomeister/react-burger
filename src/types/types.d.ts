@@ -18,17 +18,13 @@ interface IMessageData {
   message: string;
 }
 
-interface ICreateUser extends ITokenData {
-  user: IUser;
-}
-
 interface ILoginUser extends ITokenData {
   user: IUser;
 }
 
 interface IIngredient {
   _id: string;
-  _uniqueId?: string;
+  uniqueId?: string;
   index?: number;
   name: string;
   type: string;

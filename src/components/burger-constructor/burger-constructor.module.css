@@ -1,21 +1,21 @@
+.burger-constructor-container {
+  flex: 0 0 48%;
+  height: 100%;
+}
+
 .burger-constructor {
   display: flex;
   flex-flow: column;
-  width: 600px;
-  height: calc(100vh - 204px);
+  height: calc(100% - 68px);
   justify-content: space-between;
+  border: 2px dashed transparent;
+  border-radius: 30px;
+  margin-top: 60px;
+  width: calc(100% - 4px);
 }
 
-.outer_style {
-  display: flex;
-  flex-flow: column;
-  align-items: flex-end;
-  width: calc(600px - 8px);
-}
-
-.conditional {
-  width: calc(600px);
-  overflow-y: hidden;
+.burger-components {
+  height: calc(100% - 200px);
 }
 
 .helper {
@@ -35,8 +35,18 @@
   display: flex;
   flex-flow: column;
   align-items: flex-end;
-  overflow-y: scroll;
-  max-height: 465px;
+  overflow-y: auto;
+  max-height: calc(100% - 370px);
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.constructor-element-wrapper {
+  width: 100%;
+}
+
+.conditional {
+  overflow: hidden;
 }
 
 .ingredient {
@@ -44,14 +54,81 @@
   align-items: center;
 }
 
-.constructor-element-wrapper div {
-  width: 536px;
-}
-
 .cart {
   display: flex;
   flex-flow: row;
   align-items: center;
   justify-content: flex-end;
-  width: calc(600px - 8px);
+  margin-top: 40px;
+  margin-right: 20px;
+  margin-top: auto;
+}
+
+.mobile-cart__title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 80px;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.mobile-cart__ingredient-container {
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  height: calc(100% - 160px);
+  overflow-y: auto;
+}
+
+.mobile-cart__order-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 80px;
+  padding-left: 24px;
+  padding-right: 24px;
+  background-color: #1c1c21;
+}
+
+@media screen and (max-width: 1023px) {
+  .burger-constructor-container {
+    flex: none;
+    height: calc(100% - 160px);
+    overflow-y: auto;
+  }
+
+  .burger-constructor {
+    border: none;
+    margin-top: 0;
+    height: 100%;
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .inner_style {
+    overflow-y: unset;
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
+    max-height: unset;
+  }
+
+  .row {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .burger-constructor-container {
+    flex: 0 0 54%;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .burger-constructor-container {
+    flex: 0 0 48%;
+  }
 }

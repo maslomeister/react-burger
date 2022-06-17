@@ -1,9 +1,11 @@
 .container {
-  height: calc(100vh - 100px);
+  height: calc(100% - 100px);
+  width: 100%;
   display: flex;
   flex-flow: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
 }
 
 .loading-icon {

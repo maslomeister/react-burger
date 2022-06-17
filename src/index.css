@@ -2,14 +2,24 @@
   font-family: "JetBrainsMono-Regular";
   font-style: normal;
   font-weight: 400;
-  src: url("./assets/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  src: local(""),
+    url("./assets/fonts/jetbrainsmono-regular/jetbrains-mono-v12-latin-ext_latin_cyrillic-ext_cyrillic-regular.woff2")
+      format("woff2"),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+      url("./assets/fonts/jetbrainsmono-regular/jetbrains-mono-v12-latin-ext_latin_cyrillic-ext_cyrillic-regular.woff")
+      format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
 @font-face {
   font-family: "Iceland";
   font-style: normal;
   font-weight: 400;
-  src: url("./assets/fonts/Iceland-Regular.ttf") format("ttf");
+  src: local(""),
+    url("./assets/fonts/iceland/iceland-v16-latin-regular.woff2")
+      format("woff2"),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+      url("./assets/fonts/iceland/iceland-v16-latin-regular.woff")
+      format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
 body {
@@ -19,8 +29,22 @@ body {
     "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
   animation: hide-scroll 1s;
+}
+
+html,
+body,
+#root,
+.App {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 @keyframes hide-scroll {
@@ -41,12 +65,10 @@ code {
 
 .row {
   display: flex;
-  flex-flow: row;
+  flex-flow: row wrap;
   justify-content: center;
   align-content: center;
-  scrollbar-width: none; /* for Firefox */
   margin: auto;
-  overflow-x: scroll;
   z-index: 0;
 }
 
@@ -60,7 +82,7 @@ code {
 }
 
 .row::-webkit-scrollbar {
-  display: none; /* for Chrome, Safari, and Opera */
+  display: none; /* for Chrome, Safari, and Opera  */
 }
 
 /* ===== Scrollbar CSS ===== */
@@ -86,26 +108,40 @@ code {
   border: 0px none #ffffff;
 }
 
-@media screen and (min-width: 360px) {
-  .row {
-    width: 360px;
-  }
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (max-width: 1023px) {
+  .input_size_default {
+    width: 100%;
+  }
+
   .row {
-    width: 768px;
+    width: 100%;
+    height: calc(100% - 80px);
+  }
+
+  .row_inner {
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 
 @media screen and (min-width: 1024px) {
   .row {
-    width: 1024px;
+    width: 984px;
+    gap: 0;
+    height: calc(100% - 100px);
   }
 }
 
 @media screen and (min-width: 1280px) {
   .row {
-    width: 1280px;
+    width: 1240px;
+    gap: 40px;
+    height: calc(100% - 100px);
   }
 }

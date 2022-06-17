@@ -1,23 +1,21 @@
 .container {
-  height: calc(100vh - 100px);
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.inner-container {
+  height: calc(100% - 100px);
+  width: 100%;
   display: flex;
   flex-flow: column;
   align-items: center;
   justify-content: flex-start;
+  margin-top: 180px;
+  margin: auto;
 }
 
 .profile-container {
-  width: 1240px;
+  width: 100%;
   margin: auto;
   display: flex;
   flex-flow: row;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .profile-items-container {
@@ -30,7 +28,7 @@
 
 .form-container {
   display: flex;
-  width: 480px;
+  width: 100%;
   flex-flow: column;
   align-items: center;
   justify-content: center;
@@ -41,6 +39,16 @@
   flex-flow: row;
   align-items: flex-end;
   justify-content: flex-end;
+}
+
+.button {
+  margin-bottom: 60px;
+}
+
+.form {
+}
+
+.input-wrapper {
 }
 
 .text {
@@ -61,4 +69,67 @@
 
 .text-link:hover {
   text-decoration: underline;
+}
+
+@media screen and (max-width: 1023px) {
+  .container {
+    margin-top: 16px;
+  }
+
+  .form {
+    width: 100%;
+  }
+
+  .input-wrapper {
+    width: 100%;
+  }
+
+  .profile-container {
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .profile-buttons {
+    display: flex;
+    flex-flow: column-reverse;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .button {
+    margin-bottom: 40px;
+  }
+
+  .text {
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .input-wrapper > div {
+    width: calc(100% - 48px);
+    margin: auto;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .container {
+    width: 1024px;
+    margin-top: 180px;
+  }
+  .profile-container {
+    width: 1024px;
+  }
+}
+
+@media screen and (min-width: 1240px) {
+  .container {
+    width: 1240px;
+    margin-top: 180px;
+  }
+
+  .profile-container {
+    width: 1240px;
+  }
 }

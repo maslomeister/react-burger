@@ -5,7 +5,7 @@ import { BurgerIngredientItemMemoized } from "./components/burger-ingredients-it
 import { Tabs } from "../../utils/tabs-data";
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { BurgerIngredientsTabsMemoized } from "./components/burger-ingredients-tabs/burger-ingredients-tabs";
-import { addDataToModal } from "../../services/reducers/ingredient-details";
+import { addDataToModal } from "../../services/reducers/ingredient-details/ingredient-details";
 
 import styles from "./burger-ingredients.module.css";
 
@@ -48,16 +48,15 @@ function BurgerIngredients() {
         (_ingredient) => _ingredient._id === location.state.id
       );
       if (ingredient) {
-        dispatch(
-          addDataToModal({
-            modalImage: ingredient.image_large,
-            modalName: ingredient.name,
-            modalCalories: ingredient.calories,
-            modalProteins: ingredient.price,
-            modalFat: ingredient.fat,
-            modalCarbohydrates: ingredient.carbohydrates,
-          })
-        );
+        const modalData = {
+          modalImage: ingredient.image_large,
+          modalName: ingredient.name,
+          modalCalories: ingredient.calories,
+          modalProteins: ingredient.price,
+          modalFat: ingredient.fat,
+          modalCarbohydrates: ingredient.carbohydrates,
+        };
+        dispatch(addDataToModal(modalData));
       }
     }
   }, [dispatch, ingredients, location.state]);
@@ -78,42 +77,51 @@ function BurgerIngredients() {
       navigate(`/ingredients/${ingredient._id}`, {
         state: { background: location, id: ingredient._id },
       });
-      dispatch(
-        addDataToModal({
-          modalImage: ingredient.image_large,
-          modalName: ingredient.name,
-          modalCalories: ingredient.calories,
-          modalProteins: ingredient.price,
-          modalFat: ingredient.fat,
-          modalCarbohydrates: ingredient.carbohydrates,
-        })
-      );
+      const modalData = {
+        modalImage: ingredient.image_large,
+        modalName: ingredient.name,
+        modalCalories: ingredient.calories,
+        modalProteins: ingredient.price,
+        modalFat: ingredient.fat,
+        modalCarbohydrates: ingredient.carbohydrates,
+      };
+      dispatch(addDataToModal(modalData));
     },
     [dispatch, location, navigate]
   );
 
   const ingredientsCategories = [buns, sauces, mains];
   return (
-    <div>
-      <p className="text text_type_main-large mb-5 mt-10">Соберите бургер</p>
-      <BurgerIngredientsTabsMemoized tabsRef={tabsRef} />
+    <div className={styles["ingredients-container"]}>
+      <div className={styles["ingredients"]}>
+        <p
+          className={`${styles["ingredients__title"]} text text_type_main-large mb-5 mt-10`}
+        >
+          Соберите бургер
+        </p>
+        <BurgerIngredientsTabsMemoized tabsRef={tabsRef} />
 
-      <div className={styles["components"]} ref={tabsRef}>
-        {Tabs.map((tab, index) => (
-          <section key={tab._id} className={`${tab._id}`}>
-            <p className="text text_type_main-medium">{tab.name}</p>
-            <div className={`${styles["item-container"]} ml-4`}>
-              {ingredientsCategories[index].map((ingredient) => (
-                <BurgerIngredientItemMemoized
-                  key={ingredient._id}
-                  ingredient={ingredient}
-                  onClick={modalData(ingredient)}
-                  counter={ingredientsCounter[ingredient._id]}
-                />
-              ))}
-            </div>
-          </section>
-        ))}
+        <div className={styles["components"]} ref={tabsRef}>
+          {Tabs.map((tab, index) => (
+            <section key={tab._id} className={`${tab._id}`}>
+              <p
+                className={`${styles["ingredients__tab__title"]} text text_type_main-medium`}
+              >
+                {tab.name}
+              </p>
+              <div className={styles["item-container"]}>
+                {ingredientsCategories[index].map((ingredient) => (
+                  <BurgerIngredientItemMemoized
+                    key={ingredient._id}
+                    ingredient={ingredient}
+                    onClick={modalData(ingredient)}
+                    counter={ingredientsCounter[ingredient._id]}
+                  />
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
       </div>
     </div>
   );

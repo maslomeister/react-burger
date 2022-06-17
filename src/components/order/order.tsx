@@ -5,7 +5,7 @@ import { IngredientsPreview } from "./components/ingredients-preview";
 import { TotalPrice } from "../total-price/total-price";
 import { formatDisplayDate } from "../../utils/utils";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
-import { addDataToModal } from "../../services/reducers/order-details";
+import { addDataToModal } from "../../services/reducers/order-details/order-details";
 import {
   generateIngredientsFromIds,
   getTotalPriceOfIngredients,
@@ -57,10 +57,10 @@ export function Order(props: Props) {
 
   return (
     <div
-      className={`${styles["order-container"]} mr-2 mb-4`}
+      className={`${styles["order-container"]} ml-2 mr-2 mb-4`}
       onClick={modalData}
     >
-      <div className={`${styles["order-container_inner"]} mt-6 mb-6 ml-6 mr-6`}>
+      <div className={styles["order-container_inner"]}>
         <div className={`${styles["order-number-date"]} mb-6`}>
           <p className="text text_type_digits-default">#{props.order.number}</p>
           <p className="text text_type_main-default text_color_inactive">

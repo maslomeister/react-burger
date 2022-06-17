@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
@@ -17,14 +17,13 @@ import {
   IngredientInfo,
   OrderInfoPage,
 } from "../../pages";
-import { Sidebar } from "../../components/sidebar/sidebar";
 import { Modal } from "../modal/modal";
 import { IngredientDetails } from "../ingredient-details/ingredient-details";
 import { OrderInfoModal } from "../../components/order-info-modal/order-info-modal";
 import { ProtectedRouteFromGuest } from "../protected-routes/protected-route-from-guest";
 import { ProtectedRouteFromUser } from "../protected-routes/protected-route-from-user";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
-import { fetchIngredients } from "../../services/reducers/burger-ingredients";
+import { fetchIngredients } from "../../services/reducers/burger-ingredients/burger-ingredients";
 import { LoadingScreen } from "../loading-screen/loading-screen";
 import { ErrorScreen } from "../error-screen/error-screen";
 import { tokenExists, isTokenExpired } from "../../utils/utils";
@@ -32,7 +31,6 @@ import {
   getUserData,
   getNewAccessToken,
 } from "../../services/reducers/auth/auth";
-import { urls } from "../../utils/urls";
 
 function App() {
   let content;
@@ -45,12 +43,6 @@ function App() {
   const { tokens } = useAppSelector((state) => state.authUser);
   const accessToken = tokens.accessToken;
   const refreshToken = tokens.refreshToken;
-
-  const [showSidebar, setShowSidebar] = useState(false);
-
-  const toggleSidebar = () => {
-    setShowSidebar(!showSidebar);
-  };
 
   useEffect(() => {
     if (tokenExists(accessToken)) {
@@ -88,16 +80,12 @@ function App() {
   } else if (status === "succeeded") {
     content = (
       <>
-        <AppHeader showSidebar={showSidebar} toggleSidebar={toggleSidebar} />
-        <Sidebar showSidebar={showSidebar} toggleSidebar={toggleSidebar} />
+        {/*TODO загрузка истории замедляет сайдбар  */}
+        <AppHeader />
         <Routes location={background || location}>
+          <Route path="/" element={<Constructor />} key={location.pathname} />
           <Route
-            path={urls.home}
-            element={<Constructor />}
-            key={location.pathname}
-          />
-          <Route
-            path={urls.login}
+            path="/login"
             element={
               <ProtectedRouteFromUser>
                 <Login />
@@ -106,7 +94,7 @@ function App() {
             key={location.pathname}
           />
           <Route
-            path={urls.register}
+            path="/register"
             element={
               <ProtectedRouteFromUser>
                 <Register />
@@ -115,7 +103,7 @@ function App() {
             key={location.pathname}
           />
           <Route
-            path={urls.forgotPassword}
+            path="/forgot-password"
             element={
               <ProtectedRouteFromUser>
                 <ForgotPassword />
@@ -124,7 +112,7 @@ function App() {
             key={location.pathname}
           />
           <Route
-            path={urls.resetPassword}
+            path="/reset-password"
             element={
               <ProtectedRouteFromUser>
                 <ResetPassword />
@@ -132,17 +120,13 @@ function App() {
             }
             key={location.pathname}
           />
-          <Route path={urls.ingredientInfo} element={<IngredientInfo />} />
+          <Route path="/ingredients/:id" element={<IngredientInfo />} />
+
+          <Route path="/feed" element={<Orders />} key={location.pathname} />
+          <Route path="/feed/:id" element={<OrderInfoPage />} />
 
           <Route
-            path={urls.feed}
-            element={<Orders />}
-            key={location.pathname}
-          />
-          <Route path={urls.feedOrder} element={<OrderInfoPage />} />
-
-          <Route
-            path={urls.profile}
+            path="/profile"
             element={
               <ProtectedRouteFromGuest>
                 <Profile />
@@ -152,7 +136,7 @@ function App() {
           />
 
           <Route
-            path={urls.profileOrders}
+            path="/profile/orders"
             element={
               <ProtectedRouteFromGuest>
                 <ProfileOrders />
@@ -161,18 +145,14 @@ function App() {
             key={location.pathname}
           />
           <Route
-            path={urls.profileOrder}
+            path="/profile/orders/:id"
             element={
               <ProtectedRouteFromGuest>
                 <OrderInfoPage />
               </ProtectedRouteFromGuest>
             }
           />
-          <Route
-            path={urls.logout}
-            element={<Logout />}
-            key={location.pathname}
-          />
+          <Route path="/logout" element={<Logout />} key={location.pathname} />
           <Route path="*" element={<NotFound />} key={location.pathname} />
         </Routes>
         <AnimatePresence>
@@ -180,7 +160,7 @@ function App() {
             <Routes>
               {/* This route fixes end animation of modal window */}
               <Route
-                path={urls.home}
+                path="/"
                 element={
                   <Modal
                     title="Детали ингредиента"
@@ -192,7 +172,7 @@ function App() {
                 }
               />
               <Route
-                path={urls.ingredientInfo}
+                path="/ingredients/:id"
                 element={
                   <Modal
                     title="Детали ингредиента"
@@ -205,7 +185,7 @@ function App() {
               />
 
               <Route
-                path={urls.feed}
+                path="/feed"
                 element={
                   <Modal
                     titleIsNumber={true}
@@ -217,7 +197,7 @@ function App() {
                 }
               />
               <Route
-                path={urls.feedOrder}
+                path="/feed/:id"
                 element={
                   <Modal
                     titleIsNumber={true}
@@ -230,7 +210,7 @@ function App() {
               />
 
               <Route
-                path={urls.profileOrders}
+                path="/profile/orders"
                 element={
                   <ProtectedRouteFromGuest>
                     <Modal
@@ -244,7 +224,7 @@ function App() {
                 }
               />
               <Route
-                path={urls.profileOrder}
+                path="/profile/orders/:id"
                 element={
                   <ProtectedRouteFromGuest>
                     <Modal

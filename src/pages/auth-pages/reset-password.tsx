@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation, Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useMediaQuery } from "react-responsive";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import {
@@ -9,11 +10,11 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useFormAndValidation } from "../../hooks/useFromAndValidate";
 import { resetPasswordUser } from "../../services/reducers/auth/auth";
-import { urls } from "../../utils/urls";
 
 import styles from "./auth-pages.module.css";
 
 export function ResetPassword() {
+  const isMobile = useMediaQuery({ query: "(max-width: 1023px)" });
   let content;
   const location = useLocation() as TLocationProps;
   const dispatch = useAppDispatch();
@@ -45,11 +46,16 @@ export function ResetPassword() {
   const input = (loading: boolean, error?: string) => {
     return (
       <>
-        <form className={styles["inner-container"]} onSubmit={submitForm}>
-          <p className="text text_type_main-medium mb-6">
+        <form className={styles["form-container"]} onSubmit={submitForm}>
+          <h1
+            className={`text text_type_main-${
+              isMobile ? "large" : "medium"
+            } mb-6`}
+          >
             Восстановление пароля
-          </p>
-          <div className="mb-6">
+          </h1>
+
+          <div className={`${styles["input-wrapper"]} mb-6`}>
             <Input
               name="password"
               icon={revealPassword ? "HideIcon" : "ShowIcon"}
@@ -64,7 +70,7 @@ export function ResetPassword() {
               onIconClick={() => setRevealPassword(!revealPassword)}
             />
           </div>
-          <div className="mb-6">
+          <div className={`${styles["input-wrapper"]} mb-6`}>
             <Input
               name="confirmationCode"
               placeholder={"Введите код из письма"}
@@ -77,7 +83,7 @@ export function ResetPassword() {
             />
           </div>
 
-          <div className={error ? "mb-5" : "mb-20"}>
+          <div className={`${styles["button"]} ${error ? "mb-5" : ""}`}>
             <Button
               disabled={loading ? true : false}
               type="primary"
@@ -101,7 +107,7 @@ export function ResetPassword() {
             <p className="text text_type_main-default text_color_inactive">
               Вспомнили пароль?&nbsp;
             </p>
-            <Link to={urls.login}>
+            <Link to={"/login"}>
               <p
                 className={`${styles["text-link"]} text text_type_main-default`}
               >
@@ -123,11 +129,11 @@ export function ResetPassword() {
   }
 
   if (location.state?.from === undefined) {
-    return <Navigate to={urls.forgotPassword} replace={true} />;
+    return <Navigate to={"/forgot-password"} replace={true} />;
   }
 
   if (status === "resetPassword/success") {
-    return <Navigate to={urls.login} replace={true} />;
+    return <Navigate to={"login"} replace={true} />;
   }
 
   return (

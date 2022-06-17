@@ -9,7 +9,8 @@ export function generateIngredientsFromIds(
   allIngredients: Array<IIngredient>,
   receivedIngredients: Array<string>
 ): Array<IIngredient> {
-  return receivedIngredients.map((ingredient) => {
+  const validIngredients = receivedIngredients.filter((item) => item != null);
+  return validIngredients.map((ingredient) => {
     const foundIngredient = allIngredients.filter(
       (item) => item._id === ingredient
     )[0];
@@ -63,3 +64,48 @@ export function getTotalPriceOfIngredientsWithAmount(
     return acc + obj.price * obj.amount;
   }, 0);
 }
+
+export const setActiveHelper = (
+  isActive: boolean,
+  activeStyle: string,
+  inActiveStyle: string
+) => (isActive ? activeStyle : inActiveStyle);
+
+export const iconTypeHelper = (
+  link: string,
+  active: string,
+  activeStyle: "secondary" | "primary" | "error" | "success",
+  inActiveStyle: "secondary" | "primary" | "error" | "success",
+  end?: boolean
+) => {
+  if (
+    active === link ||
+    (!end && active.includes(link) && active.charAt(link.length) === "/")
+  )
+    return activeStyle;
+  return inActiveStyle;
+};
+
+export const routeMatchHelper = (
+  link: string,
+  active: string,
+  activeStyle: string,
+  inActiveStyles: string,
+  end?: boolean
+) => {
+  if (
+    active === link ||
+    (!end && active.includes(link) && active.charAt(link.length) === "/")
+  )
+    return activeStyle;
+  return inActiveStyles;
+};
+
+export const buttonType = (link: string, active: string, end?: boolean) => {
+  if (
+    active === link ||
+    (!end && active.includes(link) && active.charAt(link.length) === "/")
+  )
+    return "primary";
+  return "secondary";
+};

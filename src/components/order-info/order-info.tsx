@@ -62,12 +62,9 @@ export function OrderInfo({ orderData, isModal }: Props) {
       </p>
       <p className="text text_type_main-medium mb-6">Состав:</p>
       <div className={`${styles["ingredients-container"]} mb-10`}>
-        {ingredients.map((ingredient) => {
+        {ingredients.map((ingredient, i) => {
           return (
-            <div
-              className={`${styles["ingredient-container"]} mb-4`}
-              key={ingredient._uniqueId}
-            >
+            <div className={`${styles["ingredient-container"]} mb-4`} key={i}>
               <div className="mr-4">
                 <IngredientCircleImage image={ingredient.image} />
               </div>

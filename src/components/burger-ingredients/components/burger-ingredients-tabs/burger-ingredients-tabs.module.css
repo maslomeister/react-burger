@@ -1,3 +1,39 @@
 .tabs {
   display: flex;
+  /* fixes weird bug on ios/safari  */
+  -webkit-transform: translateX(0) translateZ(0);
+}
+
+@media screen and (max-width: 767px) {
+  .tab-wrapper {
+    width: 34%;
+  }
+
+  .tab-wrapper > div {
+    min-width: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .tab-wrapper {
+    width: 34%;
+  }
+
+  .tab-wrapper > div {
+    min-width: 0;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .tab-wrapper > div {
+    min-width: 146px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .tab-wrapper > div {
+    min-width: 200px;
+  }
 }

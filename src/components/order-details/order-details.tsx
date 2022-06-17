@@ -1,6 +1,7 @@
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { AnimatedLoading } from "../../components/animated-loading/animated-loading";
 import { Modal } from "../../components/modal/modal";
+import { useMediaQuery } from "react-responsive";
 
 import styles from "./order-details.module.css";
 
@@ -17,6 +18,8 @@ export function OrderDetails({
   error,
   orderId,
 }: OrderDetailsProps) {
+  const isMobile = useMediaQuery({ query: "(max-width: 1023px)" });
+
   let content;
   if (status === "getOrderNumber/loading") {
     content = (
@@ -38,13 +41,25 @@ export function OrderDetails({
   } else if (status === "getOrderNumber/succeeded") {
     content = (
       <div className={styles["order-details"]}>
+        {isMobile && (
+          <h1 className={`${styles["order-title"]} text text_type_main_medium`}>
+            Заказ оформлен
+          </h1>
+        )}
         <div
-          className={`${styles["order-number_shadow"]} text text_type_digits-large mt-30`}
+          className={`${
+            styles["order-number_shadow"]
+          } text text_type_digits-large ${isMobile ? "mt-15" : "mt-30"}`}
+          data-testid="placed-order-number"
         >
           {orderId}
         </div>
 
-        <div className="text text text_type_main-default mt-8">
+        <div
+          className={`text text_type_main-${
+            isMobile ? "medium" : "default"
+          } mt-8`}
+        >
           идентификатор заказа
         </div>
 

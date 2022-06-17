@@ -12,11 +12,17 @@
   cursor: auto;
 }
 
-.modal_title {
+.modal-header {
   display: flex;
   flex-flow: row;
   align-items: center;
   justify-content: space-between;
+  margin-top: 40px;
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+.modal-title {
 }
 
 .close-icon_flex {
@@ -28,4 +34,35 @@
   top: 0;
   right: 0;
   cursor: pointer;
+  margin-right: 40px;
+  margin-top: 60px;
+}
+
+@media screen and (max-width: 1023px) {
+  .modal {
+    border: none;
+    border-radius: 0;
+    width: 100%;
+    height: 100%;
+    background: #131316;
+  }
+
+  .modal-header {
+    justify-content: flex-end;
+  }
+
+  .modal-title {
+    display: none;
+  }
+
+  .close-icon_absolute {
+    margin-top: 24px;
+    margin-right: 24px;
+  }
+
+  .modal-header {
+    margin-top: 24px;
+    margin-left: 24px;
+    margin-right: 24px;
+  }
 }

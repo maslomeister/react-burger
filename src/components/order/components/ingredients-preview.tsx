@@ -20,8 +20,8 @@ export function IngredientsPreview({ ingredients }: Props) {
           <IngredientCircleImage
             position={i}
             image={ingredient.image}
-            amount={i === 6 ? amountOfHiddenIngredients : undefined}
-            key={ingredient._uniqueId}
+            amount={i === 5 ? amountOfHiddenIngredients : 0}
+            key={i}
           />
         );
       })}

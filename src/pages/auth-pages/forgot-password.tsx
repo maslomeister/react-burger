@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useMediaQuery } from "react-responsive";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import {
@@ -9,11 +10,12 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useFormAndValidation } from "../../hooks/useFromAndValidate";
 import { forgotUserPassword } from "../../services/reducers/auth/auth";
-import { urls } from "../../utils/urls";
 
 import styles from "./auth-pages.module.css";
 
 export function ForgotPassword() {
+  const isMobile = useMediaQuery({ query: "(max-width: 1023px)" });
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -31,7 +33,7 @@ export function ForgotPassword() {
   const checkEmail = async () => {
     await dispatch(forgotUserPassword(values.email!));
 
-    navigate(urls.resetPassword, {
+    navigate("/reset-password", {
       state: { from: "forgot-password" },
       replace: true,
     });
@@ -46,10 +48,14 @@ export function ForgotPassword() {
     return (
       <>
         <form className={styles["form-container"]} onSubmit={submitForm}>
-          <p className="text text_type_main-medium mb-6">
+          <h1
+            className={`text text_type_main-${
+              isMobile ? "large" : "medium"
+            } mb-6`}
+          >
             Восстановление пароля
-          </p>
-          <div className={`${styles["input-item"]} mb-6`}>
+          </h1>
+          <div className={`${styles["input-wrapper"]} mb-6`}>
             <Input
               name="email"
               type="email"
@@ -63,7 +69,7 @@ export function ForgotPassword() {
             />
           </div>
 
-          <div className={error ? "mb-5" : "mb-20"}>
+          <div className={`${styles["button"]} ${error ? "mb-5" : ""}`}>
             <Button
               disabled={loading ? true : false}
               type="primary"
@@ -88,7 +94,7 @@ export function ForgotPassword() {
             <p className="text text_type_main-default text_color_inactive">
               Вспомнили пароль?&nbsp;
             </p>
-            <Link to={urls.login}>
+            <Link to={"/login"}>
               <p
                 className={`${styles["text-link"]} text text_type_main-default`}
               >

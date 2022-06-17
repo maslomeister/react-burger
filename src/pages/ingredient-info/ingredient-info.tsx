@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { IngredientDetails } from "../../components/ingredient-details/ingredient-details";
-import { addDataToPage } from "../../services/reducers/ingredient-details";
+import { addDataToModal } from "../../services/reducers/ingredient-details/ingredient-details";
 
 import styles from "./ingredient-info.module.css";
 
@@ -23,16 +23,15 @@ export function IngredientInfo() {
     const ingredient = ingredients.find((obj) => obj._id === params.id);
     if (ingredient) {
       setIngredientExists(true);
-      dispatch(
-        addDataToPage({
-          modalImage: ingredient.image_large,
-          modalName: ingredient.name,
-          modalCalories: ingredient.calories,
-          modalProteins: ingredient.price,
-          modalFat: ingredient.fat,
-          modalCarbohydrates: ingredient.carbohydrates,
-        })
-      );
+      const modalData = {
+        modalImage: ingredient.image_large,
+        modalName: ingredient.name,
+        modalCalories: ingredient.calories,
+        modalProteins: ingredient.price,
+        modalFat: ingredient.fat,
+        modalCarbohydrates: ingredient.carbohydrates,
+      };
+      dispatch(addDataToModal(modalData));
     }
   }, [dispatch, params.id, ingredients, params]);
 

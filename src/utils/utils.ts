@@ -69,7 +69,7 @@ export function validateInputField(input: string, name: string) {
   switch (name) {
     case "name": {
       const regex = new RegExp("^[-a-zA-Zа-яА-Я0-9]+$");
-      if (input.length <= 4) {
+      if (input.length <= 3) {
         return { isValid: false, error: "Минимальная длина имени - 4 символа" };
       }
       if (!regex.exec(input)) {
@@ -86,7 +86,7 @@ export function validateInputField(input: string, name: string) {
       if (regex.exec(input)) {
         return { isValid: false, error: "Пароль не может содержать пробелы" };
       }
-      if (input.length <= 8) {
+      if (input.length <= 7) {
         return {
           isValid: false,
           error: "Минимальная длина пароля - 8 символов",
@@ -99,7 +99,7 @@ export function validateInputField(input: string, name: string) {
 
 export function validateName(input: string) {
   const regex = new RegExp("^[-a-zA-Zа-яА-Я0-9]+$");
-  if (input.length <= 4) {
+  if (input.length <= 3) {
     return { isValid: false, error: "Минимальная длина имени - 4 символа" };
   }
   if (!regex.exec(input)) {
@@ -120,7 +120,7 @@ export function validatePassword(input: string) {
   if (input.length === 0) {
     return { isValid: false, error: "Пароль не может быть пустым" };
   }
-  if (input.length <= 8) {
+  if (input.length <= 7) {
     return { isValid: false, error: "Минимальная длина пароля - 8 символов" };
   }
   return { isValid: true, error: "" };
@@ -159,7 +159,7 @@ export const formatDisplayDate = (date: string): string => {
       "день",
       "дня",
       "дней",
-    ])} назад, `;
+    ])} назад`;
   }
   const time = new Date(date).toLocaleTimeString("ru-Ru", {
     hour: "2-digit",
