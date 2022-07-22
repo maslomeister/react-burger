@@ -131,7 +131,7 @@ function BurgerInnerItem({
               <div
                 ref={ref}
                 data-handler-id={handlerId}
-                className={styles["_draggable"]}
+                className={styles["_draggable"] + " noselect"}
               >
                 <DragIcon type="primary" />
               </div>

@@ -10,3 +10,12 @@
   /* fixes weird bug on ios/safari  */
   -webkit-transform: translateX(0) translateZ(0);
 }
+
+.mobile-cart {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1001;
+  background-color: #131316;
+}

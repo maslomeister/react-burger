@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { TotalPrice } from "../../../../components/total-price/total-price";
@@ -15,7 +15,6 @@ import {
 } from "../../../../services/reducers/burger-constructor/burger-constructor";
 import { getOrderNumber } from "../../../../services/reducers/order-details/order-details";
 import { userAuthorized } from "../../../../utils/utils";
-import { BurgerConstructorModal } from "../burger-constructor-modal/burger-constructor-modal";
 
 import styles from "./burger-constructor-wrapper.module.css";
 
@@ -106,26 +105,6 @@ function BurgerConstructorWrapper() {
     setShowCheckout(!showCheckout);
   }
 
-  const ingredientsElement: HTMLElement = document.getElementById(
-    "ingredients-row"
-  ) as HTMLElement;
-
-  ////////////////////////////////////////////////////////
-  // Убирает баг с отображением текста страницы ингредиентов
-  // на фоне перетаскиваемого элемента на IOS 15(chrome, safari, yandex)
-
-  const onAnimationFinish = (e: any) => {
-    if (e.y === "0") {
-      ingredientsElement.style.display = "none";
-    }
-  };
-
-  const onCartClose = () => {
-    ingredientsElement.style.display = "flex";
-  };
-
-  ///////////////////////////////////////////////////////
-
   return (
     <>
       {showModal && (
@@ -136,20 +115,30 @@ function BurgerConstructorWrapper() {
           error={error}
         />
       )}
+
       {isMobile ? (
-        <div className={styles["mobile-checkout"]}>
-          <TotalPrice price={totalPrice} size="medium" />
-          <Button
-            type="primary"
-            size="medium"
-            disabled={!canOrder}
-            onClick={toggleCheckout}
-          >
-            Заказ
-          </Button>
+        <>
+          <div className={styles["mobile-checkout"]}>
+            <TotalPrice price={totalPrice} size="medium" />
+            <Button
+              type="primary"
+              size="medium"
+              disabled={!canOrder}
+              onClick={toggleCheckout}
+            >
+              Заказ
+            </Button>
+          </div>
           <AnimatePresence>
             {showCheckout && (
-              <BurgerConstructorModal onAnimationFinish={onAnimationFinish}>
+              <motion.div
+                className={styles["mobile-cart"]}
+                key="mobile-cart-popup"
+                initial={{ y: "+100%" }}
+                animate={{ y: "0", transition: { duration: 0.25 } }}
+                exit={{ y: "+100%", transition: { duration: 0.15 } }}
+                transition={{ type: "ease-in-out" }}
+              >
                 <BurgerConstructor
                   ingredients={ingredients}
                   bun={bun}
@@ -159,17 +148,16 @@ function BurgerConstructorWrapper() {
                   status={status}
                   error={error}
                   toggleCheckout={() => {
-                    onCartClose();
                     toggleCheckout();
                   }}
                   createOrder={createOrder}
                   hideModal={hideModal}
                   showModal={showModal}
                 />
-              </BurgerConstructorModal>
+              </motion.div>
             )}
           </AnimatePresence>
-        </div>
+        </>
       ) : (
         <BurgerConstructor
           ingredients={ingredients}
