@@ -7,22 +7,30 @@
 @media screen and (max-width: 767px) {
   .tab-wrapper {
     width: 34%;
+    /* fix for weird 1px gap between tabs */
+    margin: 0px -1px;
   }
 
   .tab-wrapper > div {
     min-width: 0;
     padding-left: 0;
     padding-right: 0;
+    /* fix for weird 1px gap between tabs */
+    margin: 0px -1px;
   }
 }
 
-@media screen and (max-width: 1023px) {
+@media screen and (min-width: 768px) {
   .tab-wrapper {
     width: 34%;
+    /* fix for weird 1px gap between tabs */
+    margin: 0px -1px;
   }
 
   .tab-wrapper > div {
     min-width: 0;
+    /* fix for weird 1px gap between tabs */
+    margin: 0px -1px;
   }
 }
 
