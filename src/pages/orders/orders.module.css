@@ -136,10 +136,12 @@
 
   .tab-wrapper {
     width: 50%;
+    margin: 0px -1px;
   }
 
   .tab-wrapper > div {
     min-width: 0;
+    margin: 0px -1px;
   }
 }
 
