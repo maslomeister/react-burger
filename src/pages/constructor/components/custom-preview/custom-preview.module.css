@@ -3,7 +3,6 @@
   align-items: center;
   justify-content: flex-start;
   width: calc(100% - 8px);
-  background: rgba(19, 19, 22, 0.6);
 }
 
 ._draggable {
@@ -11,7 +10,6 @@
   display: flex;
   justify-content: center;
   width: 24px;
-  background: rgba(19, 19, 22, 0.6);
 }
 
 @media screen and (max-width: 1023px) {
@@ -32,6 +30,6 @@
 
   .constructor-element-wrapper {
     width: calc(100% - 80px);
-    background: rgba(19, 19, 22, 0.6);
+    background: transparent;
   }
 }
