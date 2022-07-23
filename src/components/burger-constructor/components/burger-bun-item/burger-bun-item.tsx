@@ -62,7 +62,7 @@ function BurgerBunItem({
           deleteThreshold={20}
           showDeleteAction={false}
         >
-          <div className={styles["ingredient-outer"]}>
+          <div className={styles["ingredient-outer"] + " noselect"}>
             <div
               className={styles["constructor-element-wrapper"]}
               data-testid={bunType + ingredient._id}
@@ -77,7 +77,7 @@ function BurgerBunItem({
           </div>
         </SwipeToDelete>
       ) : (
-        <div className={styles["ingredient-outer"]}>
+        <div className={styles["ingredient-outer"] + " noselect"}>
           <div
             className={styles["constructor-element-wrapper"]}
             data-testid={bunType + ingredient._id}

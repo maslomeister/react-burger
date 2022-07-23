@@ -164,7 +164,7 @@ function BurgerInnerItem({
             </div>
           )}
 
-          <div className={styles["constructor-element-wrapper"]}>
+          <div className={styles["constructor-element-wrapper"] + " noselect"}>
             <ConstructorElement
               text={ingredient.name}
               price={ingredient.price}
