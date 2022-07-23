@@ -1,8 +1,10 @@
 # Stellar Burgers
-
 Сайт космической бургерной написанный на reactjs с использованием typescript - проектная работа курса [React-разработчик](https://practicum.yandex.ru/react/) от Яндекс Практикума. В настоящий момент приложение находится в разработке.
 
 _В ходе разработки проект проверялся менторами и ревьюверами Яндекс Практикума._
+
+# Preview
+https://user-images.githubusercontent.com/64310545/180601523-0d9f5a99-6a7f-44eb-aab5-b5ce39c4f26c.mp4
 
 ### [Запустить сайт](https://maslomeister.github.io/react-burger/)
 
