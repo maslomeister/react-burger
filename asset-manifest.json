@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/react-burger/static/css/main.385d7d1d.css",
+    "main.css": "/react-burger/static/css/main.404ee67e.css",
     "main.js": "/react-burger/static/js/main.a9cf96cd.js",
     "static/js/27.9c179b83.chunk.js": "/react-burger/static/js/27.9c179b83.chunk.js",
     "static/media/JetBrainsMono-Bold.woff": "/react-burger/static/media/JetBrainsMono-Bold.3914674f1cb2335acf26.woff",
@@ -17,7 +17,7 @@
     "index.html": "/react-burger/index.html"
   },
   "entrypoints": [
-    "static/css/main.385d7d1d.css",
+    "static/css/main.404ee67e.css",
     "static/js/main.a9cf96cd.js"
   ]
 }
