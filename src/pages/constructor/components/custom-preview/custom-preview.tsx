@@ -2,7 +2,10 @@ import type { CSSProperties, FC } from "react";
 import type { XYCoord } from "react-dnd";
 import { useDragLayer } from "react-dnd";
 
+import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { MobileCartItem } from "../../../../components/burger-constructor/components/mobile-cart-item/mobile-cart-item";
+
+import styles from "./custom-preview.module.css";
 
 const layerStyles: CSSProperties = {
   position: "fixed",
@@ -49,11 +52,20 @@ export const CustomPreview: FC<CustomDragLayerProps> = (props) => {
     switch (itemType) {
       case "sorting":
         return (
-          <MobileCartItem
-            image={item.image}
-            name={item.name}
-            price={item.price}
-          />
+          <div className={styles["ingredient"]}>
+            <div className={styles["_draggable"] + " noselect"}>
+              <DragIcon type="primary" />
+            </div>
+
+            <div className={styles["constructor-element-wrapper"]}>
+              <MobileCartItem
+                image={item.image}
+                name={item.name}
+                price={item.price}
+                opacity={0.6}
+              />
+            </div>
+          </div>
         );
       default:
         return null;
