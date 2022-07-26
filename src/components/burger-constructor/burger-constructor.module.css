@@ -132,3 +132,11 @@
     flex: 0 0 48%;
   }
 }
+
+/* Fixes weird behavior of button where it triggers hover state when deleting bun from cart */
+@media screen and (max-width: 768px) {
+  .mobile-cart__order-container > button:hover {
+    box-shadow: none;
+    filter: none;
+  }
+}
