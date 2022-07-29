@@ -10,3 +10,20 @@
   /* fixes weird bug on ios/safari  */
   -webkit-transform: translateX(0) translateZ(0);
 }
+
+.mobile-cart {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1001;
+  background-color: #131316;
+}
+
+/* Fixes weird behavior of button where it triggers hover state when deleting bun from cart */
+@media screen and (max-width: 768px) {
+  .mobile-checkout > button:hover {
+    box-shadow: none;
+    filter: none;
+  }
+}

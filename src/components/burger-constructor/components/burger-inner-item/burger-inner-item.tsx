@@ -131,7 +131,7 @@ function BurgerInnerItem({
               <div
                 ref={ref}
                 data-handler-id={handlerId}
-                className={styles["_draggable"]}
+                className={styles["_draggable"] + " noselect"}
               >
                 <DragIcon type="primary" />
               </div>
@@ -164,7 +164,7 @@ function BurgerInnerItem({
             </div>
           )}
 
-          <div className={styles["constructor-element-wrapper"]}>
+          <div className={styles["constructor-element-wrapper"] + " noselect"}>
             <ConstructorElement
               text={ingredient.name}
               price={ingredient.price}

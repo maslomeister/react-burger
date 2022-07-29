@@ -1,3 +1,9 @@
+.app {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
 .row {
   display: flex;
   flex-flow: row;

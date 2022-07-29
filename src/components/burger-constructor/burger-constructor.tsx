@@ -243,7 +243,7 @@ function BurgerConstructor({
         </motion.div>
       </div>
       {isMobile && (
-        <div className={styles["mobile-cart__order-container"]}>
+        <div className={styles["mobile-cart__order-container"] + " noselect"}>
           <TotalPrice price={totalPrice} size="medium" />
           <Button
             type="primary"

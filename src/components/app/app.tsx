@@ -32,6 +32,8 @@ import {
   getNewAccessToken,
 } from "../../services/reducers/auth/auth";
 
+import styles from "./app.module.css";
+
 function App() {
   let content;
   const dispatch = useAppDispatch();
@@ -244,7 +246,7 @@ function App() {
     );
   }
 
-  return <div className="App">{content}</div>;
+  return <div className={styles.app}>{content}</div>;
 }
 
 export default App;
