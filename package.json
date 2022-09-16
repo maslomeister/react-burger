@@ -26,7 +26,7 @@
     "react-responsive": "^9.0.0-beta.8",
     "react-router-dom": "^6.2.2",
     "react-scripts": "5.0.0",
-    "react-swipe-to-delete-ios": "github:maslomeister/react-swipe-to-delete-ios#custom",
+    "react-swipe-to-delete-ios": "maslomeister/react-swipe-to-delete-ios#custom",
     "react-tooltip": "^4.2.21",
     "redux": "^4.1.2",
     "smooth-scroll-into-view-if-needed": "^1.1.33",
