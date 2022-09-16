@@ -73,26 +73,16 @@ function BurgerConstructor({
   const noScrollOnRemoveRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (noScrollOnRemoveRef.current) {
-      noScrollOnRemoveRef.current.addEventListener("touchstart", touchStart);
-      noScrollOnRemoveRef.current.addEventListener(
-        "touchmove",
-        preventTouch,
-        opts
-      );
+    const noScrollElem = noScrollOnRemoveRef.current;
+    if (noScrollElem) {
+      noScrollElem.addEventListener("touchstart", touchStart);
+      noScrollElem.addEventListener("touchmove", preventTouch, opts);
     }
 
     return () => {
-      if (noScrollOnRemoveRef.current) {
-        noScrollOnRemoveRef.current.removeEventListener(
-          "touchstart",
-          touchStart
-        );
-        noScrollOnRemoveRef.current.removeEventListener(
-          "touchmove",
-          preventTouch,
-          opts
-        );
+      if (noScrollElem) {
+        noScrollElem.removeEventListener("touchstart", touchStart);
+        noScrollElem.removeEventListener("touchmove", preventTouch, opts);
       }
     };
   }, []);
