@@ -1,82 +1,83 @@
 ## Stellar Burgers
-Сайт космической бургерной написанный на reactjs с использованием typescript - проектная работа курса [React-разработчик](https://practicum.yandex.ru/react/) от Яндекс Практикума. В настоящий момент приложение находится в разработке.
 
-_В ходе разработки проект проверялся менторами и ревьюверами Яндекс Практикума._
+Online burger store written with Reactjs and typescript - graduation work of [React-developer](https://practicum.yandex.ru/react/) course from Yandex Practicum.
+
+_During development project was reviewed by mentors of Yandex Practicum._
 
 ## Preview
+
 https://user-images.githubusercontent.com/64310545/180601523-0d9f5a99-6a7f-44eb-aab5-b5ce39c4f26c.mp4
 
-### [Запустить сайт](https://maslomeister.github.io/react-burger/)
+### [Open website](https://maslomeister.github.io/react-burger/)
 
-## Технологический стэк
+## Stack
 
-- **SPA** приложение написанное на **Reactjs** с использованием **функциональных компонентов**, **хуков**, **typescript**
-- **Framer Motion** для анимаций
-- **React Router V6** для роутинга
-- **React DND** использовался для реализации drag and drop ингредиентов в конструктор бургера
-- Для работы с данными в приложении использовался **Redux/Toolkit**, также использовался **localStorage** для сохранения состояния конструктора бургеров если пользователь закрыл сайт не сделав заказ
+- **SPA** written with **Reactjs**, **functional components**, **hooks**, **typescript**
+- **Framer Motion** for animations
+- **React Router V6** for routing
+- **React DND** for drag and dropping ingredients from menu to burger creator.
+- **Redux/Toolkit** as state manager and **localStorage** for saving unfinished orders locally.
 - **CSS Modules**
 - **Rest api**
 - **Adaptive design**
-- **Websocket** через **RTK Query**
-- Аутентификация с использованием **JWT** с сохранением токенов в куки и использованием защищенных роутов.
+- **Websocket** with **RTK Query**
+- **JWT** for authentication, authorization and protected routes.
 
-## Описание и функциональность
+## Description
 
-Приложение конструктор бургеров, с помощью ингридиентов можно собрать бургер.
-Также в приложении доступна регистрация и вход в свой профиль, после того как вы войдете в профиль вы можете посмотреть список своих прошлых заказов или изменить данные профиля.
+Online burger constructor, you can drag and drop ingredients from the list on the left to the right and create your own unique burger.
+You can register, login or reset forgotten password.
+In your profile you can view past orders, change account data or logout.
 
 <details>
 <summary>
   
-## Запуск тестирования
+## Testing
 </summary>
 
 #### `npm run test`
 
-Запуск unit тестов
+Launch all unit tests
 
 #### `E2E тесты`
 
-Создайте файл `cypress.env.json` в базовой директории репо со следующим содержанием
+In order for e2e test to work you need to create `cypress.env.json` in base directory of repo with following content:
 
 ```
 {
-	"email":"Ваш email который зарегистрирован на сайте конструктора",
-	"password":"Ваш пароль который зарегистрирован на сайте конструктора"
+	"email":"Your email that you used when registering",
+	"password":"Your password that you used when registering",
 }
 ```
 
-Выполните `npm start`
+Then do `npm start`
 
-После успешного старта выполните `npm run test:cypress`
+And after successful start of application run `npm run test:cypress`
 
 </details>
 
 <details>
 <summary>
   
-## Локальный запуск приложения
+## Local start of aplication
 </summary>
 <br>
 
 #### `git clone https://github.com/maslomeister/react-burger.git`
 
-Клонировать репо себе
+Clone the repository
 
 #### `cd react-burger`
 
-Перейти в папку репо
+Navigate to the repository
 
 #### `npm i`
 
-Установить все нужные зависимости
+Install all dependencies
 
 #### `npm start` or `yarn start`
 
-Запускает приложение
-Откройте http://localhost:3000 в браузере для просмотра.
-
+Start the application
+Go to http://localhost:3000 to view the application
 
 </details>
-
