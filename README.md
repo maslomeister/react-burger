@@ -1,6 +1,6 @@
 ## Stellar Burgers
 
-Online burger store written with Reactjs and typescript - graduation work of [React-developer](https://practicum.yandex.ru/react/) course from Yandex Practicum.
+Online burger constructor written with Reactjs and typescript - graduation work of [React-developer](https://practicum.yandex.ru/react/) course from Yandex Practicum.
 
 _During development project was reviewed by mentors of Yandex Practicum._
 
